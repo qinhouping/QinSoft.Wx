@@ -1,0 +1,111 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{7093873E-65A8-4804-B988-A2851C8A98F2}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>QinSoft.Wx</RootNamespace>
+    <AssemblyName>QinSoft.Wx</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Common\BaseTools.cs" />
+    <Compile Include="Common\EncryptTools.cs" />
+    <Compile Include="Common\HttpTools.cs" />
+    <Compile Include="Common\RetryTools.cs" />
+    <Compile Include="MiniApp\MiniAppConfig.cs" />
+    <Compile Include="MiniApp\MiniAppService.cs" />
+    <Compile Include="MiniApp\MiniAppServiceImp.cs" />
+    <Compile Include="OfficialAccount\Model\AccessToken\AccessTokenResponse.cs" />
+    <Compile Include="OfficialAccount\Model\CustomerService\MsgCustomerService.cs" />
+    <Compile Include="OfficialAccount\Model\CustomerService\CustomerServiceActionRequest.cs" />
+    <Compile Include="OfficialAccount\Model\CustomerService\CustomerServiceImageMsg.cs" />
+    <Compile Include="OfficialAccount\Model\CustomerService\CustomerServiceListResponse.cs" />
+    <Compile Include="OfficialAccount\Model\CustomerService\CustomerServiceMiniProgramPageMsg.cs" />
+    <Compile Include="OfficialAccount\Model\CustomerService\CustomerServiceMPNewsMsg.cs" />
+    <Compile Include="OfficialAccount\Model\CustomerService\CustomerServiceMsgBase.cs" />
+    <Compile Include="OfficialAccount\Model\CustomerService\CustomerServiceMsgMenuMsg.cs" />
+    <Compile Include="OfficialAccount\Model\CustomerService\CustomerServiceMsgResponse.cs" />
+    <Compile Include="OfficialAccount\Model\CustomerService\CustomerServiceMusicMsg.cs" />
+    <Compile Include="OfficialAccount\Model\CustomerService\CustomerServiceNewsMsg.cs" />
+    <Compile Include="OfficialAccount\Model\CustomerService\CustomerServiceActionResponse.cs" />
+    <Compile Include="OfficialAccount\Model\CustomerService\CustomerServiceTextMsg.cs" />
+    <Compile Include="OfficialAccount\Model\CustomerService\CustomerServiceVideoMsg.cs" />
+    <Compile Include="OfficialAccount\Model\CustomerService\CustomerServiceVoiceMsg.cs" />
+    <Compile Include="OfficialAccount\Model\CustomerService\CustomerServiceWxCardMsg.cs" />
+    <Compile Include="OfficialAccount\Model\CustomerService\TypingCustomerServiceResponse.cs" />
+    <Compile Include="OfficialAccount\Model\CustomerService\TypingCustomerServiceRequest.cs" />
+    <Compile Include="OfficialAccount\Model\RecvMsg\RecvEvent\RecvViewEventMsg.cs" />
+    <Compile Include="OfficialAccount\Model\RecvMsg\RecvEvent\RecvClickEventMsg.cs" />
+    <Compile Include="OfficialAccount\Model\RecvMsg\RecvEvent\RecvEventMsgBase.cs" />
+    <Compile Include="OfficialAccount\Model\RecvMsg\RecvEvent\RecvLocationEventMsg.cs" />
+    <Compile Include="OfficialAccount\Model\RecvMsg\RecvEvent\RecvScanEventMsg.cs" />
+    <Compile Include="OfficialAccount\Model\RecvMsg\RecvImageMsg.cs" />
+    <Compile Include="OfficialAccount\Model\RecvMsg\RecvLinkMsg.cs" />
+    <Compile Include="OfficialAccount\Model\RecvMsg\RecvLocationMsg.cs" />
+    <Compile Include="OfficialAccount\Model\RecvMsg\RecvMsgBase.cs" />
+    <Compile Include="OfficialAccount\Model\RecvMsg\RecvShortVideoMsg.cs" />
+    <Compile Include="OfficialAccount\Model\RecvMsg\RecvEvent\RecvSubscribeEventMsg.cs" />
+    <Compile Include="OfficialAccount\Model\RecvMsg\RecvTextMsg.cs" />
+    <Compile Include="OfficialAccount\Model\RecvMsg\RecvEvent\RecvUnsubscribeEventMsg.cs" />
+    <Compile Include="OfficialAccount\Model\RecvMsg\RecvVideoMsg.cs" />
+    <Compile Include="OfficialAccount\Model\RecvMsg\RecvVoiceMsg.cs" />
+    <Compile Include="OfficialAccount\Model\ReplyMsg\ReplyNewsMsg.cs" />
+    <Compile Include="OfficialAccount\Model\ReplyMsg\ReplyImageMsg.cs" />
+    <Compile Include="OfficialAccount\Model\ReplyMsg\ReplyMsgBase.cs" />
+    <Compile Include="OfficialAccount\Model\ReplyMsg\ReplyMuiscMsg.cs" />
+    <Compile Include="OfficialAccount\Model\ReplyMsg\ReplyTextMsg.cs" />
+    <Compile Include="OfficialAccount\Model\ReplyMsg\ReplyVideoMsg.cs" />
+    <Compile Include="OfficialAccount\Model\ReplyMsg\ReplyVoiceMsg.cs" />
+    <Compile Include="OfficialAccount\OfficialAccountConfig.cs" />
+    <Compile Include="OfficialAccount\OfficialAccountException.cs" />
+    <Compile Include="OfficialAccount\OfficialAccountService.cs" />
+    <Compile Include="OfficialAccount\OfficialAccountServiceImp.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="EnterpriseAccount\" />
+    <Folder Include="MiniGame\" />
+    <Folder Include="OfficialAccount\Model\GroupSending\" />
+    <Folder Include="Pay\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
