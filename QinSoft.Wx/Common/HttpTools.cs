@@ -6,7 +6,7 @@ using System.Net;
 using System.Web;
 using System.Reflection;
 using System.IO;
-
+using System.Diagnostics;
 using System.Net.Security;
 using System.Security.Authentication;
 using System.Security.Cryptography.X509Certificates;
@@ -96,11 +96,10 @@ namespace QinSoft.Wx.Common
             return Do<T>(WebMethod.OPTIONS, url, Headers, Cookies, Data);
         }
 
-        public static WebResponse Do(WebMethod method, string url, IDictionary<string, string> Headers = null, IDictionary<string, string> Cookies = null, string data = null, int timeout = 60000)
+        private static WebResponse Do(WebMethod method, string url, IDictionary<string, string> Headers = null, IDictionary<string, string> Cookies = null, string data = null, int timeout = 60000)
         {
-
-            System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls;
-            ServicePointManager.ServerCertificateValidationCallback = new System.Net.Security.RemoteCertificateValidationCallback(CheckValidationResult);
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls;
+            ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback(CheckValidationResult);
             HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(url);
             //方法
             request.Method = method.ToString();
@@ -149,7 +148,7 @@ namespace QinSoft.Wx.Common
             return request.GetResponse();
         }
 
-        public static T Do<T>(WebMethod method, string url, IDictionary<string, string> Headers = null, IDictionary<string, string> Cookies = null, object data = null, int timeout = 60000)
+        private static T Do<T>(WebMethod method, string url, IDictionary<string, string> Headers = null, IDictionary<string, string> Cookies = null, object data = null, int timeout = 60000)
         {
             if (Headers == null)
             {
@@ -163,6 +162,7 @@ namespace QinSoft.Wx.Common
             }
             StreamReader reader = new StreamReader(response.GetResponseStream(), Encoding.GetEncoding(ResponseEncoding));
             string content = reader.ReadToEnd();
+            Debug.WriteLine("httptools request:{0} response:{1}", url, content);
             return content.FromJson<T>();
         }
 

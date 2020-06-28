@@ -6,12 +6,12 @@ using System.Runtime.InteropServices;
 // 控制。更改这些特性值可修改
 // 与程序集关联的信息。
 [assembly: AssemblyTitle("QinSoft.Wx")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("QinSoft 微信开发工具")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Microsoft")]
+[assembly: AssemblyCompany("QinSoft")]
 [assembly: AssemblyProduct("QinSoft.Wx")]
-[assembly: AssemblyCopyright("Copyright © Microsoft 2020")]
-[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCopyright("Copyright © QinSoft 2020")]
+[assembly: AssemblyTrademark("QinSoft")]
 [assembly: AssemblyCulture("")]
 
 // 将 ComVisible 设置为 false 会使此程序集中的类型

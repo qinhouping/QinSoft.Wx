@@ -4,6 +4,8 @@ using QinSoft.Wx.OfficialAccount.Model;
 using QinSoft.Wx.OfficialAccount.Model.CustomerService;
 using QinSoft.Wx.OfficialAccount.Model.RecvMsg;
 using QinSoft.Wx.OfficialAccount.Model.ReplyMsg;
+using QinSoft.Wx.OfficialAccount.Model.Menu;
+using QinSoft.Wx.OfficialAccount.Model.Template;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -11,12 +13,20 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Diagnostics;
+using System.Reflection.Emit;
+using QinSoft.Wx.OfficialAccount.Model.Account;
 
 namespace QinSoft.Wx.Web.Controllers
 {
     public class OfficialAccountController : Controller
     {
         private OfficialAccountService officialAccountService;
+
+        private string ReadInputContent(Stream stream)
+        {
+            StreamReader reader = new StreamReader(stream);
+            return reader.ReadToEnd();
+        }
 
         public OfficialAccountController()
         {
@@ -28,6 +38,14 @@ namespace QinSoft.Wx.Web.Controllers
             });
         }
 
+        /// <summary>
+        /// 微信接入
+        /// </summary>
+        /// <param name="signature">签名</param>
+        /// <param name="timestamp">时间戳</param>
+        /// <param name="nonce">随机字符串</param>
+        /// <param name="echostr">响应内容</param>
+        /// <returns>执行结果</returns>
         [HttpGet]
         public ActionResult Join(string signature, long timestamp, string nonce, string echostr)
         {
@@ -41,6 +59,13 @@ namespace QinSoft.Wx.Web.Controllers
             }
         }
 
+        /// <summary>
+        /// 被动回复
+        /// </summary>
+        /// <param name="signature">签名</param>
+        /// <param name="timestamp">时间戳</param>
+        /// <param name="nonce">随机字符串</param>
+        /// <returns>执行结果</returns>
         [HttpPost]
         public ActionResult Join(string signature, long timestamp, string nonce)
         {
@@ -90,6 +115,7 @@ namespace QinSoft.Wx.Web.Controllers
                         ToUser = recvMsg.FromUserName,
                         Command = "CancelTyping"
                     });
+
                     return Content(sendMsgXml);
                 }
                 catch (Exception e)
@@ -118,12 +144,70 @@ namespace QinSoft.Wx.Web.Controllers
         }
 
         [HttpGet]
+        public ActionResult CreateMenu()
+        {
+            try
+            {
+                string accessToken = this.officialAccountService.GetAccessToken();
+                this.officialAccountService.CreateMenu(accessToken, new MenuInfo()
+                {
+                    Button = new MenuBase[]
+                    {
+                        new ClickMenu(){
+                            Key="V1001_TODAY_MUSIC",
+                            Name="今日歌曲"
+                        },
+                        new MenuBase(){ Name="菜单", SubButton=new MenuBase[]{
+                            new ViewMenu()
+                            {
+                                Url="http://www.soso.com/",
+                                Name="搜索"
+                            },
+                            //new MiniProgramMenu()
+                            //{
+                            //    Url="http://mp.weixin.qq.com",
+                            //    AppId="wx286b93c14bbf93aa",
+                            //    PagePath="pages/lunar/index",
+                            //    Name="wxa"
+                            //},
+                            new ClickMenu()
+                            {
+                                Key="V1001_GOOD",
+                                Name="赞一下我们"
+                            }
+                        } }
+                    }
+                }); ;
+                return Content("OK");
+            }
+            catch (Exception e)
+            {
+                return Content(e.ToString());
+            }
+        }
+
+        [HttpGet]
+        public ActionResult DeleteMenu()
+        {
+            try
+            {
+                string accessToken = this.officialAccountService.GetAccessToken();
+                this.officialAccountService.DeleteMenu(accessToken);
+                return Content("OK");
+            }
+            catch (Exception e)
+            {
+                return Content(e.ToString());
+            }
+        }
+
+        [HttpGet]
         public ActionResult GetCustomerServiceList()
         {
             try
             {
-                string accessTokne = this.officialAccountService.GetAccessToken();
-                return Content(this.officialAccountService.GetCustomerServiceList(accessTokne).ToJson());
+                string accessToken = this.officialAccountService.GetAccessToken();
+                return Content(this.officialAccountService.GetCustomerServiceList(accessToken).ToJson());
             }
             catch (Exception e)
             {
@@ -136,13 +220,13 @@ namespace QinSoft.Wx.Web.Controllers
         {
             try
             {
-                string accessTokne = this.officialAccountService.GetAccessToken();
+                string accessToken = this.officialAccountService.GetAccessToken();
                 CustomerServiceActionRequest request = new CustomerServiceActionRequest() { Account = account, NickName = nickname, Password = password };
                 switch (option)
                 {
-                    case "add": this.officialAccountService.AddCustomerService(accessTokne, request); break;
-                    case "delete": this.officialAccountService.DeleteCustomerService(accessTokne, request); break;
-                    case "update": this.officialAccountService.UpdateCustomerService(accessTokne, request); break;
+                    case "add": this.officialAccountService.AddCustomerService(accessToken, request); break;
+                    case "delete": this.officialAccountService.DeleteCustomerService(accessToken, request); break;
+                    case "update": this.officialAccountService.UpdateCustomerService(accessToken, request); break;
                 }
                 return Content("OK");
             }
@@ -152,10 +236,108 @@ namespace QinSoft.Wx.Web.Controllers
             }
         }
 
-        private string ReadInputContent(Stream stream)
+        [HttpGet]
+        public ActionResult SetTemplateIndustry(string id1, string id2)
         {
-            StreamReader reader = new StreamReader(stream);
-            return reader.ReadToEnd();
+            try
+            {
+                string accessToken = this.officialAccountService.GetAccessToken();
+                this.officialAccountService.SetTemplateIndustry(accessToken, new SetTemplateIndustryRequest() { IndustryId1 = id1, IndustryId2 = id2 });
+                return Content("OK");
+            }
+            catch (Exception e)
+            {
+                return Content(e.ToString());
+            }
+        }
+
+        [HttpGet]
+        public ActionResult GetTemplateIndustry()
+        {
+            try
+            {
+                string accessToken = this.officialAccountService.GetAccessToken();
+                return Content(this.officialAccountService.GetTemplateIndustry(accessToken).ToJson());
+            }
+            catch (Exception e)
+            {
+                return Content(e.ToString());
+            }
+        }
+
+        [HttpGet]
+        public ActionResult GetTemplateList()
+        {
+            try
+            {
+                string accessToken = this.officialAccountService.GetAccessToken();
+                return Content(this.officialAccountService.GetTemplateList(accessToken).ToJson());
+            }
+            catch (Exception e)
+            {
+                return Content(e.ToString());
+            }
+        }
+
+        [HttpGet]
+        public ActionResult DeleteTemplate(string templateId)
+        {
+            try
+            {
+                string accessToken = this.officialAccountService.GetAccessToken();
+                this.officialAccountService.DeleteTemplate(accessToken, templateId);
+                return Content("OK");
+            }
+            catch (Exception e)
+            {
+                return Content(e.ToString());
+            }
+        }
+
+        [HttpGet]
+        public ActionResult SendTemplateMessage()
+        {
+            try
+            {
+                string accessToken = this.officialAccountService.GetAccessToken();
+                //发送模板信息
+                TemplateMessage templateMessage = new TemplateMessage()
+                {
+                    ToUser = "oHHY5v6KCMygltJiNTSfIVMD2Y54",
+                    Url = "https://github.com/qinhouping",
+                    TemplateId = "xrsTOC7oISJGgDEaBz9f8Wax-dBEDheZYJ934IN4f5E",
+                    Data = new TemplateMessageData()
+                          {
+                              {"date", new TemplateMessageKeyWord() { Value=DateTime.Now.ToString(), Color="#173177" } }
+                          }
+                };
+                return Content(this.officialAccountService.SendTemplateMessage(accessToken, templateMessage));
+            }
+            catch (Exception e)
+            {
+                return Content(e.ToString());
+            }
+        }
+
+        [HttpGet]
+        public ActionResult GetOnceSubscribeUrl()
+        {
+            return Content(this.officialAccountService.GetSubscribeUrl("test", "xrsTOC7oISJGgDEaBz9f8Wax-dBEDheZYJ934IN4f5E", "http://zkgxji.natappfree.cc", "test"));
+        }
+
+
+        public ActionResult GetQRCode()
+        {
+            string accessToken = this.officialAccountService.GetAccessToken();
+            CreateQRCodeResponse response = this.officialAccountService.CreateQRCode(accessToken, new CreateQRCodeRequest()
+            {
+                ActionName = "QR_STR_SCENE",
+                ActionInfo = new QRCodeActionInfo()
+                {
+                    Scene = new QRCodeScene() { SceneStr = "QinSoft.Wx" }
+                }
+            });
+            return Content(this.officialAccountService.GetShortUrl(accessToken, this.officialAccountService.GetQRCodeUrl(response.Ticket)));
         }
     }
 }

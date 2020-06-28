@@ -2,9 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Web;
 using QinSoft.Wx.Common;
 using QinSoft.Wx.OfficialAccount.Model.AccessToken;
+using QinSoft.Wx.OfficialAccount.Model.Account;
 using QinSoft.Wx.OfficialAccount.Model.CustomerService;
+using QinSoft.Wx.OfficialAccount.Model.Menu;
+using QinSoft.Wx.OfficialAccount.Model.Subscribe;
+using QinSoft.Wx.OfficialAccount.Model.Template;
+using QinSoft.Wx.OfficialAccount.Model.User;
 
 namespace QinSoft.Wx.OfficialAccount
 {
@@ -22,13 +28,41 @@ namespace QinSoft.Wx.OfficialAccount
             if (officialAccountConfig == null) throw new ArgumentNullException("officialAccountConfig");
             this.officialAccountConfig = officialAccountConfig;
             this.urlDictionary = new Dictionary<string, string>() {
-                { "GetAccessToken","https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={0}&secret={1}"},
-                { "AddCustomerService","https://api.weixin.qq.com/customservice/kfaccount/add?access_token={0}"},
-                { "UpdateCustomerService","https://api.weixin.qq.com/customservice/kfaccount/update?access_token={0}"},
-                { "DeleteCustomerService","https://api.weixin.qq.com/customservice/kfaccount/del?access_token={0}"},
-                { "GetCustomerServiceList","https://api.weixin.qq.com/cgi-bin/customservice/getkflist?access_token={0}"},
-                { "SendCustomerServiceMessage","https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token={0}"},
-                { "TypingCustomerService","https://api.weixin.qq.com/cgi-bin/message/custom/typing?access_token={0}"}
+                { "GetAccessToken","https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={0}&secret={1}" },
+                { "CreateMenu","https://api.weixin.qq.com/cgi-bin/menu/create?access_token={0}" },
+                { "CreateConditionalMenu","https://api.weixin.qq.com/cgi-bin/menu/addconditional?access_token={0}"},
+                { "DeleteMenu","https://api.weixin.qq.com/cgi-bin/menu/delete?access_token={0}"},
+                { "DeleteConditionalMenu","https://api.weixin.qq.com/cgi-bin/menu/delconditional?access_token={0}" },
+                { "AddCustomerService","https://api.weixin.qq.com/customservice/kfaccount/add?access_token={0}" },
+                { "UpdateCustomerService","https://api.weixin.qq.com/customservice/kfaccount/update?access_token={0}" },
+                { "DeleteCustomerService","https://api.weixin.qq.com/customservice/kfaccount/del?access_token={0}" },
+                { "GetCustomerServiceList","https://api.weixin.qq.com/cgi-bin/customservice/getkflist?access_token={0}" },
+                { "SendCustomerServiceMessage","https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token={0}" },
+                { "TypingCustomerService","https://api.weixin.qq.com/cgi-bin/message/custom/typing?access_token={0}" },
+                { "SetTemplateIndustry","https://api.weixin.qq.com/cgi-bin/template/api_set_industry?access_token={0}" },
+                { "GetTemplateIndustry","https://api.weixin.qq.com/cgi-bin/template/get_industry?access_token={0}" },
+                 { "GetTemplateId","https://api.weixin.qq.com/cgi-bin/template/api_add_template?access_token={0}"},
+                { "GetTemplateList","https://api.weixin.qq.com/cgi-bin/template/get_all_private_template?access_token={0}" },
+                { "DeleteTemplate","https://api.weixin.qq.com/cgi-bin/template/del_private_template?access_token={0}" },
+                { "SendTemplateMessage","https://api.weixin.qq.com/cgi-bin/message/template/send?access_token={0}" },
+                { "SubscribeUrl","https://mp.weixin.qq.com/mp/subscribemsg?action={0}&appid={1}&scene={2}&template_id={3}&redirect_url={4}&reserved={5}#wechat_redirect" },
+                { "SendSubscribeMessage","https://api.weixin.qq.com/cgi-bin/message/template/subscribe?access_token={0}" },
+                { "CreateTag","https://api.weixin.qq.com/cgi-bin/tags/create?access_token={0}" },
+                { "UpdateTag","https://api.weixin.qq.com/cgi-bin/tags/update?access_token={0}" },
+                { "DeleteTag","https://api.weixin.qq.com/cgi-bin/tags/delete?access_token={0}" },
+                { "GetTagList","https://api.weixin.qq.com/cgi-bin/tags/get?access_token={0}" },
+                { "GetTagUserList", "https://api.weixin.qq.com/cgi-bin/user/tag/get?access_token={0}" },
+                { "BatchTagging","https://api.weixin.qq.com/cgi-bin/user/tag/get?access_token={0}" },
+                { "BatchUntagging","https://api.weixin.qq.com/cgi-bin/tags/members/batchuntagging?access_token={0}" },
+                { "GetUserTagList","https://api.weixin.qq.com/cgi-bin/tags/getidlist?access_token={0}" },
+                { "UpdateRemark","https://api.weixin.qq.com/cgi-bin/user/info/updateremark?access_token={0}" },
+                { "GetUserInfo","https://api.weixin.qq.com/cgi-bin/user/info?access_token={0}&openid={1}&lang={2}" },
+                { "BatchGetUserInfo","https://api.weixin.qq.com/cgi-bin/user/info/batchget?access_token={0}" },
+                { "GetUserList","https://api.weixin.qq.com/cgi-bin/user/get?access_token={0}&next_openid={1}" },
+                { "GetBlackUserList","https://api.weixin.qq.com/cgi-bin/tags/members/getblacklist?access_token={0}" },
+                { "CreateQRCode","https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token={0}" },
+                { "QRCodeUrl", "https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket={0}"},
+                { "GetShortUrl","https://api.weixin.qq.com/cgi-bin/shorturl?access_token={0}" }
             };
         }
 
@@ -52,6 +86,29 @@ namespace QinSoft.Wx.OfficialAccount
             if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
             else return response.AccessToken;
         }
+
+        #region 菜单
+        public override void CreateMenu(string accessToken, MenuInfo menuInfo, bool isConditional = false)
+        {
+            CreateMenuResponse response = RetryTools.Retry<CreateMenuResponse>(() =>
+            {
+                return HttpTools.Post<CreateMenuResponse>(string.Format(urlDictionary[isConditional ? "CreateConditionalMenu" : "CreateMenu"], accessToken), null, null, menuInfo);
+            });
+            if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
+        }
+
+        public override void DeleteMenu(string accessToken, bool isConditional = false)
+        {
+            DeleteMenuResponse response = RetryTools.Retry<DeleteMenuResponse>(() =>
+            {
+                return HttpTools.Get<DeleteMenuResponse>(string.Format(urlDictionary[isConditional ? "DeleteConditionalMenu" : "DeleteMenu"], accessToken), null, null);
+            });
+            if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
+        }
+        #endregion
+
+        #region 群发
+        #endregion
 
         #region 客服
 
@@ -101,15 +158,263 @@ namespace QinSoft.Wx.OfficialAccount
             if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
         }
 
-        public override void TypingCustomerService(string accessToken, TypingCustomerServiceRequest action)
+        public override void TypingCustomerService(string accessToken, TypingCustomerServiceRequest request)
         {
             TypingCustomerServiceResponse response = RetryTools.Retry<TypingCustomerServiceResponse>(() =>
             {
-                return HttpTools.Post<TypingCustomerServiceResponse>(string.Format(urlDictionary["TypingCustomerService"], accessToken), null, null, action);
+                return HttpTools.Post<TypingCustomerServiceResponse>(string.Format(urlDictionary["TypingCustomerService"], accessToken), null, null, request);
+            });
+            if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
+        }
+        #endregion
+
+        #region 模板
+        public override void SetTemplateIndustry(string accessToken, SetTemplateIndustryRequest request)
+        {
+            SetTemplateIndustryResponse response = RetryTools.Retry<SetTemplateIndustryResponse>(() =>
+            {
+                return HttpTools.Post<SetTemplateIndustryResponse>(string.Format(urlDictionary["SetTemplateIndustry"], accessToken), null, null, request);
             });
             if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
         }
 
+        public override GetTemplateIndustryResponse GetTemplateIndustry(string accessToken)
+        {
+            GetTemplateIndustryResponse response = RetryTools.Retry<GetTemplateIndustryResponse>(() =>
+            {
+                return HttpTools.Get<GetTemplateIndustryResponse>(string.Format(urlDictionary["GetTemplateIndustry"], accessToken), null, null);
+            });
+            return response;
+        }
+
+        public override string GetTemplateId(string accessToken, string templateIdShort)
+        {
+            GetTemplateIdRequest request = new GetTemplateIdRequest() { TemplateIdShort = templateIdShort };
+            GetTemplateIdResponse response = RetryTools.Retry<GetTemplateIdResponse>(() =>
+            {
+                return HttpTools.Post<GetTemplateIdResponse>(string.Format(urlDictionary["GetTemplateId"], accessToken), null, null, request);
+            });
+            if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
+            return response.TemplateId;
+        }
+
+        public override GetTemplateListResponse GetTemplateList(string accessToken)
+        {
+            GetTemplateListResponse response = RetryTools.Retry<GetTemplateListResponse>(() =>
+            {
+                return HttpTools.Get<GetTemplateListResponse>(string.Format(urlDictionary["GetTemplateList"], accessToken), null, null);
+            });
+            return response;
+        }
+
+        public override void DeleteTemplate(string accessToken, string templateId)
+        {
+            DeleteTemplateRequest request = new DeleteTemplateRequest() { TemplateId = templateId };
+            DeleteTemplateResponse response = RetryTools.Retry<DeleteTemplateResponse>(() =>
+            {
+                return HttpTools.Post<DeleteTemplateResponse>(string.Format(urlDictionary["DeleteTemplate"], accessToken), null, null, request);
+            });
+            if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
+        }
+
+        public override string SendTemplateMessage(string accessToken, TemplateMessage message)
+        {
+            SendTemplateMessageResponse response = RetryTools.Retry<SendTemplateMessageResponse>(() =>
+            {
+                return HttpTools.Post<SendTemplateMessageResponse>(string.Format(urlDictionary["SendTemplateMessage"], accessToken), null, null, message);
+            });
+            if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
+            return response.MsgId;
+        }
+        #endregion
+
+        #region 订阅
+        public override string GetSubscribeUrl(string scene, string templateId, string redirectUrl, string reserved)
+        {
+            return string.Format(
+                urlDictionary["SubscribeUrl"],
+                "get_confirm",
+                this.officialAccountConfig.AppId,
+                scene,
+                templateId,
+                HttpUtility.UrlEncode(redirectUrl),
+                HttpUtility.UrlEncode(reserved)
+                );
+        }
+
+        public override void SendSubscribeMessage(string accessToken, SubscribeMessage message)
+        {
+            SendSubscribeMessageResponse response = RetryTools.Retry<SendSubscribeMessageResponse>(() =>
+            {
+                return HttpTools.Post<SendSubscribeMessageResponse>(string.Format(urlDictionary["SendSubscribeMessage"], accessToken), null, null, message);
+            });
+            if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
+        }
+        #endregion
+
+        #region 用户
+        public override CreateTagResponse CreateTag(string accessToken, CreateTagRequest request)
+        {
+            CreateTagResponse response = RetryTools.Retry<CreateTagResponse>(() =>
+            {
+                return HttpTools.Post<CreateTagResponse>(string.Format(urlDictionary["CreateTag"], accessToken), null, null, request);
+            });
+            return response;
+        }
+
+        public override void UpdateTag(string accessToken, UpdateTagRequest request)
+        {
+            UpdateTagResponse response = RetryTools.Retry<UpdateTagResponse>(() =>
+            {
+                return HttpTools.Post<UpdateTagResponse>(string.Format(urlDictionary["UpdateTag"], accessToken), null, null, request);
+            });
+            if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
+        }
+
+        public override void DeleteTag(string accessToken, DeleteTagRequest request)
+        {
+            DeleteTagResponse response = RetryTools.Retry<DeleteTagResponse>(() =>
+            {
+                return HttpTools.Post<DeleteTagResponse>(string.Format(urlDictionary["DeleteTag"], accessToken), null, null, request);
+            });
+            if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
+        }
+
+        public override GetTagListResponse GetTagList(string accessToken)
+        {
+            GetTagListResponse response = RetryTools.Retry<GetTagListResponse>(() =>
+            {
+                return HttpTools.Get<GetTagListResponse>(string.Format(urlDictionary["GetTagList"], accessToken), null, null);
+            });
+            return response;
+        }
+
+        public override GetTagUserListResponse GetTagUserList(string accessToken, GetTagUserListRequest request)
+        {
+            GetTagUserListResponse response = RetryTools.Retry<GetTagUserListResponse>(() =>
+            {
+                return HttpTools.Post<GetTagUserListResponse>(string.Format(urlDictionary["GetTagUserList"], accessToken), null, null, request);
+            });
+            return response;
+        }
+
+        public override void BatchTagging(string accessToken, BatchTaggingRequest request)
+        {
+            BatchTaggingResponse response = RetryTools.Retry<BatchTaggingResponse>(() =>
+            {
+                return HttpTools.Post<BatchTaggingResponse>(string.Format(urlDictionary["BatchTagging"], accessToken), null, null, request);
+            });
+            if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
+        }
+
+        public override void BatchUntagging(string accessToken, BatchUntaggingRequest request)
+        {
+            BatchUntaggingResponse response = RetryTools.Retry<BatchUntaggingResponse>(() =>
+            {
+                return HttpTools.Post<BatchUntaggingResponse>(string.Format(urlDictionary["BatchUntagging"], accessToken), null, null, request);
+            });
+            if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
+        }
+
+        public override GetUserTagListResponse GetUserTagList(string accessToken, GetUserTagListRequest request)
+        {
+            GetUserTagListResponse response = RetryTools.Retry<GetUserTagListResponse>(() =>
+            {
+                return HttpTools.Post<GetUserTagListResponse>(string.Format(urlDictionary["GetUserTagList"], accessToken), null, null, request);
+            });
+            return response;
+        }
+
+        public override void UpdateRemark(string accessToken, UpdateRemarkRequest request)
+        {
+            UpdateRemarkResponse response = RetryTools.Retry<UpdateRemarkResponse>(() =>
+            {
+                return HttpTools.Post<UpdateRemarkResponse>(string.Format(urlDictionary["UpdateRemark"], accessToken), null, null, request);
+            });
+            if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
+        }
+
+        public override UserInfo GetUserInfo(string accessToken, string openId, string lang = "zh_CN")
+        {
+            GetUserInfoResponse response = RetryTools.Retry<GetUserInfoResponse>(() =>
+            {
+                return HttpTools.Get<GetUserInfoResponse>(string.Format(urlDictionary["GetUserInfo"], accessToken, openId, lang), null, null);
+            });
+            if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
+            return response;
+        }
+
+        public override UserInfo[] BatchGetUserInfo(string accessToken, BatchGetUserInfoRequest request)
+        {
+            BatchGetUserInfoResponse response = RetryTools.Retry<BatchGetUserInfoResponse>(() =>
+            {
+                return HttpTools.Get<BatchGetUserInfoResponse>(string.Format(urlDictionary["BatchGetUserInfo"], accessToken), null, null);
+            });
+            if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
+            return response.UserInfoList;
+        }
+
+        public override GetUserListResponse GetUserList(string accessToken, string nextOpenId)
+        {
+            GetUserListResponse response = RetryTools.Retry<GetUserListResponse>(() =>
+            {
+                return HttpTools.Get<GetUserListResponse>(string.Format(urlDictionary["GetUserList"], accessToken, nextOpenId), null, null);
+            });
+            return response;
+        }
+
+        public override GetBlackUserListResponse GetBlackUserList(string accessToken, GetBlackUserListRequest request)
+        {
+            GetBlackUserListResponse response = RetryTools.Retry<GetBlackUserListResponse>(() =>
+            {
+                return HttpTools.Post<GetBlackUserListResponse>(string.Format(urlDictionary["GetBlackUserList"], accessToken), null, null, request);
+            });
+            return response;
+        }
+
+        public override void BatchBlackList(string accessToken, BatchBlackListRequest request)
+        {
+            BatchBlackListResponse response = RetryTools.Retry<BatchBlackListResponse>(() =>
+            {
+                return HttpTools.Post<BatchBlackListResponse>(string.Format(urlDictionary["BatchBlackList"], accessToken), null, null, request);
+            });
+            if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
+        }
+
+        public override void BatchUnblackList(string accessToken, BatchUnblackListRequest request)
+        {
+            BatchUnblackListResponse response = RetryTools.Retry<BatchUnblackListResponse>(() =>
+            {
+                return HttpTools.Post<BatchUnblackListResponse>(string.Format(urlDictionary["BatchBlackList"], accessToken), null, null, request);
+            });
+            if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
+        }
+        #endregion
+
+        #region 账户
+        public override CreateQRCodeResponse CreateQRCode(string accessToken, CreateQRCodeRequest request)
+        {
+            CreateQRCodeResponse response = RetryTools.Retry<CreateQRCodeResponse>(() =>
+            {
+                return HttpTools.Post<CreateQRCodeResponse>(string.Format(urlDictionary["CreateQRCode"], accessToken), null, null, request);
+            });
+            return response;
+        }
+
+        public override string GetQRCodeUrl(string ticket)
+        {
+            return string.Format(urlDictionary["QRCodeUrl"], HttpUtility.UrlEncode(ticket));
+        }
+
+        public override string GetShortUrl(string accessToken, string longUrl)
+        {
+            GetShortUrlResponse response = RetryTools.Retry<GetShortUrlResponse>(() =>
+            {
+                return HttpTools.Post<GetShortUrlResponse>(string.Format(urlDictionary["GetShortUrl"], accessToken), null, null, new GetShortUrlRequest() { LongUrl = longUrl });
+            });
+            if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
+            return response.ShortUrl;
+        }
         #endregion
     }
 }
