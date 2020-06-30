@@ -15,6 +15,9 @@ using System.Web.Mvc;
 using System.Diagnostics;
 using System.Reflection.Emit;
 using QinSoft.Wx.OfficialAccount.Model.Account;
+using System.Threading.Tasks;
+using QinSoft.Wx.OfficialAccount.Model.Media;
+using System.Net.Http;
 
 namespace QinSoft.Wx.Web.Controllers
 {
@@ -107,6 +110,16 @@ namespace QinSoft.Wx.Web.Controllers
                                 PicUrl="https://avatars1.githubusercontent.com/u/28695396?s=60&v=4"
                             }
                             }
+                        }
+                    };
+                    this.officialAccountService.SendCustomerServiceMessage(accessToken, customerServiceMsg);
+                    //发送客服消息2
+                    customerServiceMsg = new CustomerServiceImageMsg()
+                    {
+                        ToUser = recvMsg.FromUserName,
+                        Image = new CustomerServiceImageMsgContent()
+                        {
+                            MediaId = "dMUBr-ZQ80Ec_p1-SelnXe379HbDpl11TsgrnaVgofrrv0yVgpR3rD0jIvasL-k3"
                         }
                     };
                     this.officialAccountService.SendCustomerServiceMessage(accessToken, customerServiceMsg);
@@ -325,7 +338,7 @@ namespace QinSoft.Wx.Web.Controllers
             return Content(this.officialAccountService.GetSubscribeUrl("test", "xrsTOC7oISJGgDEaBz9f8Wax-dBEDheZYJ934IN4f5E", "http://zkgxji.natappfree.cc", "test"));
         }
 
-
+        [HttpGet]
         public ActionResult GetQRCode()
         {
             string accessToken = this.officialAccountService.GetAccessToken();
@@ -338,6 +351,98 @@ namespace QinSoft.Wx.Web.Controllers
                 }
             });
             return Content(this.officialAccountService.GetShortUrl(accessToken, this.officialAccountService.GetQRCodeUrl(response.Ticket)));
+        }
+
+        [HttpGet]
+        public ActionResult UploadMedia()
+        {
+            return View();
+        }
+
+
+        [HttpPost]
+        public async Task<ActionResult> UploadMediaHandle(string type)
+        {
+            string accessToken = this.officialAccountService.GetAccessToken();
+            string fileName = this.Request.Files["file"].FileName;
+            Stream stream = this.Request.Files["file"].InputStream;
+            UploadMediaResponse response = await this.officialAccountService.UploadMedia(accessToken, type, fileName, stream);
+            return Content(response.ToJson());
+        }
+
+        public async Task<ActionResult> DownloadMedia(string mediaId, string fileName)
+        {
+            string accessToken = this.officialAccountService.GetAccessToken();
+            Stream stream = await this.officialAccountService.DownloadMedia(accessToken, mediaId);
+            return File(stream, "application/octet-stream", fileName);
+        }
+
+        [HttpGet]
+        public ActionResult UploadMaterial()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public ActionResult UploadNewsMaterial()
+        {
+            string accessToken = this.officialAccountService.GetAccessToken();
+            AddNewsMaterialResponse response = this.officialAccountService.AddNewsMaterial(accessToken, new AddNewsMaterialRequest()
+            {
+                Articles = new NewsMaterialArticle[]
+                {
+                    new NewsMaterialArticle()
+                    {
+                         Title="test",
+                         ShowCoverPic=0,
+                         Author="Qinhouping",
+                         Digest="QinSoft.Wx",
+                         Content="秦后平",
+                         ContentSourceUrl="https://github.com/qinhouping"
+                    }
+                }
+            });
+            return Content(response.ToJson());
+        }
+
+
+        [HttpPost]
+        public async Task<ActionResult> UploadMaterialHandle(string type)
+        {
+            string accessToken = this.officialAccountService.GetAccessToken();
+            string fileName = this.Request.Files["file"].FileName;
+            Stream stream = this.Request.Files["file"].InputStream;
+            UploadMaterialResponse response = await this.officialAccountService.UploadMaterial(accessToken, type, fileName, stream);
+            return Content(response.ToJson());
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> DownloadMaterial(string mediaId, string fileName)
+        {
+            string accessToken = this.officialAccountService.GetAccessToken();
+            Stream stream = await this.officialAccountService.DownloadMaterial(accessToken, new DownloadMaterialRequest() { MediaId = mediaId });
+            return File(stream, "application/octet-stream", fileName);
+        }
+
+        [HttpGet]
+        public ActionResult GetMaterialCount()
+        {
+            string accessToken = this.officialAccountService.GetAccessToken();
+            GetMaterialCountResponse response = this.officialAccountService.GetMaterialCount(accessToken);
+            return Content(response.ToJson());
+        }
+
+        [HttpGet]
+        public ActionResult GetMaterialList()
+        {
+            string accessToken = this.officialAccountService.GetAccessToken();
+            GetMaterialListResponse<NewsMaterislListItem> response = this.officialAccountService.GetMaterialList<NewsMaterislListItem>(accessToken, new GetMaterialListRequest()
+            {
+                Count = 10,
+                Offset = 0,
+                Type = "news"
+            });
+            return Content(response.ToJson());
         }
     }
 }

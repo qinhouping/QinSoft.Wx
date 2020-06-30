@@ -9,9 +9,10 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>QinSoft.Wx</RootNamespace>
     <AssemblyName>QinSoft.Wx</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -21,6 +22,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -29,6 +31,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
@@ -36,6 +39,9 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Net.Http">
+      <HintPath>C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\System.Net.Http.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -74,6 +80,24 @@
     <Compile Include="OfficialAccount\Model\CustomerService\CustomerServiceWxCardMsg.cs" />
     <Compile Include="OfficialAccount\Model\CustomerService\TypingCustomerServiceResponse.cs" />
     <Compile Include="OfficialAccount\Model\CustomerService\TypingCustomerServiceRequest.cs" />
+    <Compile Include="OfficialAccount\Model\Media\DeleteMaterialRequest.cs" />
+    <Compile Include="OfficialAccount\Model\Media\GetMaterialCountResponse.cs" />
+    <Compile Include="OfficialAccount\Model\Media\GetMaterialListRequest.cs" />
+    <Compile Include="OfficialAccount\Model\Media\GetMaterialListResponse.cs" />
+    <Compile Include="OfficialAccount\Model\Media\NewsMaterialArticle.cs" />
+    <Compile Include="OfficialAccount\Model\Media\UpdateNewsMaterialResponse.cs" />
+    <Compile Include="OfficialAccount\Model\Media\DeleteMaterialResponse.cs" />
+    <Compile Include="OfficialAccount\Model\Media\DownloadMaterialRequest.cs" />
+    <Compile Include="OfficialAccount\Model\Media\DownloadNewsMaterialResponse.cs" />
+    <Compile Include="OfficialAccount\Model\Media\DownloadVideoMaterialResponse.cs" />
+    <Compile Include="OfficialAccount\Model\Media\UpdateNewsMaterialRequest.cs" />
+    <Compile Include="OfficialAccount\Model\Media\UploadMaterialRequest.cs" />
+    <Compile Include="OfficialAccount\Model\Media\UploadMaterialResponse.cs" />
+    <Compile Include="OfficialAccount\Model\Media\AddNewsMaterialRequest.cs" />
+    <Compile Include="OfficialAccount\Model\Media\AddNewsMaterialResponse.cs" />
+    <Compile Include="OfficialAccount\Model\Media\DownloadMediaResponse.cs" />
+    <Compile Include="OfficialAccount\Model\Media\UploadMediaResponse.cs" />
+    <Compile Include="OfficialAccount\Model\Media\UploadNewsMaterialImgResponse.cs" />
     <Compile Include="OfficialAccount\Model\Menu\ClickMenu.cs" />
     <Compile Include="OfficialAccount\Model\Menu\CreateMenuResponse.cs" />
     <Compile Include="OfficialAccount\Model\Menu\DeleteMenuResponse.cs" />

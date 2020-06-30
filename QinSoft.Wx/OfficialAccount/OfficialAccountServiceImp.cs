@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Web;
 using QinSoft.Wx.Common;
 using QinSoft.Wx.OfficialAccount.Model.AccessToken;
 using QinSoft.Wx.OfficialAccount.Model.Account;
 using QinSoft.Wx.OfficialAccount.Model.CustomerService;
+using QinSoft.Wx.OfficialAccount.Model.Media;
 using QinSoft.Wx.OfficialAccount.Model.Menu;
 using QinSoft.Wx.OfficialAccount.Model.Subscribe;
 using QinSoft.Wx.OfficialAccount.Model.Template;
@@ -62,7 +65,17 @@ namespace QinSoft.Wx.OfficialAccount
                 { "GetBlackUserList","https://api.weixin.qq.com/cgi-bin/tags/members/getblacklist?access_token={0}" },
                 { "CreateQRCode","https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token={0}" },
                 { "QRCodeUrl", "https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket={0}"},
-                { "GetShortUrl","https://api.weixin.qq.com/cgi-bin/shorturl?access_token={0}" }
+                { "GetShortUrl","https://api.weixin.qq.com/cgi-bin/shorturl?access_token={0}" },
+                { "UploadMedia","https://api.weixin.qq.com/cgi-bin/media/upload?access_token={0}&type={1}" },
+                { "GetMedia","https://api.weixin.qq.com/cgi-bin/media/get?access_token={0}&media_id={1}" },
+                { "AddNewsMaterial","https://api.weixin.qq.com/cgi-bin/material/add_news?access_token={0}" },
+                { "UploadNewsMaterialImg","https://api.weixin.qq.com/cgi-bin/media/uploadimg?access_token={0}" },
+                { "UploadMaterial","https://api.weixin.qq.com/cgi-bin/material/add_material?access_token={0}&type={1}" },
+                { "DownloadMaterial","https://api.weixin.qq.com/cgi-bin/material/get_material?access_token={0}" },
+                { "DeleteMaterial","https://api.weixin.qq.com/cgi-bin/material/del_material?access_token={0}" },
+                { "UpdateNewsMaterial","https://api.weixin.qq.com/cgi-bin/material/update_news?access_token={0}" },
+                { "GetMaterialCount","https://api.weixin.qq.com/cgi-bin/material/get_materialcount?access_token={0}" },
+                { "GetMaterialList","https://api.weixin.qq.com/cgi-bin/material/batchget_material?access_token={0}" }
             };
         }
 
@@ -414,6 +427,135 @@ namespace QinSoft.Wx.OfficialAccount
             });
             if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
             return response.ShortUrl;
+        }
+        #endregion
+
+        #region
+
+        public async override Task<UploadMediaResponse> UploadMedia(string accessToken, string type, string fileName, Stream stream)
+        {
+            UploadMediaResponse response = await RetryTools.Retry<Task<UploadMediaResponse>>(async () =>
+            {
+                return await HttpTools.UploadAsync<UploadMediaResponse>(string.Format(urlDictionary["UploadMedia"], accessToken, type), stream, fileName);
+            });
+            if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
+            return response;
+        }
+
+        public override DownloadMediaResponse DownloadVideoMedia(string accessToken, string mediaId)
+        {
+            DownloadMediaResponse response = RetryTools.Retry<DownloadMediaResponse>(() =>
+            {
+                return HttpTools.Get<DownloadMediaResponse>(string.Format(urlDictionary["GetMedia"], accessToken, mediaId), null, null);
+            });
+            if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
+            return response;
+        }
+
+        public async override Task<Stream> DownloadMedia(string accessToken, string mediaId)
+        {
+            Stream stream = await RetryTools.Retry<Task<Stream>>(async () =>
+            {
+                return await HttpTools.DownloadAsync(string.Format(urlDictionary["GetMedia"], accessToken, mediaId), null, null);
+            });
+            return stream;
+        }
+
+        public override AddNewsMaterialResponse AddNewsMaterial(string accessToken, AddNewsMaterialRequest request)
+        {
+            AddNewsMaterialResponse response = RetryTools.Retry<AddNewsMaterialResponse>(() =>
+            {
+                return HttpTools.Post<AddNewsMaterialResponse>(string.Format(urlDictionary["AddNewsMaterial"], accessToken), null, null, request);
+            });
+            if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
+            return response;
+        }
+
+        public async override Task<UploadNewsMaterialImgResponse> UploadNewsMaterialImg(string accessToken, string fileName, Stream stream)
+        {
+            UploadNewsMaterialImgResponse response = await RetryTools.Retry<Task<UploadNewsMaterialImgResponse>>(async () =>
+            {
+                return await HttpTools.UploadAsync<UploadNewsMaterialImgResponse>(string.Format(urlDictionary["UploadNewsMaterialImg"], accessToken), stream, fileName);
+            });
+            if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
+            return response;
+        }
+
+        public async override Task<UploadMaterialResponse> UploadMaterial(string accessToken, string type, string fileName, Stream stream, UploadMaterialRequest request = null)
+        {
+            UploadMaterialResponse response = await RetryTools.Retry<Task<UploadMaterialResponse>>(async () =>
+            {
+                return await HttpTools.UploadAsync<UploadMaterialResponse>(string.Format(urlDictionary["UploadMaterial"], accessToken, type), stream, fileName, request != null ? new Dictionary<string, string>() { { "description", request.ToJson() } } : new Dictionary<string, string>());
+            });
+            if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
+            return response;
+        }
+
+        public override DownloadNewsMaterialResponse DownloadNewsMaterial(string accessToken, DownloadMaterialRequest request)
+        {
+            DownloadNewsMaterialResponse response = RetryTools.Retry<DownloadNewsMaterialResponse>(() =>
+            {
+                return HttpTools.Post<DownloadNewsMaterialResponse>(string.Format(urlDictionary["DownloadMaterial"], accessToken), null, null, request);
+            });
+            if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
+            return response;
+        }
+
+        public override DownloadVideoMaterialResponse DownloadVideoMaterial(string accessToken, DownloadMaterialRequest request)
+        {
+            DownloadVideoMaterialResponse response = RetryTools.Retry<DownloadVideoMaterialResponse>(() =>
+            {
+                return HttpTools.Post<DownloadVideoMaterialResponse>(string.Format(urlDictionary["DownloadMaterial"], accessToken), null, null, request);
+            });
+            if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
+            return response;
+        }
+
+        public async override Task<Stream> DownloadMaterial(string accessToken, DownloadMaterialRequest request)
+        {
+            Stream stream = await RetryTools.Retry<Task<Stream>>(async () =>
+            {
+                return await HttpTools.DownloadAsync(WebMethod.POST, string.Format(urlDictionary["DownloadMaterial"], accessToken), null, null, request);
+            });
+            return stream;
+        }
+
+        public override void DeleteMaterial(string accessToken, DeleteMaterialRequest request)
+        {
+            DeleteMaterialResponse response = RetryTools.Retry<DeleteMaterialResponse>(() =>
+            {
+                return HttpTools.Post<DeleteMaterialResponse>(string.Format(urlDictionary["DeleteMaterial"], accessToken), null, null, request);
+            });
+            if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
+        }
+
+        public override void UpdateNewsMaterial(string accessToken, UpdateNewsMaterialRequest request)
+        {
+            UpdateNewsMaterialResponse response = RetryTools.Retry<UpdateNewsMaterialResponse>(() =>
+            {
+                return HttpTools.Post<UpdateNewsMaterialResponse>(string.Format(urlDictionary["UpdateNewsMaterial"], accessToken), null, null, request);
+            });
+            if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
+        }
+
+        public override GetMaterialCountResponse GetMaterialCount(string accessToken)
+        {
+            GetMaterialCountResponse response = RetryTools.Retry<GetMaterialCountResponse>(() =>
+            {
+                return HttpTools.Get<GetMaterialCountResponse>(string.Format(urlDictionary["GetMaterialCount"], accessToken), null, null);
+            });
+            if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
+            return response;
+        }
+
+        public override GetMaterialListResponse<T> GetMaterialList<T>(string accessToken, GetMaterialListRequest request)
+        {
+            GetMaterialListResponse<T> response = RetryTools.Retry<GetMaterialListResponse<T>>(() =>
+            {
+                return HttpTools.Post<GetMaterialListResponse<T>>(string.Format(urlDictionary["GetMaterialList"], accessToken), null, null, request);
+            });
+            if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
+            return response;
         }
         #endregion
     }

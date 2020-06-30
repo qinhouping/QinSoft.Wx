@@ -1,13 +1,16 @@
 ﻿using QinSoft.Wx.OfficialAccount.Model.Account;
 using QinSoft.Wx.OfficialAccount.Model.CustomerService;
+using QinSoft.Wx.OfficialAccount.Model.Media;
 using QinSoft.Wx.OfficialAccount.Model.Menu;
 using QinSoft.Wx.OfficialAccount.Model.Subscribe;
 using QinSoft.Wx.OfficialAccount.Model.Template;
 using QinSoft.Wx.OfficialAccount.Model.User;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace QinSoft.Wx.OfficialAccount
 {
@@ -105,6 +108,35 @@ namespace QinSoft.Wx.OfficialAccount
         #endregion
 
         #region 素材
+        #region 临时素材
+        public abstract Task<UploadMediaResponse> UploadMedia(string accessToken, string type, string fileName, Stream stream);
+
+        public abstract DownloadMediaResponse DownloadVideoMedia(string accessToken, string mediaId);
+
+        public abstract Task<Stream> DownloadMedia(string accessToken, string mediaId);
+        #endregion
+
+        #region 永久素材
+        public abstract AddNewsMaterialResponse AddNewsMaterial(string accessToken, AddNewsMaterialRequest request);
+
+        public abstract Task<UploadNewsMaterialImgResponse> UploadNewsMaterialImg(string accessToken, string fileName, Stream stream);
+
+        public abstract Task<UploadMaterialResponse> UploadMaterial(string accessToken, string type, string fileName, Stream stream, UploadMaterialRequest request = null);
+
+        public abstract DownloadNewsMaterialResponse DownloadNewsMaterial(string accessToken, DownloadMaterialRequest request);
+
+        public abstract DownloadVideoMaterialResponse DownloadVideoMaterial(string accessToken, DownloadMaterialRequest request);
+
+        public abstract Task<Stream> DownloadMaterial(string accessToken, DownloadMaterialRequest request);
+
+        public abstract void DeleteMaterial(string accessToken, DeleteMaterialRequest request);
+
+        public abstract void UpdateNewsMaterial(string accessToken, UpdateNewsMaterialRequest request);
+
+        public abstract GetMaterialCountResponse GetMaterialCount(string accessToken);
+
+        public abstract GetMaterialListResponse<T> GetMaterialList<T>(string accessToken, GetMaterialListRequest request) where T : MaterialListItem;
+        #endregion
         #endregion
     }
 }

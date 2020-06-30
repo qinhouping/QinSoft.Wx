@@ -11,6 +11,10 @@ using System.Net.Security;
 using System.Security.Authentication;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Threading.Tasks;
+using System.Security;
 
 namespace QinSoft.Wx.Common
 {
@@ -175,7 +179,7 @@ namespace QinSoft.Wx.Common
         /// <param name="Error"></param>
         public static void RequestAsync<T>(HttpParams param, Action<T> Success, Action<Exception> Error)
         {
-            ThreadPool.QueueUserWorkItem(x =>
+            Task.Factory.StartNew(() =>
             {
                 RequestSync(param, Success, Error);
             });
@@ -199,6 +203,91 @@ namespace QinSoft.Wx.Common
             {
                 Error.Invoke(e);
             }
+        }
+
+        /// <summary>
+        /// 异步文件上传
+        /// </summary>
+        /// <param name="url">上传接口路径</param>
+        /// <param name="stream">文件流</param>
+        /// <param name="param">其他参数</param>
+        /// <returns>上传结果</returns>
+        public static async Task<HttpResponseMessage> UploadAsync(string url, Stream stream, string fileName, IDictionary<string, string> extData = null)
+        {
+            MultipartFormDataContent multipartFormDataContent = new MultipartFormDataContent("--" + DateTime.Now.Ticks.ToString("X"));
+            multipartFormDataContent.Headers.ContentType = new MediaTypeHeaderValue("multipart/form-data");
+            multipartFormDataContent.Add(new StreamContent(stream), "media", string.Format("\"{0}\"", fileName));
+
+            if (extData == null)
+            {
+                HttpClient httpClient = new HttpClient();
+                HttpResponseMessage response = await httpClient.PostAsync(url, multipartFormDataContent);
+                return response;
+            }
+            else
+            {
+                foreach (string key in extData.Keys)
+                {
+                    multipartFormDataContent.Add(new StringContent(extData[key]), key);
+                }
+                HttpClient httpClient = new HttpClient();
+                HttpResponseMessage response = await httpClient.PostAsync(url, multipartFormDataContent);
+                return response;
+            }
+        }
+
+        /// <summary>
+        /// 异步文件上传
+        /// </summary>
+        /// <param name="url">上传接口路径</param>
+        /// <param name="stream">文件流</param>
+        /// <param name="param">其他参数</param>
+        /// <returns>上传结果</returns>
+        public static async Task<T> UploadAsync<T>(string url, Stream stream, string fileName, IDictionary<string, string> extData = null)
+        {
+            HttpResponseMessage response = await UploadAsync(url, stream, fileName, extData);
+            string content = await response.Content.ReadAsStringAsync();
+            Debug.WriteLine("httptools request:{0} response:{1}", url, content);
+            return content.FromJson<T>();
+        }
+
+        /// <summary>
+        /// 异步文件下载
+        /// </summary>
+        /// <param name="url"></param>
+        /// <param name="Headers"></param>
+        /// <param name="Cookies"></param>
+        /// <param name="timeout"></param>
+        /// <returns></returns>
+        public static Task<Stream> DownloadAsync(string url, IDictionary<string, string> Headers = null, IDictionary<string, string> Cookies = null, int timeout = 60000)
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                WebResponse response = Do(WebMethod.GET, url, Headers, Cookies, null, timeout);
+                return response.GetResponseStream();
+            });
+        }
+
+        /// <summary>
+        /// 异步文件下载
+        /// </summary>
+        /// <param name="url"></param>
+        /// <param name="Headers"></param>
+        /// <param name="Cookies"></param>
+        /// <param name="timeout"></param>
+        /// <returns></returns>
+        public static Task<Stream> DownloadAsync(WebMethod method, string url, IDictionary<string, string> Headers = null, IDictionary<string, string> Cookies = null, object data = null, int timeout = 60000)
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                if (Headers == null)
+                {
+                    Headers = new Dictionary<string, string>();
+                }
+                Headers["Content-Type"] = "application/json";//Json
+                WebResponse response = Do(method, url, Headers, Cookies, data.ToJson(), timeout);
+                return response.GetResponseStream();
+            });
         }
     }
 

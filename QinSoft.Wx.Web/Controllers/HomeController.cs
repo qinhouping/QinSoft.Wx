@@ -11,7 +11,7 @@ namespace QinSoft.Wx.Web.Controllers
         // GET: Home
         public ActionResult Index()
         {
-            return new ContentResult() { Content = "QinSoft.Wx.Web" };
+            return View();
         }
     }
 }

@@ -1,0 +1,30 @@
+﻿
+@{
+    ViewBag.Title = "View";
+}
+
+<div style="margin-top:20px;"></div>
+
+<style>
+    .txt_box {
+        padding: 0px;
+        width: 500px;
+        height: 200px;
+        text-align: center;
+        background-color: lightgray;
+        color: black;
+        display: table-cell;
+        vertical-align: middle
+    }
+</style>
+
+<div class="row">
+    <div class="col-xs-6 col-md-3">
+        <div class="thumbnail">
+            <div class="txt_box">
+                <a href="@Url.Action("Index","OfficialAccount")">公众号</a>
+            </div>
+        </div>
+    </div>
+</div>
+
