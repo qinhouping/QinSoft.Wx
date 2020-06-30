@@ -430,7 +430,7 @@ namespace QinSoft.Wx.OfficialAccount
         }
         #endregion
 
-        #region
+        #region 素材
 
         public async override Task<UploadMediaResponse> UploadMedia(string accessToken, string type, string fileName, Stream stream)
         {
