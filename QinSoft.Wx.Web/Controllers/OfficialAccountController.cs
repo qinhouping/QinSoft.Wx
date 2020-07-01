@@ -18,6 +18,7 @@ using QinSoft.Wx.OfficialAccount.Model.Account;
 using System.Threading.Tasks;
 using QinSoft.Wx.OfficialAccount.Model.Media;
 using System.Net.Http;
+using QinSoft.Wx.OfficialAccount.Model.Web;
 
 namespace QinSoft.Wx.Web.Controllers
 {
@@ -443,6 +444,30 @@ namespace QinSoft.Wx.Web.Controllers
                 Type = "news"
             });
             return Content(response.ToJson());
+        }
+
+        [HttpGet]
+        public ActionResult WebIndex()
+        {
+            string redirect = this.Request.Url.Scheme + "://" + this.Request.Url.Host + Url.Action("WebIndexRedict");
+            //string redirect = "http://686vxv.natappfree.cc/OfficialAccount/WebIndexRedict";
+            return Redirect(this.officialAccountService.GetOAuth2Uri(redirect, "snsapi_userinfo", "TEST"));
+        }
+
+        [HttpGet]
+        public ActionResult WebIndexRedict(string state, string code)
+        {
+            GetOAuth2AccessTokenResponse accessTokenResponse = this.officialAccountService.GetOAuth2AccessToken(code);
+            accessTokenResponse = this.officialAccountService.RefreshOAuth2AccessToken(accessTokenResponse.RefreshToken);
+            GetOAuth2UserInfoResponse userInfoResponse = this.officialAccountService.GetOAuth2UserInfo(accessTokenResponse.AccessToken, accessTokenResponse.OpenId);
+            return Content(userInfoResponse.ToJson());
+        }
+
+        [HttpGet]
+        public ActionResult CalculateJsApiSignature()
+        {
+            string sign = this.officialAccountService.CalculateJsApiSignature("sM4AOVdWfPE4DxkXGEs8VMCPGGVi4C3VM0P37wVUCFvkVAy_90u5h9nbSlYy3-Sl-HhTdfl2fzFy1AOcHKP7qg", 1414587457, "Wm3WZYTPz0wzccnW", "http://mp.weixin.qq.com?params=value");
+            return Content(sign);
         }
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
@@ -14,6 +15,7 @@ using QinSoft.Wx.OfficialAccount.Model.Menu;
 using QinSoft.Wx.OfficialAccount.Model.Subscribe;
 using QinSoft.Wx.OfficialAccount.Model.Template;
 using QinSoft.Wx.OfficialAccount.Model.User;
+using QinSoft.Wx.OfficialAccount.Model.Web;
 
 namespace QinSoft.Wx.OfficialAccount
 {
@@ -44,7 +46,7 @@ namespace QinSoft.Wx.OfficialAccount
                 { "TypingCustomerService","https://api.weixin.qq.com/cgi-bin/message/custom/typing?access_token={0}" },
                 { "SetTemplateIndustry","https://api.weixin.qq.com/cgi-bin/template/api_set_industry?access_token={0}" },
                 { "GetTemplateIndustry","https://api.weixin.qq.com/cgi-bin/template/get_industry?access_token={0}" },
-                 { "GetTemplateId","https://api.weixin.qq.com/cgi-bin/template/api_add_template?access_token={0}"},
+                { "GetTemplateId","https://api.weixin.qq.com/cgi-bin/template/api_add_template?access_token={0}"},
                 { "GetTemplateList","https://api.weixin.qq.com/cgi-bin/template/get_all_private_template?access_token={0}" },
                 { "DeleteTemplate","https://api.weixin.qq.com/cgi-bin/template/del_private_template?access_token={0}" },
                 { "SendTemplateMessage","https://api.weixin.qq.com/cgi-bin/message/template/send?access_token={0}" },
@@ -75,7 +77,13 @@ namespace QinSoft.Wx.OfficialAccount
                 { "DeleteMaterial","https://api.weixin.qq.com/cgi-bin/material/del_material?access_token={0}" },
                 { "UpdateNewsMaterial","https://api.weixin.qq.com/cgi-bin/material/update_news?access_token={0}" },
                 { "GetMaterialCount","https://api.weixin.qq.com/cgi-bin/material/get_materialcount?access_token={0}" },
-                { "GetMaterialList","https://api.weixin.qq.com/cgi-bin/material/batchget_material?access_token={0}" }
+                { "GetMaterialList","https://api.weixin.qq.com/cgi-bin/material/batchget_material?access_token={0}" },
+                { "GetAuthorizeUrl","https://open.weixin.qq.com/connect/oauth2/authorize?appid={0}&redirect_uri={1}&response_type={2}&scope={3}&state={4}#wechat_redirect" },
+                { "GetOAuth2AccessToken"," https://api.weixin.qq.com/sns/oauth2/access_token?appid={0}&secret={1}&code={2}&grant_type={3}" },
+                { "RefreshOAuth2AccessToken","https://api.weixin.qq.com/sns/oauth2/refresh_token?appid={0}&grant_type={1}&refresh_token={2}" },
+                { "GetOAuth2UserInfo","https://api.weixin.qq.com/sns/userinfo?access_token={0}&openid={1}&lang={2}" },
+                { "IsValidOAuth2AccessToken","https://api.weixin.qq.com/sns/auth?access_token={0}&openid={1}" },
+                { "GetJsApiTicket","https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token={0}&type={1}" }
             };
         }
 
@@ -556,6 +564,83 @@ namespace QinSoft.Wx.OfficialAccount
             });
             if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
             return response;
+        }
+        #endregion
+
+        #region 页面开发
+        public override string GetOAuth2Uri(string redirectUri, string scope, string state)
+        {
+            return string.Format(
+                urlDictionary["GetAuthorizeUrl"],
+                this.officialAccountConfig.AppId,
+                HttpUtility.UrlEncode(redirectUri),
+                "code",
+                scope,
+                state
+                );
+        }
+
+        public override GetOAuth2AccessTokenResponse GetOAuth2AccessToken(string code)
+        {
+            GetOAuth2AccessTokenResponse response = RetryTools.Retry<GetOAuth2AccessTokenResponse>(() =>
+            {
+                return HttpTools.Get<GetOAuth2AccessTokenResponse>(string.Format(urlDictionary["GetOAuth2AccessToken"], this.officialAccountConfig.AppId, this.officialAccountConfig.AppSecret, code, "authorization_code"), null, null);
+            });
+            if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
+            return response;
+        }
+
+        public override GetOAuth2AccessTokenResponse RefreshOAuth2AccessToken(string refreshToken)
+        {
+            GetOAuth2AccessTokenResponse response = RetryTools.Retry<GetOAuth2AccessTokenResponse>(() =>
+            {
+                return HttpTools.Get<GetOAuth2AccessTokenResponse>(string.Format(urlDictionary["RefreshOAuth2AccessToken"], this.officialAccountConfig.AppId, "refresh_token", refreshToken), null, null);
+            });
+            if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
+            return response;
+        }
+
+        public override GetOAuth2UserInfoResponse GetOAuth2UserInfo(string accessToken, string openId, string lang = "zh_CN")
+        {
+            GetOAuth2UserInfoResponse response = RetryTools.Retry<GetOAuth2UserInfoResponse>(() =>
+            {
+                return HttpTools.Get<GetOAuth2UserInfoResponse>(string.Format(urlDictionary["GetOAuth2UserInfo"], accessToken, openId, lang), null, null);
+            });
+            if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
+            return response;
+        }
+
+        public override IsValidOAuth2AccessTokenResponse IsValidOAuth2AccessToken(string accessToken, string openId)
+        {
+            IsValidOAuth2AccessTokenResponse response = RetryTools.Retry<IsValidOAuth2AccessTokenResponse>(() =>
+            {
+                return HttpTools.Get<IsValidOAuth2AccessTokenResponse>(string.Format(urlDictionary["IsValidOAuth2AccessToken"], accessToken, openId), null, null);
+            });
+            if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
+            return response;
+        }
+
+        public override string GetJsApiTicket(string accessToken)
+        {
+            GetJsApiTicketResponse response = RetryTools.Retry<GetJsApiTicketResponse>(() =>
+            {
+                return HttpTools.Get<GetJsApiTicketResponse>(string.Format(urlDictionary["GetJsApiTicket"], accessToken, "jsapi"), null, null);
+            });
+            if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
+            return response.Ticket;
+        }
+
+        public override string CalculateJsApiSignature(string jsApiTicket, long timestamp, string nonce, string url)
+        {
+            url = url.Split('#')[0];
+            List<string> data = new List<string>();
+            data.Add(string.Format("{0}={1}", "noncestr", nonce));
+            data.Add(string.Format("{0}={1}", "jsapi_ticket", jsApiTicket));
+            data.Add(string.Format("{0}={1}", "timestamp", timestamp));
+            data.Add(string.Format("{0}={1}", "url", url));
+            data.Sort();
+            string joinStr = string.Join("&", data);
+            return joinStr.SHA1().ToLower();
         }
         #endregion
     }

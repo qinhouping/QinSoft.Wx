@@ -5,6 +5,7 @@ using QinSoft.Wx.OfficialAccount.Model.Menu;
 using QinSoft.Wx.OfficialAccount.Model.Subscribe;
 using QinSoft.Wx.OfficialAccount.Model.Template;
 using QinSoft.Wx.OfficialAccount.Model.User;
+using QinSoft.Wx.OfficialAccount.Model.Web;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -137,6 +138,22 @@ namespace QinSoft.Wx.OfficialAccount
 
         public abstract GetMaterialListResponse<T> GetMaterialList<T>(string accessToken, GetMaterialListRequest request) where T : MaterialListItem;
         #endregion
+        #endregion
+
+        #region 微信网页开发
+        public abstract string GetOAuth2Uri(string redirectUri, string scope, string state);
+
+        public abstract GetOAuth2AccessTokenResponse GetOAuth2AccessToken(string code);
+
+        public abstract GetOAuth2AccessTokenResponse RefreshOAuth2AccessToken(string refreshToken);
+
+        public abstract GetOAuth2UserInfoResponse GetOAuth2UserInfo(string accessToken, string openId, string lang = "zh_CN");
+
+        public abstract IsValidOAuth2AccessTokenResponse IsValidOAuth2AccessToken(string accessToken, string openId);
+
+        public abstract string GetJsApiTicket(string accessToken);
+
+        public abstract string CalculateJsApiSignature(string jsApiTicket, long timestamp, string nonce, string url);
         #endregion
     }
 }

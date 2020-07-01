@@ -179,6 +179,10 @@
     <Compile Include="OfficialAccount\Model\User\UpdateTagRequest.cs" />
     <Compile Include="OfficialAccount\Model\User\UpdateTagResponse.cs" />
     <Compile Include="OfficialAccount\Model\User\UserInfo.cs" />
+    <Compile Include="OfficialAccount\Model\Web\GetJsApiTicketResponse.cs" />
+    <Compile Include="OfficialAccount\Model\Web\GetOAuth2AccessTokenResponse.cs" />
+    <Compile Include="OfficialAccount\Model\Web\GetOAuth2UserInfoResponse.cs" />
+    <Compile Include="OfficialAccount\Model\Web\IsValidOAuth2AccessTokenResponse.cs" />
     <Compile Include="OfficialAccount\OfficialAccountConfig.cs" />
     <Compile Include="OfficialAccount\OfficialAccountException.cs" />
     <Compile Include="OfficialAccount\OfficialAccountService.cs" />
