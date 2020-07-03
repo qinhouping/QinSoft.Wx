@@ -12,6 +12,7 @@ using QinSoft.Wx.OfficialAccount.Model.Account;
 using QinSoft.Wx.OfficialAccount.Model.CustomerService;
 using QinSoft.Wx.OfficialAccount.Model.Media;
 using QinSoft.Wx.OfficialAccount.Model.Menu;
+using QinSoft.Wx.OfficialAccount.Model.Statistics;
 using QinSoft.Wx.OfficialAccount.Model.Subscribe;
 using QinSoft.Wx.OfficialAccount.Model.Template;
 using QinSoft.Wx.OfficialAccount.Model.User;
@@ -83,7 +84,9 @@ namespace QinSoft.Wx.OfficialAccount
                 { "RefreshOAuth2AccessToken","https://api.weixin.qq.com/sns/oauth2/refresh_token?appid={0}&grant_type={1}&refresh_token={2}" },
                 { "GetOAuth2UserInfo","https://api.weixin.qq.com/sns/userinfo?access_token={0}&openid={1}&lang={2}" },
                 { "IsValidOAuth2AccessToken","https://api.weixin.qq.com/sns/auth?access_token={0}&openid={1}" },
-                { "GetJsApiTicket","https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token={0}&type={1}" }
+                { "GetJsApiTicket","https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token={0}&type={1}" },
+                { "GetUserSummary","https://api.weixin.qq.com/datacube/getusersummary?access_token={0}" },
+                { "GetUserCumulate","https://api.weixin.qq.com/datacube/getusercumulate?access_token={0}" }
             };
         }
 
@@ -641,6 +644,26 @@ namespace QinSoft.Wx.OfficialAccount
             data.Sort();
             string joinStr = string.Join("&", data);
             return joinStr.SHA1().ToLower();
+        }
+
+        public override GetUserSummaryResponse GetUserSummary(string accessToken, GetUserSummaryRequest request)
+        {
+            GetUserSummaryResponse response = RetryTools.Retry<GetUserSummaryResponse>(() =>
+            {
+                return HttpTools.Post<GetUserSummaryResponse>(string.Format(urlDictionary["GetUserSummary"], accessToken), null, null, request);
+            });
+            if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
+            return response;
+        }
+
+        public override GetUserCumulateResponse GetUserCumulate(string accessToken, GetUserCumulateRequest request)
+        {
+            GetUserCumulateResponse response = RetryTools.Retry<GetUserCumulateResponse>(() =>
+            {
+                return HttpTools.Post<GetUserCumulateResponse>(string.Format(urlDictionary["GetUserCumulate"], accessToken), null, null, request);
+            });
+            if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
+            return response;
         }
         #endregion
     }

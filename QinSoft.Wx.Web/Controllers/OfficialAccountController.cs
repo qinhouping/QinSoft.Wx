@@ -319,7 +319,7 @@ namespace QinSoft.Wx.Web.Controllers
                 {
                     ToUser = "oHHY5v6KCMygltJiNTSfIVMD2Y54",
                     Url = "https://github.com/qinhouping",
-                    TemplateId = "xrsTOC7oISJGgDEaBz9f8Wax-dBEDheZYJ934IN4f5E",
+                    TemplateId = "-oDLXI59TN21-QaWcWcPTdyYZfsxgWQBr-qVzesrwI4",
                     Data = new TemplateMessageData()
                           {
                               {"date", new TemplateMessageKeyWord() { Value=DateTime.Now.ToString(), Color="#173177" } }

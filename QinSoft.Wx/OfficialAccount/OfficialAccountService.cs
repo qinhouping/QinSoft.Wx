@@ -2,6 +2,7 @@
 using QinSoft.Wx.OfficialAccount.Model.CustomerService;
 using QinSoft.Wx.OfficialAccount.Model.Media;
 using QinSoft.Wx.OfficialAccount.Model.Menu;
+using QinSoft.Wx.OfficialAccount.Model.Statistics;
 using QinSoft.Wx.OfficialAccount.Model.Subscribe;
 using QinSoft.Wx.OfficialAccount.Model.Template;
 using QinSoft.Wx.OfficialAccount.Model.User;
@@ -154,6 +155,13 @@ namespace QinSoft.Wx.OfficialAccount
         public abstract string GetJsApiTicket(string accessToken);
 
         public abstract string CalculateJsApiSignature(string jsApiTicket, long timestamp, string nonce, string url);
+        #endregion
+
+        #region 统计
+
+        public abstract GetUserSummaryResponse GetUserSummary(string accessToken, GetUserSummaryRequest request);
+
+        public abstract GetUserCumulateResponse GetUserCumulate(string accessToken, GetUserCumulateRequest request);
         #endregion
     }
 }
