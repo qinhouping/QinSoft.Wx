@@ -19,6 +19,7 @@ using System.Threading.Tasks;
 using QinSoft.Wx.OfficialAccount.Model.Media;
 using System.Net.Http;
 using QinSoft.Wx.OfficialAccount.Model.Web;
+using QinSoft.Wx.OfficialAccount.Model.Mass;
 
 namespace QinSoft.Wx.Web.Controllers
 {
@@ -334,6 +335,32 @@ namespace QinSoft.Wx.Web.Controllers
         }
 
         [HttpGet]
+        public ActionResult SendMassTagMessage()
+        {
+            try
+            {
+                string accessToken = this.officialAccountService.GetAccessToken();
+                MassTagMsgBase massTagMsgBase = new MassTagTextMsg()
+                {
+                    Filter = new MassTagMsgFilter()
+                    {
+                        IsToAll = true,
+                        TagId = 0
+                    },
+                    Text = new MassTagTextMsgContent()
+                    {
+                        Content = "群发测试"
+                    }
+                };
+                return Content(this.officialAccountService.SendMassTagMessage(accessToken, massTagMsgBase).ToJson());
+            }
+            catch (Exception e)
+            {
+                return Content(e.ToString());
+            }
+        }
+
+        [HttpGet]
         public ActionResult GetOnceSubscribeUrl()
         {
             return Content(this.officialAccountService.GetSubscribeUrl("test", "xrsTOC7oISJGgDEaBz9f8Wax-dBEDheZYJ934IN4f5E", "http://zkgxji.natappfree.cc", "test"));
@@ -399,7 +426,8 @@ namespace QinSoft.Wx.Web.Controllers
                          Author="Qinhouping",
                          Digest="QinSoft.Wx",
                          Content="秦后平",
-                         ContentSourceUrl="https://github.com/qinhouping"
+                         ContentSourceUrl="https://github.com/qinhouping",
+                         ThumbMediaId="PqiXo-hO4-RxRAGj0Ja4AxBwdxGfnBLn0YUKVR7ZhDM"
                     }
                 }
             });
@@ -434,16 +462,29 @@ namespace QinSoft.Wx.Web.Controllers
         }
 
         [HttpGet]
-        public ActionResult GetMaterialList()
+        public ActionResult GetMaterialList(string type, int count = 10, int offset = 0)
         {
             string accessToken = this.officialAccountService.GetAccessToken();
-            GetMaterialListResponse<NewsMaterislListItem> response = this.officialAccountService.GetMaterialList<NewsMaterislListItem>(accessToken, new GetMaterialListRequest()
+            if (type == "news")
             {
-                Count = 10,
-                Offset = 0,
-                Type = "news"
-            });
-            return Content(response.ToJson());
+                GetMaterialListResponse<NewsMaterislListItem> response = this.officialAccountService.GetMaterialList<NewsMaterislListItem>(accessToken, new GetMaterialListRequest()
+                {
+                    Count = count,
+                    Offset = offset,
+                    Type = type
+                });
+                return Content(response.ToJson());
+            }
+            else
+            {
+                GetMaterialListResponse<NotNewsMaterislListItem> response = this.officialAccountService.GetMaterialList<NotNewsMaterislListItem>(accessToken, new GetMaterialListRequest()
+                {
+                    Count = count,
+                    Offset = offset,
+                    Type = type
+                });
+                return Content(response.ToJson());
+            }
         }
 
         [HttpGet]

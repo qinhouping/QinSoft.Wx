@@ -208,15 +208,17 @@ namespace QinSoft.Wx.Common
         /// <summary>
         /// 异步文件上传
         /// </summary>
-        /// <param name="url">上传接口路径</param>
+        /// <param name="url">上传路径</param>
         /// <param name="stream">文件流</param>
-        /// <param name="param">其他参数</param>
+        /// <param name="name">名称</param>
+        /// <param name="fileName">文件名称</param>
+        /// <param name="extData">其他数据</param>
         /// <returns>上传结果</returns>
-        public static async Task<HttpResponseMessage> UploadAsync(string url, Stream stream, string fileName, IDictionary<string, string> extData = null)
+        public static async Task<HttpResponseMessage> UploadAsync(string url, Stream stream, string name, string fileName, IDictionary<string, string> extData = null)
         {
-            MultipartFormDataContent multipartFormDataContent = new MultipartFormDataContent("--" + DateTime.Now.Ticks.ToString("X"));
+            MultipartFormDataContent multipartFormDataContent = new MultipartFormDataContent(DateTime.Now.Ticks.ToString("X"));
             multipartFormDataContent.Headers.ContentType = new MediaTypeHeaderValue("multipart/form-data");
-            multipartFormDataContent.Add(new StreamContent(stream), "media", string.Format("\"{0}\"", fileName));
+            multipartFormDataContent.Add(new StreamContent(stream), string.Format("\"{0}\"", name), string.Format("\"{0}\"", fileName));
 
             if (extData == null)
             {
@@ -228,7 +230,7 @@ namespace QinSoft.Wx.Common
             {
                 foreach (string key in extData.Keys)
                 {
-                    multipartFormDataContent.Add(new StringContent(extData[key]), key);
+                    multipartFormDataContent.Add(new StringContent(extData[key]), string.Format("\"{0}\"", key));
                 }
                 HttpClient httpClient = new HttpClient();
                 HttpResponseMessage response = await httpClient.PostAsync(url, multipartFormDataContent);
@@ -239,13 +241,16 @@ namespace QinSoft.Wx.Common
         /// <summary>
         /// 异步文件上传
         /// </summary>
-        /// <param name="url">上传接口路径</param>
+        /// <typeparam name="T">结果泛型</typeparam>
+        /// <param name="url">上传路径</param>
         /// <param name="stream">文件流</param>
-        /// <param name="param">其他参数</param>
+        /// <param name="name">名称</param>
+        /// <param name="fileName">文件名称</param>
+        /// <param name="extData">其他数据</param>
         /// <returns>上传结果</returns>
-        public static async Task<T> UploadAsync<T>(string url, Stream stream, string fileName, IDictionary<string, string> extData = null)
+        public static async Task<T> UploadAsync<T>(string url, Stream stream, string name, string fileName, IDictionary<string, string> extData = null)
         {
-            HttpResponseMessage response = await UploadAsync(url, stream, fileName, extData);
+            HttpResponseMessage response = await UploadAsync(url, stream, name, fileName, extData);
             string content = await response.Content.ReadAsStringAsync();
             Debug.WriteLine("httptools request:{0} response:{1}", url, content);
             return content.FromJson<T>();
@@ -254,28 +259,25 @@ namespace QinSoft.Wx.Common
         /// <summary>
         /// 异步文件下载
         /// </summary>
-        /// <param name="url"></param>
-        /// <param name="Headers"></param>
-        /// <param name="Cookies"></param>
-        /// <param name="timeout"></param>
-        /// <returns></returns>
+        /// <param name="url">下载路径</param>
+        /// <param name="Headers">请求头部</param>
+        /// <param name="Cookies">cookie</param>
+        /// <param name="timeout">超时</param>
+        /// <returns>文件流</returns>
         public static Task<Stream> DownloadAsync(string url, IDictionary<string, string> Headers = null, IDictionary<string, string> Cookies = null, int timeout = 60000)
         {
-            return Task.Factory.StartNew(() =>
-            {
-                WebResponse response = Do(WebMethod.GET, url, Headers, Cookies, null, timeout);
-                return response.GetResponseStream();
-            });
+            return DownloadAsync(WebMethod.GET, url, Headers, Cookies, null, timeout);
         }
 
         /// <summary>
         /// 异步文件下载
         /// </summary>
-        /// <param name="url"></param>
-        /// <param name="Headers"></param>
-        /// <param name="Cookies"></param>
-        /// <param name="timeout"></param>
-        /// <returns></returns>
+        /// <param name="method">请求方法</param>
+        /// <param name="url">下载路径</param>
+        /// <param name="Headers">请求头部</param>
+        /// <param name="Cookies">cookie</param>
+        /// <param name="timeout">超时</param>
+        /// <returns>文件流</returns>
         public static Task<Stream> DownloadAsync(WebMethod method, string url, IDictionary<string, string> Headers = null, IDictionary<string, string> Cookies = null, object data = null, int timeout = 60000)
         {
             return Task.Factory.StartNew(() =>

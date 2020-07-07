@@ -1,8 +1,8 @@
 ﻿using QinSoft.Wx.OfficialAccount.Model.Account;
 using QinSoft.Wx.OfficialAccount.Model.CustomerService;
+using QinSoft.Wx.OfficialAccount.Model.Mass;
 using QinSoft.Wx.OfficialAccount.Model.Media;
 using QinSoft.Wx.OfficialAccount.Model.Menu;
-using QinSoft.Wx.OfficialAccount.Model.Statistics;
 using QinSoft.Wx.OfficialAccount.Model.Subscribe;
 using QinSoft.Wx.OfficialAccount.Model.Template;
 using QinSoft.Wx.OfficialAccount.Model.User;
@@ -47,6 +47,15 @@ namespace QinSoft.Wx.OfficialAccount
         #endregion
 
         #region 群发
+        public abstract MassTagMsgSendResponse SendMassTagMessage(string accessToken, MassTagMsgBase message);
+
+        public abstract void DeleteMassTagMessageSend(string accessToken, DeleteMassTagMsgSendRequest request);
+
+        public abstract MassPreviewMsgSendResponse SendMassPreviewMessage(string accessToken, MassPreviewMsgBase message);
+
+        public abstract GetMassSpeedResponse GetMassSpeed(string accessToken);
+
+        public abstract void SetMassSpeed(string accessToken, SetMassSpeedRequest request);
         #endregion
 
         #region 模板
@@ -113,6 +122,8 @@ namespace QinSoft.Wx.OfficialAccount
         #region 临时素材
         public abstract Task<UploadMediaResponse> UploadMedia(string accessToken, string type, string fileName, Stream stream);
 
+        public abstract UploadVideoResponse UploadVideoMedia(string accessToken, UploadVideoRequest request);
+
         public abstract DownloadMediaResponse DownloadVideoMedia(string accessToken, string mediaId);
 
         public abstract Task<Stream> DownloadMedia(string accessToken, string mediaId);
@@ -158,10 +169,6 @@ namespace QinSoft.Wx.OfficialAccount
         #endregion
 
         #region 统计
-
-        public abstract GetUserSummaryResponse GetUserSummary(string accessToken, GetUserSummaryRequest request);
-
-        public abstract GetUserCumulateResponse GetUserCumulate(string accessToken, GetUserCumulateRequest request);
         #endregion
     }
 }

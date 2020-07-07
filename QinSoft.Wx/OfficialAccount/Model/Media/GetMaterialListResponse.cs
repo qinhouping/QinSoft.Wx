@@ -37,7 +37,7 @@ namespace QinSoft.Wx.OfficialAccount.Model.Media
     public class NewsMaterislListItem : MaterialListItem
     {
         [JsonProperty("content")]
-        public NewsMaterislListItemContent[] Content { get; set; }
+        public NewsMaterislListItemContent Content { get; set; }
     }
 
     public class NewsMaterislListItemContent

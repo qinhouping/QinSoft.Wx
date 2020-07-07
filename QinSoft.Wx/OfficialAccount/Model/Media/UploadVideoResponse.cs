@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace QinSoft.Wx.OfficialAccount.Model.Media
 {
-    public class UploadNewsMaterialImgResponse
+    public class UploadVideoResponse
     {
         [JsonProperty("errcode")]
         public int ErrCode { get; set; }
@@ -15,7 +15,13 @@ namespace QinSoft.Wx.OfficialAccount.Model.Media
         [JsonProperty("errmsg")]
         public string ErrMsg { get; set; }
 
-        [JsonProperty("url")]
-        public string Url { get; set; }
+        [JsonProperty("media_id")]
+        public string MediaId { get; set; }
+
+        [JsonProperty("type")]
+        public string Type { get; set; }
+
+        [JsonProperty("created_at")]
+        public long CreatedAt { get; set; }
     }
 }

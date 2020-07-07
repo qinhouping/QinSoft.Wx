@@ -80,6 +80,28 @@
     <Compile Include="OfficialAccount\Model\CustomerService\CustomerServiceWxCardMsg.cs" />
     <Compile Include="OfficialAccount\Model\CustomerService\TypingCustomerServiceResponse.cs" />
     <Compile Include="OfficialAccount\Model\CustomerService\TypingCustomerServiceRequest.cs" />
+    <Compile Include="OfficialAccount\Model\Mass\DeleteMassTagMsgSendRequest.cs" />
+    <Compile Include="OfficialAccount\Model\Mass\DeleteMassTagMsgSendResponse.cs" />
+    <Compile Include="OfficialAccount\Model\Mass\GetMassSpeedResponse.cs" />
+    <Compile Include="OfficialAccount\Model\Mass\MassMsgBase.cs" />
+    <Compile Include="OfficialAccount\Model\Mass\MassPreviewMsgBase.cs" />
+    <Compile Include="OfficialAccount\Model\Mass\MassPreviewMsgSendResponse.cs" />
+    <Compile Include="OfficialAccount\Model\Mass\MassPreviewTextMsg.cs" />
+    <Compile Include="OfficialAccount\Model\Mass\MassPreviewImageMsg.cs" />
+    <Compile Include="OfficialAccount\Model\Mass\MassPreviewMPVideoMsg.cs" />
+    <Compile Include="OfficialAccount\Model\Mass\MassTagImageMsg.cs" />
+    <Compile Include="OfficialAccount\Model\Mass\MassPreviewMPNewsMsg.cs" />
+    <Compile Include="OfficialAccount\Model\Mass\MassTagMPNewsMsg.cs" />
+    <Compile Include="OfficialAccount\Model\Mass\MassTagMsgBase.cs" />
+    <Compile Include="OfficialAccount\Model\Mass\MassTagMsgSendResponse.cs" />
+    <Compile Include="OfficialAccount\Model\Mass\MassTagTextMsg.cs" />
+    <Compile Include="OfficialAccount\Model\Mass\MassTagMPVideoMsg.cs" />
+    <Compile Include="OfficialAccount\Model\Mass\MassPreviewVoiceMsg.cs" />
+    <Compile Include="OfficialAccount\Model\Mass\MassTagVoiceMsg.cs" />
+    <Compile Include="OfficialAccount\Model\Mass\MassPreviewWxCardMsg.cs" />
+    <Compile Include="OfficialAccount\Model\Mass\MassTagWxCardMsg.cs" />
+    <Compile Include="OfficialAccount\Model\Mass\SetMassSpeedRequest.cs" />
+    <Compile Include="OfficialAccount\Model\Mass\SetMassSpeedResponse.cs" />
     <Compile Include="OfficialAccount\Model\Media\DeleteMaterialRequest.cs" />
     <Compile Include="OfficialAccount\Model\Media\GetMaterialCountResponse.cs" />
     <Compile Include="OfficialAccount\Model\Media\GetMaterialListRequest.cs" />
@@ -98,6 +120,8 @@
     <Compile Include="OfficialAccount\Model\Media\DownloadMediaResponse.cs" />
     <Compile Include="OfficialAccount\Model\Media\UploadMediaResponse.cs" />
     <Compile Include="OfficialAccount\Model\Media\UploadNewsMaterialImgResponse.cs" />
+    <Compile Include="OfficialAccount\Model\Media\UploadVideoRequest.cs" />
+    <Compile Include="OfficialAccount\Model\Media\UploadVideoResponse.cs" />
     <Compile Include="OfficialAccount\Model\Menu\ClickMenu.cs" />
     <Compile Include="OfficialAccount\Model\Menu\CreateMenuResponse.cs" />
     <Compile Include="OfficialAccount\Model\Menu\DeleteMenuResponse.cs" />
@@ -138,19 +162,6 @@
     <Compile Include="OfficialAccount\Model\ReplyMsg\ReplyTextMsg.cs" />
     <Compile Include="OfficialAccount\Model\ReplyMsg\ReplyVideoMsg.cs" />
     <Compile Include="OfficialAccount\Model\ReplyMsg\ReplyVoiceMsg.cs" />
-    <Compile Include="OfficialAccount\Model\Statistics\GetArticleSummaryRequest.cs" />
-    <Compile Include="OfficialAccount\Model\Statistics\GetArticleSummaryResponse.cs" />
-    <Compile Include="OfficialAccount\Model\Statistics\GetArticleTotalRequest.cs" />
-    <Compile Include="OfficialAccount\Model\Statistics\GetArticleTotalResponse.cs" />
-    <Compile Include="OfficialAccount\Model\Statistics\GetUserCumulateRequest.cs" />
-    <Compile Include="OfficialAccount\Model\Statistics\GetUserReadHourRequest.cs" />
-    <Compile Include="OfficialAccount\Model\Statistics\GetUserReadRequest.cs" />
-    <Compile Include="OfficialAccount\Model\Statistics\GetUserReadResponse.cs" />
-    <Compile Include="OfficialAccount\Model\Statistics\GetUserShareHourRequest.cs" />
-    <Compile Include="OfficialAccount\Model\Statistics\GetUserShareRequest.cs" />
-    <Compile Include="OfficialAccount\Model\Statistics\GetUserSummaryRequest.cs" />
-    <Compile Include="OfficialAccount\Model\Statistics\GetUserCumulateResponse.cs" />
-    <Compile Include="OfficialAccount\Model\Statistics\GetUserSummaryResponse.cs" />
     <Compile Include="OfficialAccount\Model\Subscribe\SendSubscribeMessageResponse.cs" />
     <Compile Include="OfficialAccount\Model\Subscribe\SubscribeMessage.cs" />
     <Compile Include="OfficialAccount\Model\Template\DeleteTemplateRequest.cs" />
@@ -206,7 +217,6 @@
   <ItemGroup>
     <Folder Include="EnterpriseAccount\" />
     <Folder Include="MiniGame\" />
-    <Folder Include="OfficialAccount\Model\GroupSending\" />
     <Folder Include="Pay\" />
   </ItemGroup>
   <ItemGroup>

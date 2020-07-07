@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace QinSoft.Wx.OfficialAccount.Model.Media
+namespace QinSoft.Wx.OfficialAccount.Model.Mass
 {
-    public class UploadNewsMaterialImgResponse
+    public class MassPreviewMsgSendResponse
     {
         [JsonProperty("errcode")]
         public int ErrCode { get; set; }
@@ -15,7 +15,7 @@ namespace QinSoft.Wx.OfficialAccount.Model.Media
         [JsonProperty("errmsg")]
         public string ErrMsg { get; set; }
 
-        [JsonProperty("url")]
-        public string Url { get; set; }
+        [JsonProperty("msg_id")]
+        public int MsgId { get; set; }
     }
 }
