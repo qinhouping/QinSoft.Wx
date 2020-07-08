@@ -20,6 +20,7 @@ using QinSoft.Wx.OfficialAccount.Model.Media;
 using System.Net.Http;
 using QinSoft.Wx.OfficialAccount.Model.Web;
 using QinSoft.Wx.OfficialAccount.Model.Mass;
+using QinSoft.Wx.OfficialAccount.Model.WxShop;
 
 namespace QinSoft.Wx.Web.Controllers
 {
@@ -434,6 +435,11 @@ namespace QinSoft.Wx.Web.Controllers
             return Content(response.ToJson());
         }
 
+        public ActionResult UploadImageMaterial()
+        {
+            return View();
+        }
+
 
         [HttpPost]
         public async Task<ActionResult> UploadMaterialHandle(string type)
@@ -442,6 +448,16 @@ namespace QinSoft.Wx.Web.Controllers
             string fileName = this.Request.Files["file"].FileName;
             Stream stream = this.Request.Files["file"].InputStream;
             UploadMaterialResponse response = await this.officialAccountService.UploadMaterial(accessToken, type, fileName, stream);
+            return Content(response.ToJson());
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> UploadImageMaterialHandle(string type)
+        {
+            string accessToken = this.officialAccountService.GetAccessToken();
+            string fileName = this.Request.Files["file"].FileName;
+            Stream stream = this.Request.Files["file"].InputStream;
+            UploadImageMaterialResponse response = await this.officialAccountService.UploadImageMaterial(accessToken, fileName, stream);
             return Content(response.ToJson());
         }
 
@@ -509,6 +525,43 @@ namespace QinSoft.Wx.Web.Controllers
         {
             string sign = this.officialAccountService.CalculateJsApiSignature("sM4AOVdWfPE4DxkXGEs8VMCPGGVi4C3VM0P37wVUCFvkVAy_90u5h9nbSlYy3-Sl-HhTdfl2fzFy1AOcHKP7qg", 1414587457, "Wm3WZYTPz0wzccnW", "http://mp.weixin.qq.com?params=value");
             return Content(sign);
+        }
+
+        [HttpGet]
+        public ActionResult AddWxShop()
+        {
+            string accessToken = this.officialAccountService.GetAccessToken();
+            AddWxShopResponse response = this.officialAccountService.AddWxShop(accessToken, new AddWxShopRequest(new AddWxShopData()
+            {
+                Business = new WxShopBusinessData()
+                {
+                    BaseInfo = new WxShopBusinessBaseInfoData()
+                    {
+                        SId = "shop_test",
+                        BusinessName = "鲜榨果汁",
+                        BranchName = "test店",
+                        Province = "安徽",
+                        City = "马鞍山市",
+                        District = "当涂县",
+                        Address = "测试地址",
+                        Telephone = "11111111111",
+                        Categories = new string[] { "果汁" },
+                        OffsetType = 3,
+                        Longitude = 118.50966,
+                        Latitude = 31.585623,
+                        PhotoList = new WxShopBusinessBaseInfoPhotoData[] {
+                            new WxShopBusinessBaseInfoPhotoData() { PhotoUrl="http://file02.16sucai.com/d/file/2015/0118/f4f4dc35c08c2aafeb8a581e3e48c274.jpg" },
+                            new WxShopBusinessBaseInfoPhotoData() { PhotoUrl="http://img02.tooopen.com/images/20140120/sy_54583439935.jpg" }
+                        },
+                        Recommend = "精品果汁饮料",
+                        Special = "有WiFi，外卖服务",
+                        Introduction = "果汁以水果为原料经过物理方法如压榨、离心、萃取等得到的汁液产品，经加工制成的饮品。果汁中保留了水果中大部分营养成分，例如维生素、矿物质、糖分和膳食纤维中的果胶等。常喝果汁可以助消化、润肠道，补充膳食中营养成分的不足。",
+                        OpenTime = "9:00-22:00",
+                        AvgPrice = 20
+                    }
+                }
+            }));
+            return Content(response.ToJson());
         }
     }
 }

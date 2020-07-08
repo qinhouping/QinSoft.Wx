@@ -7,6 +7,7 @@ using QinSoft.Wx.OfficialAccount.Model.Subscribe;
 using QinSoft.Wx.OfficialAccount.Model.Template;
 using QinSoft.Wx.OfficialAccount.Model.User;
 using QinSoft.Wx.OfficialAccount.Model.Web;
+using QinSoft.Wx.OfficialAccount.Model.WxShop;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -21,9 +22,12 @@ namespace QinSoft.Wx.OfficialAccount
     /// </summary>
     public abstract class OfficialAccountService
     {
+        #region 基础
         public abstract string CalculateJoinSignature(long timestamp, string nonce);
 
         public abstract string GetAccessToken();
+
+        #endregion
 
         #region 菜单
         public abstract void CreateMenu(string accessToken, MenuInfo menuInfo, bool isConditional = false);
@@ -132,7 +136,9 @@ namespace QinSoft.Wx.OfficialAccount
         #region 永久素材
         public abstract AddNewsMaterialResponse AddNewsMaterial(string accessToken, AddNewsMaterialRequest request);
 
-        public abstract Task<UploadNewsMaterialImgResponse> UploadNewsMaterialImg(string accessToken, string fileName, Stream stream);
+        public abstract void UpdateNewsMaterial(string accessToken, UpdateNewsMaterialRequest request);
+
+        public abstract Task<UploadImageMaterialResponse> UploadImageMaterial(string accessToken, string fileName, Stream stream);
 
         public abstract Task<UploadMaterialResponse> UploadMaterial(string accessToken, string type, string fileName, Stream stream, UploadMaterialRequest request = null);
 
@@ -144,15 +150,13 @@ namespace QinSoft.Wx.OfficialAccount
 
         public abstract void DeleteMaterial(string accessToken, DeleteMaterialRequest request);
 
-        public abstract void UpdateNewsMaterial(string accessToken, UpdateNewsMaterialRequest request);
-
         public abstract GetMaterialCountResponse GetMaterialCount(string accessToken);
 
         public abstract GetMaterialListResponse<T> GetMaterialList<T>(string accessToken, GetMaterialListRequest request) where T : MaterialListItem;
         #endregion
         #endregion
 
-        #region 微信网页开发
+        #region 网页开发
         public abstract string GetOAuth2Uri(string redirectUri, string scope, string state);
 
         public abstract GetOAuth2AccessTokenResponse GetOAuth2AccessToken(string code);
@@ -169,6 +173,14 @@ namespace QinSoft.Wx.OfficialAccount
         #endregion
 
         #region 统计
+        #endregion
+
+        #region 门店
+        public abstract AddWxShopResponse AddWxShop(string accessToken, AddWxShopRequest request);
+
+        public abstract GetWxShopResponse GetWxShop(string accessToken, GetWxShopRequest request);
+
+        public abstract GetWxShopListResponse GetWxShopList(string accessToken, GetWxShopListRequest request);
         #endregion
     }
 }

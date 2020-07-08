@@ -17,6 +17,7 @@ using QinSoft.Wx.OfficialAccount.Model.Subscribe;
 using QinSoft.Wx.OfficialAccount.Model.Template;
 using QinSoft.Wx.OfficialAccount.Model.User;
 using QinSoft.Wx.OfficialAccount.Model.Web;
+using QinSoft.Wx.OfficialAccount.Model.WxShop;
 
 namespace QinSoft.Wx.OfficialAccount
 {
@@ -72,12 +73,12 @@ namespace QinSoft.Wx.OfficialAccount
                 { "UploadMedia","https://api.weixin.qq.com/cgi-bin/media/upload?access_token={0}&type={1}" },
                 { "UploadVideoMedia","https://api.weixin.qq.com/cgi-bin/media/uploadvideo?access_token={0}" },
                 { "GetMedia","https://api.weixin.qq.com/cgi-bin/media/get?access_token={0}&media_id={1}" },
+                { "UploadImageMaterial","https://api.weixin.qq.com/cgi-bin/media/uploadimg?access_token={0}" },
                 { "AddNewsMaterial","https://api.weixin.qq.com/cgi-bin/material/add_news?access_token={0}" },
-                { "UploadNewsMaterialImg","https://api.weixin.qq.com/cgi-bin/media/uploadimg?access_token={0}" },
+                { "UpdateNewsMaterial","https://api.weixin.qq.com/cgi-bin/material/update_news?access_token={0}" },
                 { "UploadMaterial","https://api.weixin.qq.com/cgi-bin/material/add_material?access_token={0}&type={1}" },
                 { "DownloadMaterial","https://api.weixin.qq.com/cgi-bin/material/get_material?access_token={0}" },
                 { "DeleteMaterial","https://api.weixin.qq.com/cgi-bin/material/del_material?access_token={0}" },
-                { "UpdateNewsMaterial","https://api.weixin.qq.com/cgi-bin/material/update_news?access_token={0}" },
                 { "GetMaterialCount","https://api.weixin.qq.com/cgi-bin/material/get_materialcount?access_token={0}" },
                 { "GetMaterialList","https://api.weixin.qq.com/cgi-bin/material/batchget_material?access_token={0}" },
                 { "GetAuthorizeUrl","https://open.weixin.qq.com/connect/oauth2/authorize?appid={0}&redirect_uri={1}&response_type={2}&scope={3}&state={4}#wechat_redirect" },
@@ -92,9 +93,14 @@ namespace QinSoft.Wx.OfficialAccount
                 { "DeleteMassTagMessageSend","https://api.weixin.qq.com/cgi-bin/message/mass/delete?access_token={0}" },
                 { "SendMassPreviewMessage","https://api.weixin.qq.com/cgi-bin/message/mass/preview?access_token={0}" },
                 { "GetMassSpeed","https://api.weixin.qq.com/cgi-bin/message/mass/speed/get?access_token={0}" },
-                { "SetMassSpeed","https://api.weixin.qq.com/cgi-bin/message/mass/speed/set?access_token={0}" }
+                { "SetMassSpeed","https://api.weixin.qq.com/cgi-bin/message/mass/speed/set?access_token={0}" },
+                { "AddWxShop","http://api.weixin.qq.com/cgi-bin/poi/addpoi?access_token={0}" },
+                { "GetWxShop","http://api.weixin.qq.com/cgi-bin/poi/getpoi?access_token={0}" },
+                { "GetWxShopList","https://api.weixin.qq.com/cgi-bin/poi/getpoilist?access_token={0}" }
             };
         }
+
+        #region 基础
 
         public override string CalculateJoinSignature(long timestamp, string nonce)
         {
@@ -116,6 +122,7 @@ namespace QinSoft.Wx.OfficialAccount
             if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
             else return response.AccessToken;
         }
+        #endregion
 
         #region 菜单
         public override void CreateMenu(string accessToken, MenuInfo menuInfo, bool isConditional = false)
@@ -132,56 +139,6 @@ namespace QinSoft.Wx.OfficialAccount
             DeleteMenuResponse response = RetryTools.Retry<DeleteMenuResponse>(() =>
             {
                 return HttpTools.Get<DeleteMenuResponse>(string.Format(urlDictionary[isConditional ? "DeleteConditionalMenu" : "DeleteMenu"], accessToken), null, null);
-            });
-            if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
-        }
-        #endregion
-
-        #region 群发
-        public override MassTagMsgSendResponse SendMassTagMessage(string accessToken, MassTagMsgBase message)
-        {
-            MassTagMsgSendResponse response = RetryTools.Retry<MassTagMsgSendResponse>(() =>
-            {
-                return HttpTools.Post<MassTagMsgSendResponse>(string.Format(urlDictionary["SendMassTagMessage"], accessToken), null, null, message);
-            });
-            if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
-            return response;
-        }
-
-        public override void DeleteMassTagMessageSend(string accessToken, DeleteMassTagMsgSendRequest request)
-        {
-            DeleteMassTagMsgSendResponse response = RetryTools.Retry<DeleteMassTagMsgSendResponse>(() =>
-            {
-                return HttpTools.Post<DeleteMassTagMsgSendResponse>(string.Format(urlDictionary["DeleteMassTagMessageSend"], accessToken), null, null, request);
-            });
-            if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
-        }
-
-        public override MassPreviewMsgSendResponse SendMassPreviewMessage(string accessToken, MassPreviewMsgBase message)
-        {
-            MassPreviewMsgSendResponse response = RetryTools.Retry<MassPreviewMsgSendResponse>(() =>
-            {
-                return HttpTools.Post<MassPreviewMsgSendResponse>(string.Format(urlDictionary["SendMassPreviewMessage"], accessToken), null, null, message);
-            });
-            if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
-            return response;
-        }
-
-        public override GetMassSpeedResponse GetMassSpeed(string accessToken)
-        {
-            GetMassSpeedResponse response = RetryTools.Retry<GetMassSpeedResponse>(() =>
-            {
-                return HttpTools.Post<GetMassSpeedResponse>(string.Format(urlDictionary["GetMassSpeed"], accessToken), null, null, null);
-            });
-            if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
-            return response;
-        }
-
-        public override void SetMassSpeed(string accessToken, SetMassSpeedRequest request)
-        {
-            SetMassSpeedResponse response = RetryTools.Retry<SetMassSpeedResponse>(() =>
-            {
-                return HttpTools.Post<SetMassSpeedResponse>(string.Format(urlDictionary["SetMassSpeed"], accessToken), null, null, request);
             });
             if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
         }
@@ -240,6 +197,56 @@ namespace QinSoft.Wx.OfficialAccount
             TypingCustomerServiceResponse response = RetryTools.Retry<TypingCustomerServiceResponse>(() =>
             {
                 return HttpTools.Post<TypingCustomerServiceResponse>(string.Format(urlDictionary["TypingCustomerService"], accessToken), null, null, request);
+            });
+            if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
+        }
+        #endregion
+
+        #region 群发
+        public override MassTagMsgSendResponse SendMassTagMessage(string accessToken, MassTagMsgBase message)
+        {
+            MassTagMsgSendResponse response = RetryTools.Retry<MassTagMsgSendResponse>(() =>
+            {
+                return HttpTools.Post<MassTagMsgSendResponse>(string.Format(urlDictionary["SendMassTagMessage"], accessToken), null, null, message);
+            });
+            if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
+            return response;
+        }
+
+        public override void DeleteMassTagMessageSend(string accessToken, DeleteMassTagMsgSendRequest request)
+        {
+            DeleteMassTagMsgSendResponse response = RetryTools.Retry<DeleteMassTagMsgSendResponse>(() =>
+            {
+                return HttpTools.Post<DeleteMassTagMsgSendResponse>(string.Format(urlDictionary["DeleteMassTagMessageSend"], accessToken), null, null, request);
+            });
+            if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
+        }
+
+        public override MassPreviewMsgSendResponse SendMassPreviewMessage(string accessToken, MassPreviewMsgBase message)
+        {
+            MassPreviewMsgSendResponse response = RetryTools.Retry<MassPreviewMsgSendResponse>(() =>
+            {
+                return HttpTools.Post<MassPreviewMsgSendResponse>(string.Format(urlDictionary["SendMassPreviewMessage"], accessToken), null, null, message);
+            });
+            if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
+            return response;
+        }
+
+        public override GetMassSpeedResponse GetMassSpeed(string accessToken)
+        {
+            GetMassSpeedResponse response = RetryTools.Retry<GetMassSpeedResponse>(() =>
+            {
+                return HttpTools.Post<GetMassSpeedResponse>(string.Format(urlDictionary["GetMassSpeed"], accessToken), null, null, null);
+            });
+            if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
+            return response;
+        }
+
+        public override void SetMassSpeed(string accessToken, SetMassSpeedRequest request)
+        {
+            SetMassSpeedResponse response = RetryTools.Retry<SetMassSpeedResponse>(() =>
+            {
+                return HttpTools.Post<SetMassSpeedResponse>(string.Format(urlDictionary["SetMassSpeed"], accessToken), null, null, request);
             });
             if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
         }
@@ -495,7 +502,7 @@ namespace QinSoft.Wx.OfficialAccount
         #endregion
 
         #region 素材
-
+        #region 临时素材
         public async override Task<UploadMediaResponse> UploadMedia(string accessToken, string type, string fileName, Stream stream)
         {
             UploadMediaResponse response = await RetryTools.Retry<Task<UploadMediaResponse>>(async () =>
@@ -534,6 +541,9 @@ namespace QinSoft.Wx.OfficialAccount
             });
             return stream;
         }
+        #endregion
+
+        #region 永久素材
 
         public override AddNewsMaterialResponse AddNewsMaterial(string accessToken, AddNewsMaterialRequest request)
         {
@@ -545,11 +555,20 @@ namespace QinSoft.Wx.OfficialAccount
             return response;
         }
 
-        public async override Task<UploadNewsMaterialImgResponse> UploadNewsMaterialImg(string accessToken, string fileName, Stream stream)
+        public override void UpdateNewsMaterial(string accessToken, UpdateNewsMaterialRequest request)
         {
-            UploadNewsMaterialImgResponse response = await RetryTools.Retry<Task<UploadNewsMaterialImgResponse>>(async () =>
+            UpdateNewsMaterialResponse response = RetryTools.Retry<UpdateNewsMaterialResponse>(() =>
             {
-                return await HttpTools.UploadAsync<UploadNewsMaterialImgResponse>(string.Format(urlDictionary["UploadNewsMaterialImg"], accessToken), stream, "media", fileName);
+                return HttpTools.Post<UpdateNewsMaterialResponse>(string.Format(urlDictionary["UpdateNewsMaterial"], accessToken), null, null, request);
+            });
+            if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
+        }
+
+        public async override Task<UploadImageMaterialResponse> UploadImageMaterial(string accessToken, string fileName, Stream stream)
+        {
+            UploadImageMaterialResponse response = await RetryTools.Retry<Task<UploadImageMaterialResponse>>(async () =>
+            {
+                return await HttpTools.UploadAsync<UploadImageMaterialResponse>(string.Format(urlDictionary["UploadImageMaterial"], accessToken), stream, "media", fileName);
             });
             if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
             return response;
@@ -603,15 +622,6 @@ namespace QinSoft.Wx.OfficialAccount
             if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
         }
 
-        public override void UpdateNewsMaterial(string accessToken, UpdateNewsMaterialRequest request)
-        {
-            UpdateNewsMaterialResponse response = RetryTools.Retry<UpdateNewsMaterialResponse>(() =>
-            {
-                return HttpTools.Post<UpdateNewsMaterialResponse>(string.Format(urlDictionary["UpdateNewsMaterial"], accessToken), null, null, request);
-            });
-            if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
-        }
-
         public override GetMaterialCountResponse GetMaterialCount(string accessToken)
         {
             GetMaterialCountResponse response = RetryTools.Retry<GetMaterialCountResponse>(() =>
@@ -632,8 +642,9 @@ namespace QinSoft.Wx.OfficialAccount
             return response;
         }
         #endregion
+        #endregion
 
-        #region 页面开发
+        #region 网页开发
         public override string GetOAuth2Uri(string redirectUri, string scope, string state)
         {
             return string.Format(
@@ -709,6 +720,41 @@ namespace QinSoft.Wx.OfficialAccount
             return joinStr.SHA1().ToLower();
         }
 
+        #endregion
+
+        #region 统计
+        #endregion
+
+        #region 门店
+        public override AddWxShopResponse AddWxShop(string accessToken, AddWxShopRequest request)
+        {
+            AddWxShopResponse response = RetryTools.Retry<AddWxShopResponse>(() =>
+            {
+                return HttpTools.Post<AddWxShopResponse>(string.Format(urlDictionary["AddWxShop"], accessToken), null, null, request);
+            });
+            if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
+            return response;
+        }
+
+        public override GetWxShopResponse GetWxShop(string accessToken, GetWxShopRequest request)
+        {
+            GetWxShopResponse response = RetryTools.Retry<GetWxShopResponse>(() =>
+            {
+                return HttpTools.Post<GetWxShopResponse>(string.Format(urlDictionary["GetWxShop"], accessToken), null, null, request);
+            });
+            if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
+            return response;
+        }
+
+        public override GetWxShopListResponse GetWxShopList(string accessToken, GetWxShopListRequest request)
+        {
+            GetWxShopListResponse response = RetryTools.Retry<GetWxShopListResponse>(() =>
+            {
+                return HttpTools.Post<GetWxShopListResponse>(string.Format(urlDictionary["GetWxShopList"], accessToken), null, null, request);
+            });
+            if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
+            return response;
+        }
         #endregion
     }
 }

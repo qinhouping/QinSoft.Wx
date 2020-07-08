@@ -119,7 +119,7 @@
     <Compile Include="OfficialAccount\Model\Media\AddNewsMaterialResponse.cs" />
     <Compile Include="OfficialAccount\Model\Media\DownloadMediaResponse.cs" />
     <Compile Include="OfficialAccount\Model\Media\UploadMediaResponse.cs" />
-    <Compile Include="OfficialAccount\Model\Media\UploadNewsMaterialImgResponse.cs" />
+    <Compile Include="OfficialAccount\Model\Media\UploadImageMaterialResponse.cs" />
     <Compile Include="OfficialAccount\Model\Media\UploadVideoRequest.cs" />
     <Compile Include="OfficialAccount\Model\Media\UploadVideoResponse.cs" />
     <Compile Include="OfficialAccount\Model\Menu\ClickMenu.cs" />
@@ -138,6 +138,7 @@
     <Compile Include="OfficialAccount\Model\Menu\ViewLimitedMenu.cs" />
     <Compile Include="OfficialAccount\Model\Menu\ViewMenu.cs" />
     <Compile Include="OfficialAccount\Model\Menu\WeixinPhoneMenu.cs" />
+    <Compile Include="OfficialAccount\Model\RecvMsg\RecvEvent\RecvPoiCheckNotifyEventMsg.cs" />
     <Compile Include="OfficialAccount\Model\RecvMsg\RecvEvent\RecvScanCodePushEventMsg.cs" />
     <Compile Include="OfficialAccount\Model\RecvMsg\RecvEvent\RecvScanCodeWaitEvntMsg.cs" />
     <Compile Include="OfficialAccount\Model\RecvMsg\RecvEvent\RecvViewEventMsg.cs" />
@@ -207,6 +208,13 @@
     <Compile Include="OfficialAccount\Model\Web\GetOAuth2AccessTokenResponse.cs" />
     <Compile Include="OfficialAccount\Model\Web\GetOAuth2UserInfoResponse.cs" />
     <Compile Include="OfficialAccount\Model\Web\IsValidOAuth2AccessTokenResponse.cs" />
+    <Compile Include="OfficialAccount\Model\WxShop\AddWxShopRequest.cs" />
+    <Compile Include="OfficialAccount\Model\WxShop\AddWxShopResponse.cs" />
+    <Compile Include="OfficialAccount\Model\WxShop\GetWxShopListRequest.cs" />
+    <Compile Include="OfficialAccount\Model\WxShop\GetWxShopListResponse.cs" />
+    <Compile Include="OfficialAccount\Model\WxShop\GetWxShopRequest.cs" />
+    <Compile Include="OfficialAccount\Model\WxShop\GetWxShopResponse.cs" />
+    <Compile Include="OfficialAccount\Model\WxShop\WxShopBusinessData.cs" />
     <Compile Include="OfficialAccount\OfficialAccountConfig.cs" />
     <Compile Include="OfficialAccount\OfficialAccountException.cs" />
     <Compile Include="OfficialAccount\OfficialAccountService.cs" />
@@ -217,6 +225,7 @@
   <ItemGroup>
     <Folder Include="EnterpriseAccount\" />
     <Folder Include="MiniGame\" />
+    <Folder Include="OfficialAccount\Model\WxCard\" />
     <Folder Include="Pay\" />
   </ItemGroup>
   <ItemGroup>
