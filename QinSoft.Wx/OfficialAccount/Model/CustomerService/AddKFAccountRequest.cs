@@ -6,15 +6,12 @@ using System.Text;
 
 namespace QinSoft.Wx.OfficialAccount.Model.CustomerService
 {
-    public class CustomerServiceActionRequest
+    public class AddKFAccountRequest
     {
         [JsonProperty("kf_account")]
-        public string Account { get; set; }
+        public string KFAccount { get; set; }
 
         [JsonProperty("nickname")]
         public string NickName { get; set; }
-
-        [JsonProperty("password")]
-        public string Password { get; set; }
     }
 }

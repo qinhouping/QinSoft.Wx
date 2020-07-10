@@ -16,6 +16,12 @@ namespace QinSoft.Wx.OfficialAccount.Model.CustomerService
 
         [JsonProperty("customservice")]
 
-        public MsgCustomerService CustomerService { get; set; }
+        public CstomServiceInfo CustomerService { get; set; }
+    }
+
+    public class CstomServiceInfo
+    {
+        [JsonProperty("kf_account")]
+        public string KFAccount { get; set; }
     }
 }

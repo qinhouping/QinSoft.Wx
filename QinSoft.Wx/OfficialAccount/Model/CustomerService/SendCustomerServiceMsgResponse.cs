@@ -6,7 +6,7 @@ using System.Text;
 
 namespace QinSoft.Wx.OfficialAccount.Model.CustomerService
 {
-    public class CustomerServiceActionResponse
+    public class SendCustomerServiceMsgResponse
     {
         [JsonProperty("errcode")]
         public int ErrCode { get; set; }

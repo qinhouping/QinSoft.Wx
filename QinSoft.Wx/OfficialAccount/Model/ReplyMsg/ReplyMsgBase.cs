@@ -1,4 +1,5 @@
-﻿using System;
+﻿using QinSoft.Wx.Common;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,5 +16,10 @@ namespace QinSoft.Wx.OfficialAccount.Model.ReplyMsg
         public long CreateTime { get; set; }
 
         public string MsgType { get; set; }
+
+        public ReplyMsgBase()
+        {
+            this.CreateTime = DateTime.Now.ToTimeStamp();
+        }
     }
 }

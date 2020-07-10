@@ -1,4 +1,5 @@
-﻿using QinSoft.Wx.OfficialAccount.Model.Account;
+﻿using QinSoft.Wx.OfficialAccount.Model.AccessToken;
+using QinSoft.Wx.OfficialAccount.Model.Account;
 using QinSoft.Wx.OfficialAccount.Model.CustomerService;
 using QinSoft.Wx.OfficialAccount.Model.Mass;
 using QinSoft.Wx.OfficialAccount.Model.Media;
@@ -25,93 +26,97 @@ namespace QinSoft.Wx.OfficialAccount
         #region 基础
         public abstract string CalculateJoinSignature(long timestamp, string nonce);
 
-        public abstract string GetAccessToken();
+        public abstract AccessTokenResponse GetAccessToken();
 
         #endregion
 
         #region 菜单
-        public abstract void CreateMenu(string accessToken, MenuInfo menuInfo, bool isConditional = false);
+        public abstract CreateMenuResponse CreateMenu(string accessToken, MenuInfo menuInfo, bool isConditional = false);
 
-        public abstract void DeleteMenu(string accessToken, bool isConditional = false);
+        public abstract DeleteMenuResponse DeleteMenu(string accessToken, bool isConditional = false);
         #endregion
 
         #region 客服
 
-        public abstract void AddCustomerService(string accessToken, CustomerServiceActionRequest customerService);
+        public abstract AddKFAccountResponse AddFKAccount(string accessToken, AddKFAccountRequest request);
 
-        public abstract void UpdateCustomerService(string accessToken, CustomerServiceActionRequest customerService);
+        public abstract UpdateKFAccountResponse UpdateKFAccount(string accessToken, UpdateKFAccountRequest request);
 
-        public abstract void DeleteCustomerService(string accessToken, CustomerServiceActionRequest customerService);
+        public abstract DeleteKFAccountResponse DeleteKFAccount(string accessToken, string kfAccount);
 
-        public abstract CustomerServiceListItem[] GetCustomerServiceList(string accessToken);
+        public abstract InviteKFAccountResponse InviteKFAccount(string accessToken, InviteKFAccountRequest request);
 
-        public abstract void SendCustomerServiceMessage(string accessToken, CustomerServiceMsgBase message);
+        public abstract GetFKAccountList GetFKAccountList(string accessToken);
 
-        public abstract void TypingCustomerService(string accessToken, TypingCustomerServiceRequest action);
+        public abstract Task<UploadKFAccountHeadImgResponse> UploadKFAccountHeadImg(string accessToken, string kfAccount, Stream stream, string fileName);
+
+        public abstract SendCustomerServiceMsgResponse SendCustomerServiceMessage(string accessToken, CustomerServiceMsgBase message);
+
+        public abstract TypingCustomerServiceResponse TypingCustomerService(string accessToken, TypingCustomerServiceRequest request);
         #endregion
 
         #region 群发
         public abstract MassTagMsgSendResponse SendMassTagMessage(string accessToken, MassTagMsgBase message);
 
-        public abstract void DeleteMassTagMessageSend(string accessToken, DeleteMassTagMsgSendRequest request);
+        public abstract DeleteMassTagMsgSendResponse DeleteMassTagMessageSend(string accessToken, DeleteMassTagMsgSendRequest request);
 
         public abstract MassPreviewMsgSendResponse SendMassPreviewMessage(string accessToken, MassPreviewMsgBase message);
 
         public abstract GetMassSpeedResponse GetMassSpeed(string accessToken);
 
-        public abstract void SetMassSpeed(string accessToken, SetMassSpeedRequest request);
+        public abstract SetMassSpeedResponse SetMassSpeed(string accessToken, SetMassSpeedRequest request);
         #endregion
 
         #region 模板
-        public abstract void SetTemplateIndustry(string accessToken, SetTemplateIndustryRequest request);
+        public abstract SetTemplateIndustryResponse SetTemplateIndustry(string accessToken, SetTemplateIndustryRequest request);
 
         public abstract GetTemplateIndustryResponse GetTemplateIndustry(string accessToken);
 
-        public abstract string GetTemplateId(string accessToken, string templateIdShort);
+        public abstract GetTemplateIdResponse GetTemplateId(string accessToken, GetTemplateIdRequest request);
 
         public abstract GetTemplateListResponse GetTemplateList(string accessToken);
 
-        public abstract void DeleteTemplate(string accessToken, string templateId);
+        public abstract DeleteTemplateResponse DeleteTemplate(string accessToken, DeleteTemplateRequest request);
 
-        public abstract string SendTemplateMessage(string accessToken, TemplateMessage message);
+        public abstract SendTemplateMessageResponse SendTemplateMessage(string accessToken, TemplateMessage message);
         #endregion
 
         #region 订阅
         public abstract string GetSubscribeUrl(string scene, string templateId, string redirectUrl, string reserved);
 
-        public abstract void SendSubscribeMessage(string accessToken, SubscribeMessage message);
+        public abstract SendSubscribeMessageResponse SendSubscribeMessage(string accessToken, SubscribeMessage message);
         #endregion
 
         #region 用户
         public abstract CreateTagResponse CreateTag(string accessToken, CreateTagRequest request);
 
-        public abstract void UpdateTag(string accessToken, UpdateTagRequest request);
+        public abstract UpdateTagResponse UpdateTag(string accessToken, UpdateTagRequest request);
 
-        public abstract void DeleteTag(string accessToken, DeleteTagRequest request);
+        public abstract DeleteTagResponse DeleteTag(string accessToken, DeleteTagRequest request);
 
         public abstract GetTagListResponse GetTagList(string accessToken);
 
         public abstract GetTagUserListResponse GetTagUserList(string accessToken, GetTagUserListRequest request);
 
-        public abstract void BatchTagging(string accessToken, BatchTaggingRequest request);
+        public abstract BatchTaggingResponse BatchTagging(string accessToken, BatchTaggingRequest request);
 
-        public abstract void BatchUntagging(string accessToken, BatchUntaggingRequest request);
+        public abstract BatchUntaggingResponse BatchUntagging(string accessToken, BatchUntaggingRequest request);
 
         public abstract GetUserTagListResponse GetUserTagList(string accessToken, GetUserTagListRequest request);
 
-        public abstract void UpdateRemark(string accessToken, UpdateRemarkRequest request);
+        public abstract UpdateRemarkResponse UpdateRemark(string accessToken, UpdateRemarkRequest request);
 
-        public abstract UserInfo GetUserInfo(string accessToken, string openId, string lang = "zh_CN");
+        public abstract GetUserInfoResponse GetUserInfo(string accessToken, string openId, string lang = "zh_CN");
 
-        public abstract UserInfo[] BatchGetUserInfo(string accessToken, BatchGetUserInfoRequest request);
+        public abstract BatchGetUserInfoResponse BatchGetUserInfo(string accessToken, BatchGetUserInfoRequest request);
 
         public abstract GetUserListResponse GetUserList(string accessToken, string nextOpenId);
 
         public abstract GetBlackUserListResponse GetBlackUserList(string accessToken, GetBlackUserListRequest request);
 
-        public abstract void BatchBlackList(string accessToken, BatchBlackListRequest request);
+        public abstract BatchBlackListResponse BatchBlackList(string accessToken, BatchBlackListRequest request);
 
-        public abstract void BatchUnblackList(string accessToken, BatchUnblackListRequest request);
+        public abstract BatchUnblackListResponse BatchUnblackList(string accessToken, BatchUnblackListRequest request);
         #endregion
 
         #region 账号
@@ -119,7 +124,7 @@ namespace QinSoft.Wx.OfficialAccount
 
         public abstract string GetQRCodeUrl(string ticket);
 
-        public abstract string GetShortUrl(string accessToken, string longUrl);
+        public abstract GetShortUrlResponse GetShortUrl(string accessToken, string longUrl);
         #endregion
 
         #region 素材
@@ -136,7 +141,7 @@ namespace QinSoft.Wx.OfficialAccount
         #region 永久素材
         public abstract AddNewsMaterialResponse AddNewsMaterial(string accessToken, AddNewsMaterialRequest request);
 
-        public abstract void UpdateNewsMaterial(string accessToken, UpdateNewsMaterialRequest request);
+        public abstract UpdateNewsMaterialResponse UpdateNewsMaterial(string accessToken, UpdateNewsMaterialRequest request);
 
         public abstract Task<UploadImageMaterialResponse> UploadImageMaterial(string accessToken, string fileName, Stream stream);
 
@@ -148,7 +153,7 @@ namespace QinSoft.Wx.OfficialAccount
 
         public abstract Task<Stream> DownloadMaterial(string accessToken, DownloadMaterialRequest request);
 
-        public abstract void DeleteMaterial(string accessToken, DeleteMaterialRequest request);
+        public abstract DeleteMaterialResponse DeleteMaterial(string accessToken, DeleteMaterialRequest request);
 
         public abstract GetMaterialCountResponse GetMaterialCount(string accessToken);
 
@@ -167,12 +172,9 @@ namespace QinSoft.Wx.OfficialAccount
 
         public abstract IsValidOAuth2AccessTokenResponse IsValidOAuth2AccessToken(string accessToken, string openId);
 
-        public abstract string GetJsApiTicket(string accessToken);
+        public abstract GetJsApiTicketResponse GetJsApiTicket(string accessToken);
 
         public abstract string CalculateJsApiSignature(string jsApiTicket, long timestamp, string nonce, string url);
-        #endregion
-
-        #region 统计
         #endregion
 
         #region 门店

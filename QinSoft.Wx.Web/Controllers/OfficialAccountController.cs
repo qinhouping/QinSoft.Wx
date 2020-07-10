@@ -81,17 +81,14 @@ namespace QinSoft.Wx.Web.Controllers
                 {
                     string recvMsgXml = ReadInputContent(this.Request.InputStream);
                     RecvMsgBase recvMsg = recvMsgXml.FromXml<RecvMsgBase>();
-                    ReplyTextMsg replyMsg = new ReplyTextMsg()
+                    ReplyMsgBase replyMsg = new ReplyTransferCustomerServiceMsg()
                     {
                         FromUserName = recvMsg.ToUserName,
-                        ToUserName = recvMsg.FromUserName,
-                        CreateTime = DateTime.Now.ToTimeStamp(),
-                        MsgType = "text",
-                        Content = "hello world"
+                        ToUserName = recvMsg.FromUserName
                     };
                     string sendMsgXml = replyMsg.ToXml();
 
-                    string accessToken = this.officialAccountService.GetAccessToken();
+                    string accessToken = this.officialAccountService.GetAccessToken().AccessToken;
                     this.officialAccountService.TypingCustomerService(accessToken, new TypingCustomerServiceRequest()
                     {
                         ToUser = recvMsg.FromUserName,
@@ -122,7 +119,7 @@ namespace QinSoft.Wx.Web.Controllers
                         ToUser = recvMsg.FromUserName,
                         Image = new CustomerServiceImageMsgContent()
                         {
-                            MediaId = "dMUBr-ZQ80Ec_p1-SelnXe379HbDpl11TsgrnaVgofrrv0yVgpR3rD0jIvasL-k3"
+                            MediaId = "PqiXo-hO4-RxRAGj0Ja4Az-tTsRDtcq9PsQ_8E_6jso"
                         }
                     };
                     this.officialAccountService.SendCustomerServiceMessage(accessToken, customerServiceMsg);
@@ -151,7 +148,7 @@ namespace QinSoft.Wx.Web.Controllers
         {
             try
             {
-                return Content(this.officialAccountService.GetAccessToken());
+                return Content(this.officialAccountService.GetAccessToken().AccessToken);
             }
             catch (Exception e)
             {
@@ -164,7 +161,7 @@ namespace QinSoft.Wx.Web.Controllers
         {
             try
             {
-                string accessToken = this.officialAccountService.GetAccessToken();
+                string accessToken = this.officialAccountService.GetAccessToken().AccessToken;
                 this.officialAccountService.CreateMenu(accessToken, new MenuInfo()
                 {
                     Button = new MenuBase[]
@@ -207,7 +204,7 @@ namespace QinSoft.Wx.Web.Controllers
         {
             try
             {
-                string accessToken = this.officialAccountService.GetAccessToken();
+                string accessToken = this.officialAccountService.GetAccessToken().AccessToken;
                 this.officialAccountService.DeleteMenu(accessToken);
                 return Content("OK");
             }
@@ -218,12 +215,12 @@ namespace QinSoft.Wx.Web.Controllers
         }
 
         [HttpGet]
-        public ActionResult GetCustomerServiceList()
+        public ActionResult GetFKAccountList()
         {
             try
             {
-                string accessToken = this.officialAccountService.GetAccessToken();
-                return Content(this.officialAccountService.GetCustomerServiceList(accessToken).ToJson());
+                string accessToken = this.officialAccountService.GetAccessToken().AccessToken;
+                return Content(this.officialAccountService.GetFKAccountList(accessToken).ToJson());
             }
             catch (Exception e)
             {
@@ -232,17 +229,16 @@ namespace QinSoft.Wx.Web.Controllers
         }
 
         [HttpGet]
-        public ActionResult ActionCustomerService(string option, string account, string nickname, string password)
+        public ActionResult KFAccountAction(string option, string account, string nickname)
         {
             try
             {
-                string accessToken = this.officialAccountService.GetAccessToken();
-                CustomerServiceActionRequest request = new CustomerServiceActionRequest() { Account = account, NickName = nickname, Password = password };
+                string accessToken = this.officialAccountService.GetAccessToken().AccessToken;
                 switch (option)
                 {
-                    case "add": this.officialAccountService.AddCustomerService(accessToken, request); break;
-                    case "delete": this.officialAccountService.DeleteCustomerService(accessToken, request); break;
-                    case "update": this.officialAccountService.UpdateCustomerService(accessToken, request); break;
+                    case "add": this.officialAccountService.AddFKAccount(accessToken, new AddKFAccountRequest() { KFAccount = account, NickName = nickname }); break;
+                    case "delete": this.officialAccountService.DeleteKFAccount(accessToken, account); break;
+                    case "update": this.officialAccountService.UpdateKFAccount(accessToken, new UpdateKFAccountRequest() { KFAccount = account, NickName = nickname }); break;
                 }
                 return Content("OK");
             }
@@ -257,7 +253,7 @@ namespace QinSoft.Wx.Web.Controllers
         {
             try
             {
-                string accessToken = this.officialAccountService.GetAccessToken();
+                string accessToken = this.officialAccountService.GetAccessToken().AccessToken;
                 this.officialAccountService.SetTemplateIndustry(accessToken, new SetTemplateIndustryRequest() { IndustryId1 = id1, IndustryId2 = id2 });
                 return Content("OK");
             }
@@ -272,7 +268,7 @@ namespace QinSoft.Wx.Web.Controllers
         {
             try
             {
-                string accessToken = this.officialAccountService.GetAccessToken();
+                string accessToken = this.officialAccountService.GetAccessToken().AccessToken;
                 return Content(this.officialAccountService.GetTemplateIndustry(accessToken).ToJson());
             }
             catch (Exception e)
@@ -286,7 +282,7 @@ namespace QinSoft.Wx.Web.Controllers
         {
             try
             {
-                string accessToken = this.officialAccountService.GetAccessToken();
+                string accessToken = this.officialAccountService.GetAccessToken().AccessToken;
                 return Content(this.officialAccountService.GetTemplateList(accessToken).ToJson());
             }
             catch (Exception e)
@@ -300,8 +296,8 @@ namespace QinSoft.Wx.Web.Controllers
         {
             try
             {
-                string accessToken = this.officialAccountService.GetAccessToken();
-                this.officialAccountService.DeleteTemplate(accessToken, templateId);
+                string accessToken = this.officialAccountService.GetAccessToken().AccessToken;
+                this.officialAccountService.DeleteTemplate(accessToken, new DeleteTemplateRequest() { TemplateId = templateId });
                 return Content("OK");
             }
             catch (Exception e)
@@ -315,7 +311,7 @@ namespace QinSoft.Wx.Web.Controllers
         {
             try
             {
-                string accessToken = this.officialAccountService.GetAccessToken();
+                string accessToken = this.officialAccountService.GetAccessToken().AccessToken;
                 //发送模板信息
                 TemplateMessage templateMessage = new TemplateMessage()
                 {
@@ -327,7 +323,7 @@ namespace QinSoft.Wx.Web.Controllers
                               {"date", new TemplateMessageKeyWord() { Value=DateTime.Now.ToString(), Color="#173177" } }
                           }
                 };
-                return Content(this.officialAccountService.SendTemplateMessage(accessToken, templateMessage));
+                return Content(this.officialAccountService.SendTemplateMessage(accessToken, templateMessage).ToJson());
             }
             catch (Exception e)
             {
@@ -340,7 +336,7 @@ namespace QinSoft.Wx.Web.Controllers
         {
             try
             {
-                string accessToken = this.officialAccountService.GetAccessToken();
+                string accessToken = this.officialAccountService.GetAccessToken().AccessToken;
                 MassTagMsgBase massTagMsgBase = new MassTagTextMsg()
                 {
                     Filter = new MassTagMsgFilter()
@@ -370,7 +366,7 @@ namespace QinSoft.Wx.Web.Controllers
         [HttpGet]
         public ActionResult GetQRCode()
         {
-            string accessToken = this.officialAccountService.GetAccessToken();
+            string accessToken = this.officialAccountService.GetAccessToken().AccessToken;
             CreateQRCodeResponse response = this.officialAccountService.CreateQRCode(accessToken, new CreateQRCodeRequest()
             {
                 ActionName = "QR_STR_SCENE",
@@ -379,7 +375,7 @@ namespace QinSoft.Wx.Web.Controllers
                     Scene = new QRCodeScene() { SceneStr = "QinSoft.Wx" }
                 }
             });
-            return Content(this.officialAccountService.GetShortUrl(accessToken, this.officialAccountService.GetQRCodeUrl(response.Ticket)));
+            return Content(this.officialAccountService.GetShortUrl(accessToken, this.officialAccountService.GetQRCodeUrl(response.Ticket)).ToJson());
         }
 
         [HttpGet]
@@ -392,7 +388,7 @@ namespace QinSoft.Wx.Web.Controllers
         [HttpPost]
         public async Task<ActionResult> UploadMediaHandle(string type)
         {
-            string accessToken = this.officialAccountService.GetAccessToken();
+            string accessToken = this.officialAccountService.GetAccessToken().AccessToken;
             string fileName = this.Request.Files["file"].FileName;
             Stream stream = this.Request.Files["file"].InputStream;
             UploadMediaResponse response = await this.officialAccountService.UploadMedia(accessToken, type, fileName, stream);
@@ -401,7 +397,7 @@ namespace QinSoft.Wx.Web.Controllers
 
         public async Task<ActionResult> DownloadMedia(string mediaId, string fileName)
         {
-            string accessToken = this.officialAccountService.GetAccessToken();
+            string accessToken = this.officialAccountService.GetAccessToken().AccessToken;
             Stream stream = await this.officialAccountService.DownloadMedia(accessToken, mediaId);
             return File(stream, "application/octet-stream", fileName);
         }
@@ -415,7 +411,7 @@ namespace QinSoft.Wx.Web.Controllers
         [HttpGet]
         public ActionResult UploadNewsMaterial()
         {
-            string accessToken = this.officialAccountService.GetAccessToken();
+            string accessToken = this.officialAccountService.GetAccessToken().AccessToken;
             AddNewsMaterialResponse response = this.officialAccountService.AddNewsMaterial(accessToken, new AddNewsMaterialRequest()
             {
                 Articles = new NewsMaterialArticle[]
@@ -444,7 +440,7 @@ namespace QinSoft.Wx.Web.Controllers
         [HttpPost]
         public async Task<ActionResult> UploadMaterialHandle(string type)
         {
-            string accessToken = this.officialAccountService.GetAccessToken();
+            string accessToken = this.officialAccountService.GetAccessToken().AccessToken;
             string fileName = this.Request.Files["file"].FileName;
             Stream stream = this.Request.Files["file"].InputStream;
             UploadMaterialResponse response = await this.officialAccountService.UploadMaterial(accessToken, type, fileName, stream);
@@ -454,7 +450,7 @@ namespace QinSoft.Wx.Web.Controllers
         [HttpPost]
         public async Task<ActionResult> UploadImageMaterialHandle(string type)
         {
-            string accessToken = this.officialAccountService.GetAccessToken();
+            string accessToken = this.officialAccountService.GetAccessToken().AccessToken;
             string fileName = this.Request.Files["file"].FileName;
             Stream stream = this.Request.Files["file"].InputStream;
             UploadImageMaterialResponse response = await this.officialAccountService.UploadImageMaterial(accessToken, fileName, stream);
@@ -464,7 +460,7 @@ namespace QinSoft.Wx.Web.Controllers
         [HttpGet]
         public async Task<ActionResult> DownloadMaterial(string mediaId, string fileName)
         {
-            string accessToken = this.officialAccountService.GetAccessToken();
+            string accessToken = this.officialAccountService.GetAccessToken().AccessToken;
             Stream stream = await this.officialAccountService.DownloadMaterial(accessToken, new DownloadMaterialRequest() { MediaId = mediaId });
             return File(stream, "application/octet-stream", fileName);
         }
@@ -472,7 +468,7 @@ namespace QinSoft.Wx.Web.Controllers
         [HttpGet]
         public ActionResult GetMaterialCount()
         {
-            string accessToken = this.officialAccountService.GetAccessToken();
+            string accessToken = this.officialAccountService.GetAccessToken().AccessToken;
             GetMaterialCountResponse response = this.officialAccountService.GetMaterialCount(accessToken);
             return Content(response.ToJson());
         }
@@ -480,7 +476,7 @@ namespace QinSoft.Wx.Web.Controllers
         [HttpGet]
         public ActionResult GetMaterialList(string type, int count = 10, int offset = 0)
         {
-            string accessToken = this.officialAccountService.GetAccessToken();
+            string accessToken = this.officialAccountService.GetAccessToken().AccessToken;
             if (type == "news")
             {
                 GetMaterialListResponse<NewsMaterislListItem> response = this.officialAccountService.GetMaterialList<NewsMaterislListItem>(accessToken, new GetMaterialListRequest()
@@ -530,7 +526,7 @@ namespace QinSoft.Wx.Web.Controllers
         [HttpGet]
         public ActionResult AddWxShop()
         {
-            string accessToken = this.officialAccountService.GetAccessToken();
+            string accessToken = this.officialAccountService.GetAccessToken().AccessToken;
             AddWxShopResponse response = this.officialAccountService.AddWxShop(accessToken, new AddWxShopRequest(new AddWxShopData()
             {
                 Business = new WxShopBusinessData()

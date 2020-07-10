@@ -7,7 +7,7 @@ using System.Text;
 namespace QinSoft.Wx.OfficialAccount.Model.CustomerService
 {
 
-    public class CustomerServiceListResponse
+    public class GetFKAccountList
     {
         [JsonProperty("errcode")]
         public int ErrCode { get; set; }
@@ -16,21 +16,24 @@ namespace QinSoft.Wx.OfficialAccount.Model.CustomerService
         public string ErrMsg { get; set; }
 
         [JsonProperty("kf_list")]
-        public CustomerServiceListItem[] CustomerServiceList { get; set; }
+        public GetFKAccountItem[] KFAccountList { get; set; }
     }
 
-    public class CustomerServiceListItem
+    public class GetFKAccountItem
     {
         [JsonProperty("kf_account")]
-        public string Account { get; set; }
+        public string KFAccountk { get; set; }
 
         [JsonProperty("kf_nick")]
-        public string NickName { get; set; }
+        public string KFNickName { get; set; }
 
         [JsonProperty("kf_id")]
-        public string ID { get; set; }
+        public string KFID { get; set; }
 
         [JsonProperty("kf_headimgurl")]
-        public string HeadImgUrl { get; set; }
+        public string KFHeadImgUrl { get; set; }
+
+        [JsonProperty("kf_wx")]
+        public string KFWx { get; set; }
     }
 }

@@ -40,10 +40,12 @@ namespace QinSoft.Wx.OfficialAccount
                 { "CreateConditionalMenu","https://api.weixin.qq.com/cgi-bin/menu/addconditional?access_token={0}"},
                 { "DeleteMenu","https://api.weixin.qq.com/cgi-bin/menu/delete?access_token={0}"},
                 { "DeleteConditionalMenu","https://api.weixin.qq.com/cgi-bin/menu/delconditional?access_token={0}" },
-                { "AddCustomerService","https://api.weixin.qq.com/customservice/kfaccount/add?access_token={0}" },
-                { "UpdateCustomerService","https://api.weixin.qq.com/customservice/kfaccount/update?access_token={0}" },
-                { "DeleteCustomerService","https://api.weixin.qq.com/customservice/kfaccount/del?access_token={0}" },
-                { "GetCustomerServiceList","https://api.weixin.qq.com/cgi-bin/customservice/getkflist?access_token={0}" },
+                { "AddKFAccount","https://api.weixin.qq.com/customservice/kfaccount/add?access_token={0}" },
+                { "UpdateKFAccount","https://api.weixin.qq.com/customservice/kfaccount/update?access_token={0}" },
+                { "DeleteKFAccount","https://api.weixin.qq.com/customservice/kfaccount/del?access_token={0}&kf_account={1}" },
+                { "InviteKFAccount","https://api.weixin.qq.com/customservice/kfaccount/inviteworker?access_token={0}" },
+                { "GetFKAccountList","https://api.weixin.qq.com/cgi-bin/customservice/getkflist?access_token={0}" },
+                { "UploadKFAccountHeadImg","https://api.weixin.qq.com/customservice/kfaccount/uploadheadimg?access_token={0}&kf_account={1}" },
                 { "SendCustomerServiceMessage","https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token={0}" },
                 { "TypingCustomerService","https://api.weixin.qq.com/cgi-bin/message/custom/typing?access_token={0}" },
                 { "SetTemplateIndustry","https://api.weixin.qq.com/cgi-bin/template/api_set_industry?access_token={0}" },
@@ -113,202 +115,189 @@ namespace QinSoft.Wx.OfficialAccount
             return joinStr.SHA1();
         }
 
-        public override string GetAccessToken()
+        public override AccessTokenResponse GetAccessToken()
         {
-            AccessTokenResponse response = RetryTools.Retry<AccessTokenResponse>(() =>
+            return RetryTools.Retry<AccessTokenResponse>(() =>
             {
                 return HttpTools.Get<AccessTokenResponse>(string.Format(urlDictionary["GetAccessToken"], this.officialAccountConfig.AppId, this.officialAccountConfig.AppSecret), null, null);
             });
-            if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
-            else return response.AccessToken;
         }
         #endregion
 
         #region 菜单
-        public override void CreateMenu(string accessToken, MenuInfo menuInfo, bool isConditional = false)
+        public override CreateMenuResponse CreateMenu(string accessToken, MenuInfo menuInfo, bool isConditional = false)
         {
-            CreateMenuResponse response = RetryTools.Retry<CreateMenuResponse>(() =>
+            return RetryTools.Retry<CreateMenuResponse>(() =>
             {
                 return HttpTools.Post<CreateMenuResponse>(string.Format(urlDictionary[isConditional ? "CreateConditionalMenu" : "CreateMenu"], accessToken), null, null, menuInfo);
             });
-            if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
         }
 
-        public override void DeleteMenu(string accessToken, bool isConditional = false)
+        public override DeleteMenuResponse DeleteMenu(string accessToken, bool isConditional = false)
         {
-            DeleteMenuResponse response = RetryTools.Retry<DeleteMenuResponse>(() =>
+            return RetryTools.Retry<DeleteMenuResponse>(() =>
             {
                 return HttpTools.Get<DeleteMenuResponse>(string.Format(urlDictionary[isConditional ? "DeleteConditionalMenu" : "DeleteMenu"], accessToken), null, null);
             });
-            if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
         }
         #endregion
 
         #region 客服
 
-        public override void AddCustomerService(string accessToken, CustomerServiceActionRequest customerService)
+        public override AddKFAccountResponse AddFKAccount(string accessToken, AddKFAccountRequest request)
         {
-            CustomerServiceActionResponse response = RetryTools.Retry<CustomerServiceActionResponse>(() =>
+            return RetryTools.Retry<AddKFAccountResponse>(() =>
             {
-                return HttpTools.Post<CustomerServiceActionResponse>(string.Format(urlDictionary["AddCustomerService"], accessToken), null, null, customerService);
+                return HttpTools.Post<AddKFAccountResponse>(string.Format(urlDictionary["AddFKAccount"], accessToken), null, null, request);
             });
-            if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
         }
 
-        public override void UpdateCustomerService(string accessToken, CustomerServiceActionRequest customerService)
+        public override UpdateKFAccountResponse UpdateKFAccount(string accessToken, UpdateKFAccountRequest request)
         {
-            CustomerServiceActionResponse response = RetryTools.Retry<CustomerServiceActionResponse>(() =>
+            return RetryTools.Retry<UpdateKFAccountResponse>(() =>
             {
-                return HttpTools.Post<CustomerServiceActionResponse>(string.Format(urlDictionary["UpdateCustomerService"], accessToken), null, null, customerService);
+                return HttpTools.Post<UpdateKFAccountResponse>(string.Format(urlDictionary["UpdateKFAccount"], accessToken), null, null, request);
             });
-            if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
         }
 
-        public override void DeleteCustomerService(string accessToken, CustomerServiceActionRequest customerService)
+        public override DeleteKFAccountResponse DeleteKFAccount(string accessToken, string kfAccount)
         {
-            CustomerServiceActionResponse response = RetryTools.Retry<CustomerServiceActionResponse>(() =>
+            return RetryTools.Retry<DeleteKFAccountResponse>(() =>
             {
-                return HttpTools.Post<CustomerServiceActionResponse>(string.Format(urlDictionary["DeleteCustomerService"], accessToken), null, null, customerService);
+                return HttpTools.Get<DeleteKFAccountResponse>(string.Format(urlDictionary["DeleteKFAccount"], accessToken, kfAccount), null, null);
             });
-            if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
         }
 
-        public override CustomerServiceListItem[] GetCustomerServiceList(string accessToken)
+        public override InviteKFAccountResponse InviteKFAccount(string accessToken, InviteKFAccountRequest request)
         {
-            CustomerServiceListResponse response = RetryTools.Retry<CustomerServiceListResponse>(() =>
+            return RetryTools.Retry<InviteKFAccountResponse>(() =>
             {
-                return HttpTools.Get<CustomerServiceListResponse>(string.Format(urlDictionary["GetCustomerServiceList"], accessToken), null, null);
+                return HttpTools.Post<InviteKFAccountResponse>(string.Format(urlDictionary["InviteKFAccount"], accessToken), null, null, request);
             });
-            if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
-            return response.CustomerServiceList;
         }
 
-        public override void SendCustomerServiceMessage(string accessToken, CustomerServiceMsgBase message)
+        public override GetFKAccountList GetFKAccountList(string accessToken)
         {
-            CustomerServiceMsgResponse response = RetryTools.Retry<CustomerServiceMsgResponse>(() =>
+            return RetryTools.Retry<GetFKAccountList>(() =>
             {
-                return HttpTools.Post<CustomerServiceMsgResponse>(string.Format(urlDictionary["SendCustomerServiceMessage"], accessToken), null, null, message);
+                return HttpTools.Get<GetFKAccountList>(string.Format(urlDictionary["GetFKAccountList"], accessToken), null, null);
             });
-            if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
         }
 
-        public override void TypingCustomerService(string accessToken, TypingCustomerServiceRequest request)
+        public override async Task<UploadKFAccountHeadImgResponse> UploadKFAccountHeadImg(string accessToken, string kfAccount, Stream stream, string fileName)
         {
-            TypingCustomerServiceResponse response = RetryTools.Retry<TypingCustomerServiceResponse>(() =>
+            return await RetryTools.Retry<Task<UploadKFAccountHeadImgResponse>>(async () =>
+            {
+                return await HttpTools.UploadAsync<UploadKFAccountHeadImgResponse>(string.Format(urlDictionary["UploadKFAccountHeadImg"], accessToken), stream, "media", fileName);
+            });
+        }
+
+        public override SendCustomerServiceMsgResponse SendCustomerServiceMessage(string accessToken, CustomerServiceMsgBase message)
+        {
+            return RetryTools.Retry<SendCustomerServiceMsgResponse>(() =>
+            {
+                return HttpTools.Post<SendCustomerServiceMsgResponse>(string.Format(urlDictionary["SendCustomerServiceMessage"], accessToken), null, null, message);
+            });
+        }
+
+        public override TypingCustomerServiceResponse TypingCustomerService(string accessToken, TypingCustomerServiceRequest request)
+        {
+            return RetryTools.Retry<TypingCustomerServiceResponse>(() =>
             {
                 return HttpTools.Post<TypingCustomerServiceResponse>(string.Format(urlDictionary["TypingCustomerService"], accessToken), null, null, request);
             });
-            if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
         }
         #endregion
 
         #region 群发
         public override MassTagMsgSendResponse SendMassTagMessage(string accessToken, MassTagMsgBase message)
         {
-            MassTagMsgSendResponse response = RetryTools.Retry<MassTagMsgSendResponse>(() =>
+            return RetryTools.Retry<MassTagMsgSendResponse>(() =>
             {
                 return HttpTools.Post<MassTagMsgSendResponse>(string.Format(urlDictionary["SendMassTagMessage"], accessToken), null, null, message);
             });
-            if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
-            return response;
         }
 
-        public override void DeleteMassTagMessageSend(string accessToken, DeleteMassTagMsgSendRequest request)
+        public override DeleteMassTagMsgSendResponse DeleteMassTagMessageSend(string accessToken, DeleteMassTagMsgSendRequest request)
         {
-            DeleteMassTagMsgSendResponse response = RetryTools.Retry<DeleteMassTagMsgSendResponse>(() =>
+            return RetryTools.Retry<DeleteMassTagMsgSendResponse>(() =>
             {
                 return HttpTools.Post<DeleteMassTagMsgSendResponse>(string.Format(urlDictionary["DeleteMassTagMessageSend"], accessToken), null, null, request);
             });
-            if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
         }
 
         public override MassPreviewMsgSendResponse SendMassPreviewMessage(string accessToken, MassPreviewMsgBase message)
         {
-            MassPreviewMsgSendResponse response = RetryTools.Retry<MassPreviewMsgSendResponse>(() =>
+            return RetryTools.Retry<MassPreviewMsgSendResponse>(() =>
             {
                 return HttpTools.Post<MassPreviewMsgSendResponse>(string.Format(urlDictionary["SendMassPreviewMessage"], accessToken), null, null, message);
             });
-            if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
-            return response;
         }
 
         public override GetMassSpeedResponse GetMassSpeed(string accessToken)
         {
-            GetMassSpeedResponse response = RetryTools.Retry<GetMassSpeedResponse>(() =>
+            return RetryTools.Retry<GetMassSpeedResponse>(() =>
             {
                 return HttpTools.Post<GetMassSpeedResponse>(string.Format(urlDictionary["GetMassSpeed"], accessToken), null, null, null);
             });
-            if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
-            return response;
         }
 
-        public override void SetMassSpeed(string accessToken, SetMassSpeedRequest request)
+        public override SetMassSpeedResponse SetMassSpeed(string accessToken, SetMassSpeedRequest request)
         {
-            SetMassSpeedResponse response = RetryTools.Retry<SetMassSpeedResponse>(() =>
+            return RetryTools.Retry<SetMassSpeedResponse>(() =>
             {
                 return HttpTools.Post<SetMassSpeedResponse>(string.Format(urlDictionary["SetMassSpeed"], accessToken), null, null, request);
             });
-            if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
         }
         #endregion
 
         #region 模板
-        public override void SetTemplateIndustry(string accessToken, SetTemplateIndustryRequest request)
+        public override SetTemplateIndustryResponse SetTemplateIndustry(string accessToken, SetTemplateIndustryRequest request)
         {
-            SetTemplateIndustryResponse response = RetryTools.Retry<SetTemplateIndustryResponse>(() =>
+            return RetryTools.Retry<SetTemplateIndustryResponse>(() =>
             {
                 return HttpTools.Post<SetTemplateIndustryResponse>(string.Format(urlDictionary["SetTemplateIndustry"], accessToken), null, null, request);
             });
-            if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
         }
 
         public override GetTemplateIndustryResponse GetTemplateIndustry(string accessToken)
         {
-            GetTemplateIndustryResponse response = RetryTools.Retry<GetTemplateIndustryResponse>(() =>
-            {
-                return HttpTools.Get<GetTemplateIndustryResponse>(string.Format(urlDictionary["GetTemplateIndustry"], accessToken), null, null);
-            });
-            return response;
+            return RetryTools.Retry<GetTemplateIndustryResponse>(() =>
+             {
+                 return HttpTools.Get<GetTemplateIndustryResponse>(string.Format(urlDictionary["GetTemplateIndustry"], accessToken), null, null);
+             });
         }
 
-        public override string GetTemplateId(string accessToken, string templateIdShort)
+        public override GetTemplateIdResponse GetTemplateId(string accessToken, GetTemplateIdRequest request)
         {
-            GetTemplateIdRequest request = new GetTemplateIdRequest() { TemplateIdShort = templateIdShort };
-            GetTemplateIdResponse response = RetryTools.Retry<GetTemplateIdResponse>(() =>
+            return RetryTools.Retry<GetTemplateIdResponse>(() =>
             {
                 return HttpTools.Post<GetTemplateIdResponse>(string.Format(urlDictionary["GetTemplateId"], accessToken), null, null, request);
             });
-            if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
-            return response.TemplateId;
         }
 
         public override GetTemplateListResponse GetTemplateList(string accessToken)
         {
-            GetTemplateListResponse response = RetryTools.Retry<GetTemplateListResponse>(() =>
+            return RetryTools.Retry<GetTemplateListResponse>(() =>
             {
                 return HttpTools.Get<GetTemplateListResponse>(string.Format(urlDictionary["GetTemplateList"], accessToken), null, null);
             });
-            return response;
         }
 
-        public override void DeleteTemplate(string accessToken, string templateId)
+        public override DeleteTemplateResponse DeleteTemplate(string accessToken, DeleteTemplateRequest request)
         {
-            DeleteTemplateRequest request = new DeleteTemplateRequest() { TemplateId = templateId };
-            DeleteTemplateResponse response = RetryTools.Retry<DeleteTemplateResponse>(() =>
-            {
-                return HttpTools.Post<DeleteTemplateResponse>(string.Format(urlDictionary["DeleteTemplate"], accessToken), null, null, request);
-            });
-            if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
+            return RetryTools.Retry<DeleteTemplateResponse>(() =>
+             {
+                 return HttpTools.Post<DeleteTemplateResponse>(string.Format(urlDictionary["DeleteTemplate"], accessToken), null, null, request);
+             });
         }
 
-        public override string SendTemplateMessage(string accessToken, TemplateMessage message)
+        public override SendTemplateMessageResponse SendTemplateMessage(string accessToken, TemplateMessage message)
         {
-            SendTemplateMessageResponse response = RetryTools.Retry<SendTemplateMessageResponse>(() =>
+            return RetryTools.Retry<SendTemplateMessageResponse>(() =>
             {
                 return HttpTools.Post<SendTemplateMessageResponse>(string.Format(urlDictionary["SendTemplateMessage"], accessToken), null, null, message);
             });
-            if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
-            return response.MsgId;
         }
         #endregion
 
@@ -326,163 +315,144 @@ namespace QinSoft.Wx.OfficialAccount
                 );
         }
 
-        public override void SendSubscribeMessage(string accessToken, SubscribeMessage message)
+        public override SendSubscribeMessageResponse SendSubscribeMessage(string accessToken, SubscribeMessage message)
         {
-            SendSubscribeMessageResponse response = RetryTools.Retry<SendSubscribeMessageResponse>(() =>
+            return RetryTools.Retry<SendSubscribeMessageResponse>(() =>
             {
                 return HttpTools.Post<SendSubscribeMessageResponse>(string.Format(urlDictionary["SendSubscribeMessage"], accessToken), null, null, message);
             });
-            if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
         }
         #endregion
 
         #region 用户
         public override CreateTagResponse CreateTag(string accessToken, CreateTagRequest request)
         {
-            CreateTagResponse response = RetryTools.Retry<CreateTagResponse>(() =>
+            return RetryTools.Retry<CreateTagResponse>(() =>
             {
                 return HttpTools.Post<CreateTagResponse>(string.Format(urlDictionary["CreateTag"], accessToken), null, null, request);
             });
-            return response;
         }
 
-        public override void UpdateTag(string accessToken, UpdateTagRequest request)
+        public override UpdateTagResponse UpdateTag(string accessToken, UpdateTagRequest request)
         {
-            UpdateTagResponse response = RetryTools.Retry<UpdateTagResponse>(() =>
+            return RetryTools.Retry<UpdateTagResponse>(() =>
             {
                 return HttpTools.Post<UpdateTagResponse>(string.Format(urlDictionary["UpdateTag"], accessToken), null, null, request);
             });
-            if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
         }
 
-        public override void DeleteTag(string accessToken, DeleteTagRequest request)
+        public override DeleteTagResponse DeleteTag(string accessToken, DeleteTagRequest request)
         {
-            DeleteTagResponse response = RetryTools.Retry<DeleteTagResponse>(() =>
+            return RetryTools.Retry<DeleteTagResponse>(() =>
             {
                 return HttpTools.Post<DeleteTagResponse>(string.Format(urlDictionary["DeleteTag"], accessToken), null, null, request);
             });
-            if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
         }
 
         public override GetTagListResponse GetTagList(string accessToken)
         {
-            GetTagListResponse response = RetryTools.Retry<GetTagListResponse>(() =>
+            return RetryTools.Retry<GetTagListResponse>(() =>
             {
                 return HttpTools.Get<GetTagListResponse>(string.Format(urlDictionary["GetTagList"], accessToken), null, null);
             });
-            return response;
         }
 
         public override GetTagUserListResponse GetTagUserList(string accessToken, GetTagUserListRequest request)
         {
-            GetTagUserListResponse response = RetryTools.Retry<GetTagUserListResponse>(() =>
+            return RetryTools.Retry<GetTagUserListResponse>(() =>
             {
                 return HttpTools.Post<GetTagUserListResponse>(string.Format(urlDictionary["GetTagUserList"], accessToken), null, null, request);
             });
-            return response;
         }
 
-        public override void BatchTagging(string accessToken, BatchTaggingRequest request)
+        public override BatchTaggingResponse BatchTagging(string accessToken, BatchTaggingRequest request)
         {
-            BatchTaggingResponse response = RetryTools.Retry<BatchTaggingResponse>(() =>
+            return RetryTools.Retry<BatchTaggingResponse>(() =>
             {
                 return HttpTools.Post<BatchTaggingResponse>(string.Format(urlDictionary["BatchTagging"], accessToken), null, null, request);
             });
-            if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
         }
 
-        public override void BatchUntagging(string accessToken, BatchUntaggingRequest request)
+        public override BatchUntaggingResponse BatchUntagging(string accessToken, BatchUntaggingRequest request)
         {
-            BatchUntaggingResponse response = RetryTools.Retry<BatchUntaggingResponse>(() =>
+            return RetryTools.Retry<BatchUntaggingResponse>(() =>
             {
                 return HttpTools.Post<BatchUntaggingResponse>(string.Format(urlDictionary["BatchUntagging"], accessToken), null, null, request);
             });
-            if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
         }
 
         public override GetUserTagListResponse GetUserTagList(string accessToken, GetUserTagListRequest request)
         {
-            GetUserTagListResponse response = RetryTools.Retry<GetUserTagListResponse>(() =>
+            return RetryTools.Retry<GetUserTagListResponse>(() =>
             {
                 return HttpTools.Post<GetUserTagListResponse>(string.Format(urlDictionary["GetUserTagList"], accessToken), null, null, request);
             });
-            return response;
         }
 
-        public override void UpdateRemark(string accessToken, UpdateRemarkRequest request)
+        public override UpdateRemarkResponse UpdateRemark(string accessToken, UpdateRemarkRequest request)
         {
-            UpdateRemarkResponse response = RetryTools.Retry<UpdateRemarkResponse>(() =>
+            return RetryTools.Retry<UpdateRemarkResponse>(() =>
             {
                 return HttpTools.Post<UpdateRemarkResponse>(string.Format(urlDictionary["UpdateRemark"], accessToken), null, null, request);
             });
-            if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
         }
 
-        public override UserInfo GetUserInfo(string accessToken, string openId, string lang = "zh_CN")
+        public override GetUserInfoResponse GetUserInfo(string accessToken, string openId, string lang = "zh_CN")
         {
-            GetUserInfoResponse response = RetryTools.Retry<GetUserInfoResponse>(() =>
+            return RetryTools.Retry<GetUserInfoResponse>(() =>
             {
                 return HttpTools.Get<GetUserInfoResponse>(string.Format(urlDictionary["GetUserInfo"], accessToken, openId, lang), null, null);
             });
-            if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
-            return response;
         }
 
-        public override UserInfo[] BatchGetUserInfo(string accessToken, BatchGetUserInfoRequest request)
+        public override BatchGetUserInfoResponse BatchGetUserInfo(string accessToken, BatchGetUserInfoRequest request)
         {
-            BatchGetUserInfoResponse response = RetryTools.Retry<BatchGetUserInfoResponse>(() =>
+            return RetryTools.Retry<BatchGetUserInfoResponse>(() =>
             {
                 return HttpTools.Get<BatchGetUserInfoResponse>(string.Format(urlDictionary["BatchGetUserInfo"], accessToken), null, null);
             });
-            if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
-            return response.UserInfoList;
         }
 
         public override GetUserListResponse GetUserList(string accessToken, string nextOpenId)
         {
-            GetUserListResponse response = RetryTools.Retry<GetUserListResponse>(() =>
+            return RetryTools.Retry<GetUserListResponse>(() =>
             {
                 return HttpTools.Get<GetUserListResponse>(string.Format(urlDictionary["GetUserList"], accessToken, nextOpenId), null, null);
             });
-            return response;
         }
 
         public override GetBlackUserListResponse GetBlackUserList(string accessToken, GetBlackUserListRequest request)
         {
-            GetBlackUserListResponse response = RetryTools.Retry<GetBlackUserListResponse>(() =>
+            return RetryTools.Retry<GetBlackUserListResponse>(() =>
             {
                 return HttpTools.Post<GetBlackUserListResponse>(string.Format(urlDictionary["GetBlackUserList"], accessToken), null, null, request);
             });
-            return response;
         }
 
-        public override void BatchBlackList(string accessToken, BatchBlackListRequest request)
+        public override BatchBlackListResponse BatchBlackList(string accessToken, BatchBlackListRequest request)
         {
-            BatchBlackListResponse response = RetryTools.Retry<BatchBlackListResponse>(() =>
+            return RetryTools.Retry<BatchBlackListResponse>(() =>
             {
                 return HttpTools.Post<BatchBlackListResponse>(string.Format(urlDictionary["BatchBlackList"], accessToken), null, null, request);
             });
-            if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
         }
 
-        public override void BatchUnblackList(string accessToken, BatchUnblackListRequest request)
+        public override BatchUnblackListResponse BatchUnblackList(string accessToken, BatchUnblackListRequest request)
         {
-            BatchUnblackListResponse response = RetryTools.Retry<BatchUnblackListResponse>(() =>
+            return RetryTools.Retry<BatchUnblackListResponse>(() =>
             {
                 return HttpTools.Post<BatchUnblackListResponse>(string.Format(urlDictionary["BatchBlackList"], accessToken), null, null, request);
             });
-            if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
         }
         #endregion
 
         #region 账户
         public override CreateQRCodeResponse CreateQRCode(string accessToken, CreateQRCodeRequest request)
         {
-            CreateQRCodeResponse response = RetryTools.Retry<CreateQRCodeResponse>(() =>
+            return RetryTools.Retry<CreateQRCodeResponse>(() =>
             {
                 return HttpTools.Post<CreateQRCodeResponse>(string.Format(urlDictionary["CreateQRCode"], accessToken), null, null, request);
             });
-            return response;
         }
 
         public override string GetQRCodeUrl(string ticket)
@@ -490,14 +460,12 @@ namespace QinSoft.Wx.OfficialAccount
             return string.Format(urlDictionary["QRCodeUrl"], HttpUtility.UrlEncode(ticket));
         }
 
-        public override string GetShortUrl(string accessToken, string longUrl)
+        public override GetShortUrlResponse GetShortUrl(string accessToken, string longUrl)
         {
-            GetShortUrlResponse response = RetryTools.Retry<GetShortUrlResponse>(() =>
+            return RetryTools.Retry<GetShortUrlResponse>(() =>
             {
                 return HttpTools.Post<GetShortUrlResponse>(string.Format(urlDictionary["GetShortUrl"], accessToken), null, null, new GetShortUrlRequest() { LongUrl = longUrl });
             });
-            if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
-            return response.ShortUrl;
         }
         #endregion
 
@@ -505,41 +473,34 @@ namespace QinSoft.Wx.OfficialAccount
         #region 临时素材
         public async override Task<UploadMediaResponse> UploadMedia(string accessToken, string type, string fileName, Stream stream)
         {
-            UploadMediaResponse response = await RetryTools.Retry<Task<UploadMediaResponse>>(async () =>
+            return await RetryTools.Retry<Task<UploadMediaResponse>>(async () =>
             {
                 return await HttpTools.UploadAsync<UploadMediaResponse>(string.Format(urlDictionary["UploadMedia"], accessToken, type), stream, "media", fileName);
             });
-            if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
-            return response;
         }
 
         public override UploadVideoResponse UploadVideoMedia(string accessToken, UploadVideoRequest request)
         {
-            UploadVideoResponse response = RetryTools.Retry<UploadVideoResponse>(() =>
+            return RetryTools.Retry<UploadVideoResponse>(() =>
             {
                 return HttpTools.Post<UploadVideoResponse>(string.Format(urlDictionary["UploadVideoMedia"], accessToken), null, null, request);
             });
-            if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
-            return response;
         }
 
         public override DownloadMediaResponse DownloadVideoMedia(string accessToken, string mediaId)
         {
-            DownloadMediaResponse response = RetryTools.Retry<DownloadMediaResponse>(() =>
+            return RetryTools.Retry<DownloadMediaResponse>(() =>
             {
                 return HttpTools.Get<DownloadMediaResponse>(string.Format(urlDictionary["GetMedia"], accessToken, mediaId), null, null);
             });
-            if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
-            return response;
         }
 
         public async override Task<Stream> DownloadMedia(string accessToken, string mediaId)
         {
-            Stream stream = await RetryTools.Retry<Task<Stream>>(async () =>
+            return await RetryTools.Retry<Task<Stream>>(async () =>
             {
                 return await HttpTools.DownloadAsync(string.Format(urlDictionary["GetMedia"], accessToken, mediaId), null, null);
             });
-            return stream;
         }
         #endregion
 
@@ -547,99 +508,82 @@ namespace QinSoft.Wx.OfficialAccount
 
         public override AddNewsMaterialResponse AddNewsMaterial(string accessToken, AddNewsMaterialRequest request)
         {
-            AddNewsMaterialResponse response = RetryTools.Retry<AddNewsMaterialResponse>(() =>
+            return RetryTools.Retry<AddNewsMaterialResponse>(() =>
             {
                 return HttpTools.Post<AddNewsMaterialResponse>(string.Format(urlDictionary["AddNewsMaterial"], accessToken), null, null, request);
             });
-            if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
-            return response;
         }
 
-        public override void UpdateNewsMaterial(string accessToken, UpdateNewsMaterialRequest request)
+        public override UpdateNewsMaterialResponse UpdateNewsMaterial(string accessToken, UpdateNewsMaterialRequest request)
         {
-            UpdateNewsMaterialResponse response = RetryTools.Retry<UpdateNewsMaterialResponse>(() =>
+            return RetryTools.Retry<UpdateNewsMaterialResponse>(() =>
             {
                 return HttpTools.Post<UpdateNewsMaterialResponse>(string.Format(urlDictionary["UpdateNewsMaterial"], accessToken), null, null, request);
             });
-            if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
         }
 
         public async override Task<UploadImageMaterialResponse> UploadImageMaterial(string accessToken, string fileName, Stream stream)
         {
-            UploadImageMaterialResponse response = await RetryTools.Retry<Task<UploadImageMaterialResponse>>(async () =>
+            return await RetryTools.Retry<Task<UploadImageMaterialResponse>>(async () =>
             {
                 return await HttpTools.UploadAsync<UploadImageMaterialResponse>(string.Format(urlDictionary["UploadImageMaterial"], accessToken), stream, "media", fileName);
             });
-            if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
-            return response;
         }
 
         public async override Task<UploadMaterialResponse> UploadMaterial(string accessToken, string type, string fileName, Stream stream, UploadMaterialRequest request = null)
         {
-            UploadMaterialResponse response = await RetryTools.Retry<Task<UploadMaterialResponse>>(async () =>
+            return await RetryTools.Retry<Task<UploadMaterialResponse>>(async () =>
             {
                 return await HttpTools.UploadAsync<UploadMaterialResponse>(string.Format(urlDictionary["UploadMaterial"], accessToken, type), stream, "media", fileName, request != null ? new Dictionary<string, string>() { { "description", request.ToJson() } } : new Dictionary<string, string>());
             });
-            if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
-            return response;
         }
 
         public override DownloadNewsMaterialResponse DownloadNewsMaterial(string accessToken, DownloadMaterialRequest request)
         {
-            DownloadNewsMaterialResponse response = RetryTools.Retry<DownloadNewsMaterialResponse>(() =>
+            return RetryTools.Retry<DownloadNewsMaterialResponse>(() =>
             {
                 return HttpTools.Post<DownloadNewsMaterialResponse>(string.Format(urlDictionary["DownloadMaterial"], accessToken), null, null, request);
             });
-            if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
-            return response;
         }
 
         public override DownloadVideoMaterialResponse DownloadVideoMaterial(string accessToken, DownloadMaterialRequest request)
         {
-            DownloadVideoMaterialResponse response = RetryTools.Retry<DownloadVideoMaterialResponse>(() =>
+            return RetryTools.Retry<DownloadVideoMaterialResponse>(() =>
             {
                 return HttpTools.Post<DownloadVideoMaterialResponse>(string.Format(urlDictionary["DownloadMaterial"], accessToken), null, null, request);
             });
-            if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
-            return response;
         }
 
         public async override Task<Stream> DownloadMaterial(string accessToken, DownloadMaterialRequest request)
         {
-            Stream stream = await RetryTools.Retry<Task<Stream>>(async () =>
+            return await RetryTools.Retry<Task<Stream>>(async () =>
             {
                 return await HttpTools.DownloadAsync(WebMethod.POST, string.Format(urlDictionary["DownloadMaterial"], accessToken), null, null, request);
             });
-            return stream;
         }
 
-        public override void DeleteMaterial(string accessToken, DeleteMaterialRequest request)
+        public override DeleteMaterialResponse DeleteMaterial(string accessToken, DeleteMaterialRequest request)
         {
-            DeleteMaterialResponse response = RetryTools.Retry<DeleteMaterialResponse>(() =>
+            return RetryTools.Retry<DeleteMaterialResponse>(() =>
             {
                 return HttpTools.Post<DeleteMaterialResponse>(string.Format(urlDictionary["DeleteMaterial"], accessToken), null, null, request);
             });
-            if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
         }
 
         public override GetMaterialCountResponse GetMaterialCount(string accessToken)
         {
-            GetMaterialCountResponse response = RetryTools.Retry<GetMaterialCountResponse>(() =>
+            return RetryTools.Retry<GetMaterialCountResponse>(() =>
             {
                 return HttpTools.Get<GetMaterialCountResponse>(string.Format(urlDictionary["GetMaterialCount"], accessToken), null, null);
             });
-            if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
-            return response;
         }
 
         public override GetMaterialListResponse<T> GetMaterialList<T>(string accessToken, GetMaterialListRequest request)
         {
-            GetMaterialListResponse<T> response = RetryTools.Retry<GetMaterialListResponse<T>>(() =>
+            return RetryTools.Retry<GetMaterialListResponse<T>>(() =>
             {
                 return HttpTools.Post<GetMaterialListResponse<T>>(string.Format(urlDictionary["GetMaterialList"], accessToken), null, null, request);
             });
-            if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
-            return response;
         }
         #endregion
         #endregion
@@ -659,52 +603,42 @@ namespace QinSoft.Wx.OfficialAccount
 
         public override GetOAuth2AccessTokenResponse GetOAuth2AccessToken(string code)
         {
-            GetOAuth2AccessTokenResponse response = RetryTools.Retry<GetOAuth2AccessTokenResponse>(() =>
+            return RetryTools.Retry<GetOAuth2AccessTokenResponse>(() =>
             {
                 return HttpTools.Get<GetOAuth2AccessTokenResponse>(string.Format(urlDictionary["GetOAuth2AccessToken"], this.officialAccountConfig.AppId, this.officialAccountConfig.AppSecret, code, "authorization_code"), null, null);
             });
-            if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
-            return response;
         }
 
         public override GetOAuth2AccessTokenResponse RefreshOAuth2AccessToken(string refreshToken)
         {
-            GetOAuth2AccessTokenResponse response = RetryTools.Retry<GetOAuth2AccessTokenResponse>(() =>
+            return RetryTools.Retry<GetOAuth2AccessTokenResponse>(() =>
             {
                 return HttpTools.Get<GetOAuth2AccessTokenResponse>(string.Format(urlDictionary["RefreshOAuth2AccessToken"], this.officialAccountConfig.AppId, "refresh_token", refreshToken), null, null);
             });
-            if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
-            return response;
         }
 
         public override GetOAuth2UserInfoResponse GetOAuth2UserInfo(string accessToken, string openId, string lang = "zh_CN")
         {
-            GetOAuth2UserInfoResponse response = RetryTools.Retry<GetOAuth2UserInfoResponse>(() =>
+            return RetryTools.Retry<GetOAuth2UserInfoResponse>(() =>
             {
                 return HttpTools.Get<GetOAuth2UserInfoResponse>(string.Format(urlDictionary["GetOAuth2UserInfo"], accessToken, openId, lang), null, null);
             });
-            if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
-            return response;
         }
 
         public override IsValidOAuth2AccessTokenResponse IsValidOAuth2AccessToken(string accessToken, string openId)
         {
-            IsValidOAuth2AccessTokenResponse response = RetryTools.Retry<IsValidOAuth2AccessTokenResponse>(() =>
+            return RetryTools.Retry<IsValidOAuth2AccessTokenResponse>(() =>
             {
                 return HttpTools.Get<IsValidOAuth2AccessTokenResponse>(string.Format(urlDictionary["IsValidOAuth2AccessToken"], accessToken, openId), null, null);
             });
-            if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
-            return response;
         }
 
-        public override string GetJsApiTicket(string accessToken)
+        public override GetJsApiTicketResponse GetJsApiTicket(string accessToken)
         {
-            GetJsApiTicketResponse response = RetryTools.Retry<GetJsApiTicketResponse>(() =>
+            return RetryTools.Retry<GetJsApiTicketResponse>(() =>
             {
                 return HttpTools.Get<GetJsApiTicketResponse>(string.Format(urlDictionary["GetJsApiTicket"], accessToken, "jsapi"), null, null);
             });
-            if (response.ErrCode != 0) throw new OfficialAccountException(response.ErrCode, response.ErrMsg);
-            return response.Ticket;
         }
 
         public override string CalculateJsApiSignature(string jsApiTicket, long timestamp, string nonce, string url)
@@ -720,9 +654,6 @@ namespace QinSoft.Wx.OfficialAccount
             return joinStr.SHA1().ToLower();
         }
 
-        #endregion
-
-        #region 统计
         #endregion
 
         #region 门店
