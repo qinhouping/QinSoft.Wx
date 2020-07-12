@@ -1,0 +1,4 @@
+<!--pages/demo/index.wxml-->
+<view class="btn-area">
+  <navigator data-url="/pages/demo/viewcontainer" bind:tap="bindNavigatorTap">1. 视图容器</navigator>
+</view>

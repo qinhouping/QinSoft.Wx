@@ -1,5 +1,6 @@
 //logs.js
 const util = require('../../utils/util.js')
+const log = require("../../utils/log.js")
 
 Page({
   data: {
@@ -7,9 +8,14 @@ Page({
   },
   onLoad: function () {
     this.setData({
-      logs: (wx.getStorageSync('logs') || []).map(log => {
-        return util.formatTime(new Date(log))
-      })
+      logs: log.getLogs()
+    })
+    wx.stopPullDownRefresh();
+  },
+  onPullDownRefresh: function () {
+    this.onLoad()
+    wx.showToast({
+      title: "已经刷新",
     })
   }
 })

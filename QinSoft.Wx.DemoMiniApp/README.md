@@ -1,1 +1,0 @@
-# QinSoft.Wx.DemoMiniApp

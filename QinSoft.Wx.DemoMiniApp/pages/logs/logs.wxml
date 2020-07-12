@@ -2,6 +2,8 @@
 
 <view class="container log-list">
 	<block wx:for="{{logs}}" wx:for-item="log" wx:key="log">
-		<text>{{log}}</text>
+		<text>{{log.time}}</text>
+		<text>{{log.type}}</text>
+		<textarea value="{{log.message}}" disabled="disabled"></textarea>
 	</block>
 </view> 

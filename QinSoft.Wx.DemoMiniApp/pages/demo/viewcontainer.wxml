@@ -1,0 +1,6 @@
+<!--pages/demo/viewcontainer.wxml-->
+<view>
+<block>
+  <cover-image src="../../res/img/img1.jpg"></cover-image>
+</block>
+</view>

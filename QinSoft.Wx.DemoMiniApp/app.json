@@ -2,7 +2,8 @@
   "pages": [
     "pages/index/index",
     "pages/logs/logs",
-    "pages/greet/greet"
+    "pages/demo/index",
+    "pages/demo/viewcontainer"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -14,22 +15,26 @@
   "style": "v2",
   "sitemapLocation": "sitemap.json",
   "tabBar": {
-    "color": "#000000",
-    "selectedColor": "#666666",
-    "backgroundColor": "#FFFFFF",
+    "color": "#aaa",
+    "selectedColor": "#000",
+    "backgroundColor": "#fff",
     "list": [
       {
         "pagePath": "pages/index/index",
+        "iconPath": "res/icon/home.png",
         "text": "首页"
       },
       {
         "pagePath": "pages/logs/logs",
+        "iconPath": "res/icon/logs.png",
         "text": "日志"
       },
       {
-        "pagePath": "pages/greet/greet",
-        "text": "greet"
+        "pagePath": "pages/demo/index",
+        "iconPath": "res/icon/test.png",
+        "text": "测试"
       }
     ]
-  }
+  },
+  "usingComponents": {}
 }

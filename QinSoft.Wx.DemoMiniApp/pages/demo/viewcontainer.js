@@ -1,11 +1,11 @@
-// pages/greet/greet.js
+// pages/demo/viewcontainer.js
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    url:"https://github.com/qinhouping"
+
   },
 
   /**
