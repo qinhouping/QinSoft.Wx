@@ -1,0 +1,83 @@
+<!--pages/demo/formcomponent.wxml-->
+
+<view>
+	<form>
+		<block>
+			<checkbox-group>
+				<checkbox value="cb1" checked="true" id="cb1" /><label for="cb1">是否选中1</label>
+				<checkbox value="cb2" checked="true" id="cb2" /><label for="cb2">是否选中2</label>
+			</checkbox-group>
+		</block>
+		<block>
+			<radio-group>
+				<radio value="r1" id="r1" /><label for="r1">选项1</label>
+				<radio value="r2" id="r2" /><label for="r2">选项2</label>
+			</radio-group>
+		</block>
+		<block>
+			<editor placeholder="富文本编辑器" show-img-size="true" show-img-resize="true" />
+		</block>
+		<block>
+			<input placeholder="文本输入键盘" type="text" confirm-type="search" />
+			<input placeholder="数字输入键盘" type="number" />
+			<input placeholder="身份证输入键盘" type="idcard" />
+			<input placeholder="带小数点的数字键盘" type="digit" />
+		</block>
+		<block>
+			<picker mode="selector" range="{{range}}" range-key="{{rangeKey}}" model:value="{{index}}">
+				<view>
+					当前选择：{{range[index][rangeKey]}}
+				</view>
+			</picker>
+			<picker mode="multiSelector" range="{{mulitRange}}" range-key="{{mulitRangeKey}}" model:value="{{mulitIndex}}" bind:change="bindMultiPickerChange">
+				<view>
+					当前选择：{{mulitValue}}
+				</view>
+			</picker>
+
+			<picker mode="time" model:value="{{time}}">
+				<view>
+					当前选择：{{time}}
+				</view>
+			</picker>
+
+			<picker mode="date" model:value="{{date}}">
+				<view>
+					当前选择：{{date}}
+				</view>
+			</picker>
+
+			<picker mode="region" model:value="{{region}}" custom-item="{{customItem}}" bind:change="bindRegionPickerChange">
+				<view>
+					当前选择：{{region[0]}} {{region[1]}} {{region[2]}}
+				</view>
+			</picker>
+
+			<picker-view style="height:400rpx">
+				<block wx:for="{{mulitRange}}" wx:for-item="range" wx:key="range">
+					<picker-view-column>
+						<view wx:for="{{range}}" wx:for-item="rangeItem" wx:key="rangeItem">{{rangeItem[mulitRangeKey]}}</view>
+					</picker-view-column>
+				</block>
+			</picker-view>
+		</block>
+
+		<block>
+			<slider mode:value="{{sliderValue}}" show-value="show-value"/>
+		</block>
+
+		<block>
+			<switch checked="true" type="switch"></switch>
+			<switch checked="true" type="checkbox"></switch>
+		</block>
+
+		<block>
+			<textarea placeholder="多行输入框"></textarea>
+		</block>
+
+		<block>
+			<button form-type="submit" type="primary">submit</button>
+			<button form-type="reset" type="warn">reset</button>
+		</block>
+	</form>
+</view>

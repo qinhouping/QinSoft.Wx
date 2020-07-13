@@ -1,6 +1,32 @@
 <!--pages/demo/viewcontainer.wxml-->
-<view>
-<block>
-  <cover-image src="../../res/img/img1.jpg"></cover-image>
-</block>
-</view>
+<scroll-view>
+	<cover-image src="../../res/img/img1.jpg"></cover-image>
+
+	<cover-view>
+		conver-view
+	</cover-view>
+	<match-media min-width="300" max-width="600">
+		<view>当页面宽度在 300 ~ 500 px 之间时展示这里</view>
+	</match-media>
+
+	<match-media min-height="400" orientation="landscape">
+		<view>当页面高度不小于 400 px 且屏幕方向为纵向时展示这里</view>
+	</match-media>
+
+	<movable-area style="width:100%;height:300rpx;background:lightgray;">
+		<movable-view direction="all" style="color:red">text</movable-view>
+	</movable-area>
+
+	<swiper indicator-dots="true" autoplay="true">
+		<swiper-item>
+			<view style="background:red;height:200rpx;color:white">
+				<text>A</text>
+			</view>
+		</swiper-item>
+		<swiper-item>
+			<view style="background:green;height:200rpx;color:white">
+				<text>B</text>
+			</view>
+		</swiper-item>
+	</swiper>
+</scroll-view>

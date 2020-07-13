@@ -2,7 +2,10 @@
 <view class="container">
 	<view class="userinfo">
 		<block wx:if="{{!hasUserInfo}}">
-			<button open-type="getUserInfo" bind:getuserinfo="getUserInfo">授权登录</button>
+			<button open-type="getUserInfo" bind:getuserinfo="getUserInfo" class="userinfo-get-button">
+				<image class="userinfo-avatar" src="../../res/icon/user.png" mode="cover" style="margin:0"></image>
+			</button>
+			<text class="userinfo-nickname">用户未登录</text>
 		</block>
 
 		<block wx:else>

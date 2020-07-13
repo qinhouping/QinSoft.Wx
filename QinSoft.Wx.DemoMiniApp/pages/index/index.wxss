@@ -16,6 +16,11 @@
   color: #aaa;
 }
 
-.usermotto {
-  margin-top: 200px;
+.userinfo-get-button {
+  width: 128rpx;
+  height: 128rpx;
+  margin: 20rpx;
+  border-radius: 50%;
+  background-color: transparent;
+  border: transparent;
 }

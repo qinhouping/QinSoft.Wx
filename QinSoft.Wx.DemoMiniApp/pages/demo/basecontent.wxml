@@ -1,0 +1,15 @@
+<!--pages/demo/basecontent.wxml-->
+<scroll-view>
+	<icon type="success" size="30" color="green"></icon>
+	<icon type="info" size="30" color="blue"></icon>
+	<icon type="warn" size="30" color="orange"></icon>
+	<icon type="waiting" size="30" color="blue"></icon>
+	<icon type="cancel" size="30" color="red"></icon>
+	<icon type="download" size="30" color="green"></icon>
+	<icon type="search" size="30" color="green"></icon>
+	<icon type="clear" size="30" color="red"></icon>
+
+	<progress percent="10" show-info="true" border-radius="50%" active="true" stroke-width="4"></progress>
+
+  <text>{{txt}}</text>
+</scroll-view>

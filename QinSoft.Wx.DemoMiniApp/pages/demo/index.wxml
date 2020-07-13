@@ -1,4 +1,7 @@
 <!--pages/demo/index.wxml-->
-<view class="btn-area">
-  <navigator data-url="/pages/demo/viewcontainer" bind:tap="bindNavigatorTap">1. 视图容器</navigator>
-</view>
+<scroll-view>
+	<button data-url="/pages/demo/viewcontainer" bind:tap="bindNavigatorTap">1. 视图容器</button>
+	<button data-url="/pages/demo/basecontent" bind:tap="bindNavigatorTap">2. 基础内容</button>
+	<button data-url="/pages/demo/formcomponent" bind:tap="bindNavigatorTap">3. 表单组件</button>
+	<button data-url="/pages/demo/navigator" bind:tap="bindNavigatorTap">4. 导航</button>
+</scroll-view>

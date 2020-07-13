@@ -3,7 +3,10 @@
     "pages/index/index",
     "pages/logs/logs",
     "pages/demo/index",
-    "pages/demo/viewcontainer"
+    "pages/demo/viewcontainer",
+    "pages/demo/basecontent",
+    "pages/demo/formcomponent",
+    "pages/demo/navigator"
   ],
   "window": {
     "backgroundTextStyle": "light",
