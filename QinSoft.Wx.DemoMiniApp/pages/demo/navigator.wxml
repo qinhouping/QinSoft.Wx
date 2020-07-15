@@ -3,4 +3,7 @@
 	<functional-page-navigator name="loginAndGetUserInfo" bind:success="loginSuccess">
 		<button>登录到插件</button>
 	</functional-page-navigator>
+  <navigator open-type="navigateBack">退回</navigator>
+  <navigator open-type="navigate" url="/pages/demo/index">index</navigator>
+  <navigator open-type="reLaunch" url="/pages/index/index">重启</navigator>
 </view>

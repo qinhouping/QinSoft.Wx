@@ -16,11 +16,17 @@
   color: #aaa;
 }
 
-.userinfo-get-button {
+.userinfo-empty {
   width: 128rpx;
   height: 128rpx;
   margin: 20rpx;
   border-radius: 50%;
   background-color: transparent;
   border: transparent;
+}
+
+.userinfo-empty > image {
+  width: 128rpx;
+  height: 128rpx;
+  border-radius: 50%;
 }

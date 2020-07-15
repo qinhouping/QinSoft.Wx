@@ -1,0 +1,5 @@
+<!--pages/demo/map.wxml-->
+
+<view>
+	<map style="width:100%;height:100vh;" show-compass="true" enable-3D="true" show-scale="true" enable-overlooking="true" enable-rotate="true" enable-satellite="true" enable-traffic="true"></map>
+</view>

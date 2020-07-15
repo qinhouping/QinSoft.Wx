@@ -8,9 +8,24 @@ App({
     // 登录
     wx.login({
       success: res => {
-        // 发送 res.code 到后台换取 openId, sessionKey, unionId
-
-        log.success("登录成功" + JSON.stringify(res));
+        log.success("wx.login success" + JSON.stringify(res));
+        wx.request({
+          url: this.globalData.urlDictionary.GetJsCode2Session + "?jsCode=" + res.code,
+          method: "get",
+          dataType: "json",
+          success: function (res) {
+            log.success("GetJsCode2Session success" + JSON.stringify(res));
+          },
+          fail: function (res) {
+            log.success("GetJsCode2Session fail" + JSON.stringify(res));
+          }
+        })
+      },
+      fail: res => {
+        log.success("wx.login fail" + JSON.stringify(res));
+      },
+      complete: res => {
+        log.success("wx.login complete" + JSON.stringify(res));
       }
     })
 
@@ -33,6 +48,9 @@ App({
     })
   },
   globalData: {
-    userInfo: null
+    userInfo: null,
+    urlDictionary: {
+      GetJsCode2Session: "https://qinsoft.mynatapp.cc/MiniProgram/GetJsCode2Session"
+    }
   }
 })

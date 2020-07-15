@@ -6,12 +6,16 @@
     "pages/demo/viewcontainer",
     "pages/demo/basecontent",
     "pages/demo/formcomponent",
-    "pages/demo/navigator"
+    "pages/demo/navigator",
+    "pages/demo/media",
+    "pages/demo/map",
+    "pages/demo/open",
+    "pages/demo/webview"
   ],
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "QinSoft.Wx.DemoMiniApp",
+    "navigationBarTitleText": "QinSoft.Wx.DemoMiniProgram",
     "navigationBarTextStyle": "black",
     "pageOrientation": "auto"
   },

@@ -1,9 +1,9 @@
 <!--index.wxml-->
-<view class="container">
+<view class="weui-container">
 	<view class="userinfo">
 		<block wx:if="{{!hasUserInfo}}">
-			<button open-type="getUserInfo" bind:getuserinfo="getUserInfo" class="userinfo-get-button">
-				<image class="userinfo-avatar" src="../../res/icon/user.png" mode="cover" style="margin:0"></image>
+			<button open-type="getUserInfo" bind:getuserinfo="getUserInfo" class="userinfo-empty">
+				<image src="../../res/icon/user.png" mode="cover"></image>
 			</button>
 			<text class="userinfo-nickname">用户未登录</text>
 		</block>

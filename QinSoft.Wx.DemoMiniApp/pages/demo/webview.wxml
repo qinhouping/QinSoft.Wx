@@ -1,0 +1,4 @@
+<!--pages/demo/webview.wxml-->
+<view>
+  <web-view src="https://qinsoft.mynatapp.cc/OfficialAccount/WebIndex?from=miniprograme#wechat-redirect"></web-view>
+</view>

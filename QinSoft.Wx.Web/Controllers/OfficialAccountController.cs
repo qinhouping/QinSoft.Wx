@@ -500,9 +500,9 @@ namespace QinSoft.Wx.Web.Controllers
         }
 
         [HttpGet]
-        public ActionResult WebIndex()
+        public ActionResult WebIndex(string from = "MiniProgram")
         {
-            string redirect = this.Request.Url.Scheme + "://" + this.Request.Url.Host + Url.Action("WebIndexRedict");
+            string redirect = (from == "MiniProgram" ? "https" : this.Request.Url.Scheme) + "://" + this.Request.Url.Host + Url.Action("WebIndexRedict");
             //string redirect = "http://686vxv.natappfree.cc/OfficialAccount/WebIndexRedict";
             return Redirect(this.officialAccountService.GetOAuth2Uri(redirect, "snsapi_userinfo", "TEST"));
         }
