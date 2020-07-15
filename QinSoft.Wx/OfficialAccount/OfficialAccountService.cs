@@ -26,7 +26,7 @@ namespace QinSoft.Wx.OfficialAccount
         #region 基础
         public abstract string CalculateJoinSignature(long timestamp, string nonce);
 
-        public abstract AccessTokenResponse GetAccessToken();
+        public abstract GetAccessTokenResponse GetAccessToken();
 
         #endregion
 

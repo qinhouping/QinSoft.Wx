@@ -115,11 +115,11 @@ namespace QinSoft.Wx.OfficialAccount
             return joinStr.SHA1();
         }
 
-        public override AccessTokenResponse GetAccessToken()
+        public override GetAccessTokenResponse GetAccessToken()
         {
-            return RetryTools.Retry<AccessTokenResponse>(() =>
+            return RetryTools.Retry<GetAccessTokenResponse>(() =>
             {
-                return HttpTools.Get<AccessTokenResponse>(string.Format(urlDictionary["GetAccessToken"], this.officialAccountConfig.AppId, this.officialAccountConfig.AppSecret), null, null);
+                return HttpTools.Get<GetAccessTokenResponse>(string.Format(urlDictionary["GetAccessToken"], this.officialAccountConfig.AppId, this.officialAccountConfig.AppSecret), null, null);
             });
         }
         #endregion

@@ -69,8 +69,12 @@
     <Compile Include="MiniProgram\MiniAppConfig.cs" />
     <Compile Include="MiniProgram\MiniAppService.cs" />
     <Compile Include="MiniProgram\MiniAppServiceImp.cs" />
-    <Compile Include="MiniProgram\Model\Login\GetJsCode2SessionResponse.cs" />
-    <Compile Include="OfficialAccount\Model\AccessToken\AccessTokenResponse.cs" />
+    <Compile Include="MiniProgram\Model\Analysis\GetDailyRetainRequest.cs" />
+    <Compile Include="MiniProgram\Model\Analysis\GetDailyRetainResponse.cs" />
+    <Compile Include="MiniProgram\Model\Auth\GetAccessTokenResponse.cs" />
+    <Compile Include="MiniProgram\Model\Auth\GetJsCode2SessionResponse.cs" />
+    <Compile Include="MiniProgram\Model\Auth\GetPaidUnionIdResponse.cs" />
+    <Compile Include="OfficialAccount\Model\AccessToken\GetAccessTokenResponse.cs" />
     <Compile Include="OfficialAccount\Model\Account\CreateQRCodeRequest.cs" />
     <Compile Include="OfficialAccount\Model\Account\CreateQRCodeResponse.cs" />
     <Compile Include="OfficialAccount\Model\Account\GetShortUrlRequest.cs" />

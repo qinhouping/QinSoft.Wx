@@ -6,7 +6,7 @@ using System.Text;
 
 namespace QinSoft.Wx.OfficialAccount.Model.AccessToken
 {
-    public class AccessTokenResponse
+    public class GetAccessTokenResponse
     {
         [JsonProperty("errcode")]
         public int ErrCode { get; set; }
