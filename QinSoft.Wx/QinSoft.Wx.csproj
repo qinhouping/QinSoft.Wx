@@ -37,18 +37,6 @@
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="ServiceStack.Common, Version=3.9.9.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ServiceStack.Common.3.9.11\lib\net35\ServiceStack.Common.dll</HintPath>
-    </Reference>
-    <Reference Include="ServiceStack.Interfaces, Version=3.9.9.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ServiceStack.Common.3.9.11\lib\net35\ServiceStack.Interfaces.dll</HintPath>
-    </Reference>
-    <Reference Include="ServiceStack.Redis, Version=3.9.71.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ServiceStack.Redis.3.9.71\lib\net35\ServiceStack.Redis.dll</HintPath>
-    </Reference>
-    <Reference Include="ServiceStack.Text, Version=3.9.11.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ServiceStack.Text.3.9.11\lib\net35\ServiceStack.Text.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Net.Http">
@@ -66,14 +54,41 @@
     <Compile Include="Common\EncryptTools.cs" />
     <Compile Include="Common\HttpTools.cs" />
     <Compile Include="Common\RetryTools.cs" />
-    <Compile Include="MiniProgram\MiniAppConfig.cs" />
-    <Compile Include="MiniProgram\MiniAppService.cs" />
-    <Compile Include="MiniProgram\MiniAppServiceImp.cs" />
+    <Compile Include="MiniProgram\MiniProgramConfig.cs" />
+    <Compile Include="MiniProgram\MiniProgramService.cs" />
+    <Compile Include="MiniProgram\MiniProgramServiceImp.cs" />
+    <Compile Include="MiniProgram\Model\Analysis\GetUserPortraitResponse.cs" />
+    <Compile Include="MiniProgram\Model\Analysis\GetUserPortraitRequest.cs" />
+    <Compile Include="MiniProgram\Model\Analysis\GetDailySummaryRequest.cs" />
+    <Compile Include="MiniProgram\Model\Analysis\GetDailySummaryResponse.cs" />
+    <Compile Include="MiniProgram\Model\Analysis\GetVisitDistributionRequest.cs" />
+    <Compile Include="MiniProgram\Model\Analysis\GetVisitDistributionResponse.cs" />
+    <Compile Include="MiniProgram\Model\Analysis\GetVisitPageRequest.cs" />
+    <Compile Include="MiniProgram\Model\Analysis\GetVisitPageResponse.cs" />
+    <Compile Include="MiniProgram\Model\Analysis\GetWeeklyVisistTrendRequest.cs" />
+    <Compile Include="MiniProgram\Model\Analysis\GetWeeklyVisitTrendResponse.cs" />
+    <Compile Include="MiniProgram\Model\Analysis\GetMonthlyVisitTrendResponse.cs" />
+    <Compile Include="MiniProgram\Model\Analysis\GetMonthlyVisistTrendRequest.cs" />
+    <Compile Include="MiniProgram\Model\Analysis\GetDailyVisistTrendRequest.cs" />
+    <Compile Include="MiniProgram\Model\Analysis\GetDailyVisitTrendResponse.cs" />
+    <Compile Include="MiniProgram\Model\Analysis\GetWeeklyRetainResponse.cs" />
+    <Compile Include="MiniProgram\Model\Analysis\GetWeeklyRetainRequest.cs" />
+    <Compile Include="MiniProgram\Model\Analysis\GetMonthlyRetainRequest.cs" />
     <Compile Include="MiniProgram\Model\Analysis\GetDailyRetainRequest.cs" />
     <Compile Include="MiniProgram\Model\Analysis\GetDailyRetainResponse.cs" />
+    <Compile Include="MiniProgram\Model\Analysis\GetMonthlyRetainResponse.cs" />
     <Compile Include="MiniProgram\Model\Auth\GetAccessTokenResponse.cs" />
     <Compile Include="MiniProgram\Model\Auth\GetJsCode2SessionResponse.cs" />
     <Compile Include="MiniProgram\Model\Auth\GetPaidUnionIdResponse.cs" />
+    <Compile Include="MiniProgram\Model\CustomerService\CustomerServiceImageMsg.cs" />
+    <Compile Include="MiniProgram\Model\CustomerService\CustomerServiceLinkMsg.cs" />
+    <Compile Include="MiniProgram\Model\CustomerService\CustomerServiceMiniProgramPageMsg.cs" />
+    <Compile Include="MiniProgram\Model\CustomerService\CustomerServiceMsgBase.cs" />
+    <Compile Include="MiniProgram\Model\CustomerService\CustomerServiceTextMsg.cs" />
+    <Compile Include="MiniProgram\Model\CustomerService\SendCustomerServiceMessageResponse.cs" />
+    <Compile Include="MiniProgram\Model\CustomerService\SetTypingRequest.cs" />
+    <Compile Include="MiniProgram\Model\CustomerService\SetTypingResponse.cs" />
+    <Compile Include="MiniProgram\Model\CustomerService\UploadTempMediaResponse.cs" />
     <Compile Include="OfficialAccount\Model\AccessToken\GetAccessTokenResponse.cs" />
     <Compile Include="OfficialAccount\Model\Account\CreateQRCodeRequest.cs" />
     <Compile Include="OfficialAccount\Model\Account\CreateQRCodeResponse.cs" />

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace QinSoft.Wx.MiniProgram.Model.Analysis
 {
-    public class GetDailyRetainResponse
+    public class GetMonthlyRetainResponse
     {
         [JsonProperty("errcode")]
         public int ErrCode { get; set; }
@@ -19,13 +19,13 @@ namespace QinSoft.Wx.MiniProgram.Model.Analysis
         public string RefDate { get; set; }
 
         [JsonProperty("visit_uv_new")]
-        public DailyRetainData[] VisitUVNew { get; set; }
+        public MonthlyRetainData[] VisitUVNew { get; set; }
 
         [JsonProperty("visit_uv")]
-        public DailyRetainData[] VisitUV { get; set; }
+        public MonthlyRetainData[] VisitUV { get; set; }
     }
 
-    public class DailyRetainData
+    public class MonthlyRetainData
     {
         [JsonProperty("key")]
         public int Key { get; set; }

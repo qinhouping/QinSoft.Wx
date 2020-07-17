@@ -3,8 +3,6 @@ const log = require("utils/log.js")
 
 App({
   onLaunch: function () {
-
-
     // 登录
     wx.login({
       success: res => {
@@ -14,7 +12,7 @@ App({
           method: "get",
           dataType: "json",
           success: function (res) {
-            log.success("GetJsCode2Session success" + JSON.stringify(res));
+            log.success("GetJsCode2Session success" + JSON.stringify(res.data));
           },
           fail: function (res) {
             log.success("GetJsCode2Session fail" + JSON.stringify(res));

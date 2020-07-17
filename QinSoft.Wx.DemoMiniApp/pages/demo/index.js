@@ -68,5 +68,10 @@ Page({
     wx.navigateTo({
       url: e.target.dataset.url
     })
+  },
+  bindSubscribeMessageTap:function(e){
+    wx.requestSubscribeMessage({
+      tmplIds: [],
+    })
   }
 })

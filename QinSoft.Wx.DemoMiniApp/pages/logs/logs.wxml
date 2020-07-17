@@ -1,9 +1,15 @@
 <!--logs.wxml-->
 
 <view class="weui-container">
-	<block wx:for="{{logs}}" wx:for-item="log" wx:key="log" class="log-item">
-		<text style="color:red">{{log.time}}</text>
-		<text style="color:red">{{log.type}}</text>
-		<label>{{log.message}}</label>
+	<block wx:for="{{logs}}" wx:for-item="log" wx:key="log">
+		<block>
+			<text style="color:red">{{log.time}}</text>
+		</block>
+		<block>
+			<text style="color:red">{{log.type}}</text>
+		</block>
+		<block>
+			<text>{{log.message}}</text>
+		</block>
 	</block>
 </view>weui

@@ -1,5 +1,7 @@
-﻿using QinSoft.Wx.MiniProgram;
-using QinSoft.Wx.MiniProgram.Model.Login;
+﻿using QinSoft.Wx.Common;
+using QinSoft.Wx.MiniProgram;
+using QinSoft.Wx.MiniProgram.Model.Auth;
+using QinSoft.Wx.MiniProgram.Model.CustomerService;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,9 +24,12 @@ namespace QinSoft.Wx.Web.Controllers
         }
 
         [HttpGet]
-        public GetJsCode2SessionResponse GetJsCode2Session(string jsCode)
+        public ActionResult GetJsCode2Session(string jsCode)
         {
-            return miniProgramService.GetJsCode2Session(jsCode);
+            GetAccessTokenResponse accessTokenResponse = this.miniProgramService.GetAccessToken();
+            GetJsCode2SessionResponse getJsCode2SessionResponse = this.miniProgramService.GetJsCode2Session(jsCode);
+            SendCustomerServiceMessageResponse sendCustomerServiceMessageResponse = this.miniProgramService.SendCustomerServiceMessage(accessTokenResponse.AccessToken, new CustomerServiceTextMsg() { ToUser = getJsCode2SessionResponse.OpenId, Text = new CustomerServiceTextMsgContent() { Content = "hello world" } });
+            return Content(sendCustomerServiceMessageResponse.ToJson());
         }
     }
 }

@@ -7,30 +7,27 @@ using System.Threading.Tasks;
 
 namespace QinSoft.Wx.MiniProgram.Model.Analysis
 {
-    public class GetDailyRetainResponse
+    public class GetDailySummaryResponse
     {
         [JsonProperty("errcode")]
         public int ErrCode { get; set; }
 
         [JsonProperty("errmsg")]
         public string ErrMsg { get; set; }
+    }
 
+    public class DailySummaryData
+    {
         [JsonProperty("ref_date")]
         public string RefDate { get; set; }
 
-        [JsonProperty("visit_uv_new")]
-        public DailyRetainData[] VisitUVNew { get; set; }
+        [JsonProperty("visit_total")]
+        public int VisitTotal { get; set; }
 
-        [JsonProperty("visit_uv")]
-        public DailyRetainData[] VisitUV { get; set; }
-    }
+        [JsonProperty("share_pv")]
+        public int SharePV { get; set; }
 
-    public class DailyRetainData
-    {
-        [JsonProperty("key")]
-        public int Key { get; set; }
-
-        [JsonProperty("value")]
-        public long Value { get; set; }
+        [JsonProperty("share_uv")]
+        public int ShareUV { get; set; }
     }
 }

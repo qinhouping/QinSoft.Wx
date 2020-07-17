@@ -12,4 +12,6 @@
 	<button data-url="/pages/demo/map" bind:tap="bindNavigatorTap">6. 地图</button>
 	<button data-url="/pages/demo/open" bind:tap="bindNavigatorTap">7. 开放能力</button>
 	<button data-url="/pages/demo/webview" bind:tap="bindNavigatorTap">8. 网页</button>
+	<button open-type="contact">9. 客服</button>
+	<button bind:tap="bindSubscribeMessageTap">10. 订阅消息</button>
 </scroll-view>
