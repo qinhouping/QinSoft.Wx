@@ -2,6 +2,7 @@
 using QinSoft.Wx.MiniProgram.Model.Analysis;
 using QinSoft.Wx.MiniProgram.Model.Auth;
 using QinSoft.Wx.MiniProgram.Model.CustomerService;
+using QinSoft.Wx.MiniProgram.Model.UniformMessage;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -37,7 +38,8 @@ namespace QinSoft.Wx.MiniProgram
                 { "GetTempMedia","https://api.weixin.qq.com/cgi-bin/media/get?access_token={0}&media_id={1}" },
                 { "SendCustomerServiceMessage","https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token={0}" },
                 { "SetTyping","https://api.weixin.qq.com/cgi-bin/message/custom/typing?access_token={0}" },
-                { "UploadTempMedia","https://api.weixin.qq.com/cgi-bin/media/upload?access_token={0}&type=TYPE" }
+                { "UploadTempMedia","https://api.weixin.qq.com/cgi-bin/media/upload?access_token={0}&type={1}" },
+                { "SendUniformMessage","https://api.weixin.qq.com/cgi-bin/message/wxopen/template/uniform_send?access_token={0}" }
             };
         }
 
@@ -189,6 +191,16 @@ namespace QinSoft.Wx.MiniProgram
             return await RetryTools.Retry<Task<UploadTempMediaResponse>>(async () =>
             {
                 return await HttpTools.UploadAsync<UploadTempMediaResponse>(string.Format(urlDictionary["UploadTempMedia"], accessToken, type), stream, "media", fileName);
+            });
+        }
+        #endregion
+
+        #region 统一服务消息
+        public override SendUniformMessageResponse SendUniformMessage(string accessToken, SendUniformMessageRequest request)
+        {
+            return RetryTools.Retry<SendUniformMessageResponse>(() =>
+            {
+                return HttpTools.Post<SendUniformMessageResponse>(string.Format(urlDictionary["SendUniformMessage"], accessToken), null, null, request);
             });
         }
         #endregion

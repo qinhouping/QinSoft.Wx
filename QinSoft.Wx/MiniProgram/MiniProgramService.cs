@@ -1,6 +1,7 @@
 ﻿using QinSoft.Wx.MiniProgram.Model.Analysis;
 using QinSoft.Wx.MiniProgram.Model.Auth;
 using QinSoft.Wx.MiniProgram.Model.CustomerService;
+using QinSoft.Wx.MiniProgram.Model.UniformMessage;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -56,6 +57,10 @@ namespace QinSoft.Wx.MiniProgram
         public abstract SetTypingResponse SetTyping(string accessToken, SetTypingRequest request);
 
         public abstract Task<UploadTempMediaResponse> UploadTempMedia(string accessToken, string type, string fileName, Stream stream);
+        #endregion
+
+        #region 统一服务消息
+        public abstract SendUniformMessageResponse SendUniformMessage(string accessToken, SendUniformMessageRequest request);
         #endregion
     }
 }

@@ -89,6 +89,9 @@
     <Compile Include="MiniProgram\Model\CustomerService\SetTypingRequest.cs" />
     <Compile Include="MiniProgram\Model\CustomerService\SetTypingResponse.cs" />
     <Compile Include="MiniProgram\Model\CustomerService\UploadTempMediaResponse.cs" />
+    <Compile Include="MiniProgram\Model\UniformMessage\SendUniformMessageRequest.cs" />
+    <Compile Include="MiniProgram\Model\UniformMessage\SendUniformMessageResponse.cs" />
+    <Compile Include="MiniProgram\Model\UpdatableMessage\CreateActivityIdResponse.cs" />
     <Compile Include="OfficialAccount\Model\AccessToken\GetAccessTokenResponse.cs" />
     <Compile Include="OfficialAccount\Model\Account\CreateQRCodeRequest.cs" />
     <Compile Include="OfficialAccount\Model\Account\CreateQRCodeResponse.cs" />
