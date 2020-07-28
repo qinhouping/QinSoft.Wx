@@ -2,7 +2,9 @@
 using QinSoft.Wx.MiniProgram.Model.Analysis;
 using QinSoft.Wx.MiniProgram.Model.Auth;
 using QinSoft.Wx.MiniProgram.Model.CustomerService;
+using QinSoft.Wx.MiniProgram.Model.Plugin;
 using QinSoft.Wx.MiniProgram.Model.UniformMessage;
+using QinSoft.Wx.MiniProgram.Model.UpdatableMessage;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -39,7 +41,14 @@ namespace QinSoft.Wx.MiniProgram
                 { "SendCustomerServiceMessage","https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token={0}" },
                 { "SetTyping","https://api.weixin.qq.com/cgi-bin/message/custom/typing?access_token={0}" },
                 { "UploadTempMedia","https://api.weixin.qq.com/cgi-bin/media/upload?access_token={0}&type={1}" },
-                { "SendUniformMessage","https://api.weixin.qq.com/cgi-bin/message/wxopen/template/uniform_send?access_token={0}" }
+                { "SendUniformMessage","https://api.weixin.qq.com/cgi-bin/message/wxopen/template/uniform_send?access_token={0}" },
+                { "CreateActivityId","https://api.weixin.qq.com/cgi-bin/message/wxopen/activityid/create?access_token={0}" },
+                { "SetUpdatableMsg","https://api.weixin.qq.com/cgi-bin/message/wxopen/updatablemsg/send?access_token={0}" },
+                { "ApplyPlugin","https://api.weixin.qq.com/wxa/plugin?access_token={0}" },
+                { "GetPluginDevApplyList","https://api.weixin.qq.com/wxa/devplugin?access_token={0}" },
+                { "GetPluginList","https://api.weixin.qq.com/wxa/plugin?access_token={0}" },
+                { "SetDevPluginApplyStatus","https://api.weixin.qq.com/wxa/devplugin?access_token={0}" },
+                { "UnbindPlugin", "https://api.weixin.qq.com/wxa/plugin?access_token={0}" }
             };
         }
 
@@ -201,6 +210,66 @@ namespace QinSoft.Wx.MiniProgram
             return RetryTools.Retry<SendUniformMessageResponse>(() =>
             {
                 return HttpTools.Post<SendUniformMessageResponse>(string.Format(urlDictionary["SendUniformMessage"], accessToken), null, null, request);
+            });
+        }
+        #endregion
+
+        #region 动态消息
+        public override CreateActivityIdResponse CreateActivityId(string accessToken)
+        {
+            return RetryTools.Retry<CreateActivityIdResponse>(() =>
+            {
+                return HttpTools.Get<CreateActivityIdResponse>(string.Format(urlDictionary["CreateActivityId"], accessToken), null, null);
+            });
+        }
+
+        public override SetUpdatableMsgResponse SetUpdatableMsg(string accessToken, SetUpdatableMsgRequest request)
+        {
+            return RetryTools.Retry<SetUpdatableMsgResponse>(() =>
+            {
+                return HttpTools.Post<SetUpdatableMsgResponse>(string.Format(urlDictionary["SetUpdatableMsg"], accessToken), null, null, request);
+            });
+        }
+        #endregion
+
+        #region 插件
+        public override ApplyPluginResponse ApplyPlugin(string accessToken, ApplyPluginRequest request)
+        {
+            return RetryTools.Retry<ApplyPluginResponse>(() =>
+            {
+                return HttpTools.Post<ApplyPluginResponse>(string.Format(urlDictionary["ApplyPlugin"], accessToken), null, null, request);
+            });
+        }
+
+        public override GetPluginDevApplyListResponse GetPluginDevApplyList(string accessToken, GetPluginDevApplyListRequest request)
+        {
+            return RetryTools.Retry<GetPluginDevApplyListResponse>(() =>
+            {
+                return HttpTools.Post<GetPluginDevApplyListResponse>(string.Format(urlDictionary["GetPluginDevApplyList"], accessToken), null, null, request);
+            });
+        }
+
+        public override GetPluginListResponse GetPluginList(string accessToken, GetPluginListRequest request)
+        {
+            return RetryTools.Retry<GetPluginListResponse>(() =>
+            {
+                return HttpTools.Post<GetPluginListResponse>(string.Format(urlDictionary["GetPluginList"], accessToken), null, null, request);
+            });
+        }
+
+        public override SetDevPluginApplyStatusResponse SetDevPluginApplyStatus(string accessToken, SetDevPluginApplyStatusRequest request)
+        {
+            return RetryTools.Retry<SetDevPluginApplyStatusResponse>(() =>
+            {
+                return HttpTools.Post<SetDevPluginApplyStatusResponse>(string.Format(urlDictionary["SetDevPluginApplyStatus"], accessToken), null, null, request);
+            });
+        }
+
+        public override UnbindPluginResponse UnbindPlugin(string accessToken, UnbindPluginRequest request)
+        {
+            return RetryTools.Retry<UnbindPluginResponse>(() =>
+            {
+                return HttpTools.Post<UnbindPluginResponse>(string.Format(urlDictionary["UnbindPlugin"], accessToken), null, null, request);
             });
         }
         #endregion

@@ -1,7 +1,9 @@
 ﻿using QinSoft.Wx.MiniProgram.Model.Analysis;
 using QinSoft.Wx.MiniProgram.Model.Auth;
 using QinSoft.Wx.MiniProgram.Model.CustomerService;
+using QinSoft.Wx.MiniProgram.Model.Plugin;
 using QinSoft.Wx.MiniProgram.Model.UniformMessage;
+using QinSoft.Wx.MiniProgram.Model.UpdatableMessage;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -61,6 +63,24 @@ namespace QinSoft.Wx.MiniProgram
 
         #region 统一服务消息
         public abstract SendUniformMessageResponse SendUniformMessage(string accessToken, SendUniformMessageRequest request);
+        #endregion
+
+        #region 动态消息
+        public abstract CreateActivityIdResponse CreateActivityId(string accessToken);
+
+        public abstract SetUpdatableMsgResponse SetUpdatableMsg(string accessToken, SetUpdatableMsgRequest request);
+        #endregion
+
+        #region 插件
+        public abstract ApplyPluginResponse ApplyPlugin(string accessToken, ApplyPluginRequest request);
+
+        public abstract GetPluginDevApplyListResponse GetPluginDevApplyList(string accessToken, GetPluginDevApplyListRequest request);
+
+        public abstract GetPluginListResponse GetPluginList(string accessToken, GetPluginListRequest request);
+
+        public abstract SetDevPluginApplyStatusResponse SetDevPluginApplyStatus(string accessToken, SetDevPluginApplyStatusRequest request);
+
+        public abstract UnbindPluginResponse UnbindPlugin(string accessToken, UnbindPluginRequest request);
         #endregion
     }
 }
