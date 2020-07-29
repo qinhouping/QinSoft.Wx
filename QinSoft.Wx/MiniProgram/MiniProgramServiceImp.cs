@@ -2,6 +2,7 @@
 using QinSoft.Wx.MiniProgram.Model.Analysis;
 using QinSoft.Wx.MiniProgram.Model.Auth;
 using QinSoft.Wx.MiniProgram.Model.CustomerService;
+using QinSoft.Wx.MiniProgram.Model.NearByPoi;
 using QinSoft.Wx.MiniProgram.Model.Plugin;
 using QinSoft.Wx.MiniProgram.Model.UniformMessage;
 using QinSoft.Wx.MiniProgram.Model.UpdatableMessage;
@@ -48,7 +49,11 @@ namespace QinSoft.Wx.MiniProgram
                 { "GetPluginDevApplyList","https://api.weixin.qq.com/wxa/devplugin?access_token={0}" },
                 { "GetPluginList","https://api.weixin.qq.com/wxa/plugin?access_token={0}" },
                 { "SetDevPluginApplyStatus","https://api.weixin.qq.com/wxa/devplugin?access_token={0}" },
-                { "UnbindPlugin", "https://api.weixin.qq.com/wxa/plugin?access_token={0}" }
+                { "UnbindPlugin", "https://api.weixin.qq.com/wxa/plugin?access_token={0}" },
+                { "AddNearbyPoi","https://api.weixin.qq.com/wxa/addnearbypoi?access_token={0}" },
+                { "DeleteNearbyPoi","https://api.weixin.qq.com/wxa/delnearbypoi?access_token={0}" },
+                { "GetNearByPoiList","https://api.weixin.qq.com/wxa/getnearbypoilist?page={0}&page_rows={1}&access_token={2}" },
+                { "SetNearByPoiShowStatus","https://api.weixin.qq.com/wxa/setnearbypoishowstatus?access_token={0}" }
             };
         }
 
@@ -270,6 +275,39 @@ namespace QinSoft.Wx.MiniProgram
             return RetryTools.Retry<UnbindPluginResponse>(() =>
             {
                 return HttpTools.Post<UnbindPluginResponse>(string.Format(urlDictionary["UnbindPlugin"], accessToken), null, null, request);
+            });
+        }
+        #endregion
+
+        #region 附加小程序
+        public override AddNearByPoiResponse AddNearbyPoi(string accessToken, AddNearByPoiRequest request)
+        {
+            return RetryTools.Retry<AddNearByPoiResponse>(() =>
+            {
+                return HttpTools.Post<AddNearByPoiResponse>(string.Format(urlDictionary["AddNearbyPoi"], accessToken), null, null, request);
+            });
+        }
+
+        public override DeleteNearByPoiResponse DeleteNearByPoi(string accessToken, DeleteNearByPoiRequest request)
+        {
+            return RetryTools.Retry<DeleteNearByPoiResponse>(() =>
+            {
+                return HttpTools.Post<DeleteNearByPoiResponse>(string.Format(urlDictionary["DeleteNearByPoi"], accessToken), null, null, request);
+            });
+        }
+
+        public override GetNearByPoiListResponse GetNearByPoiList(string accessToken, int page, int pageRows)
+        {
+            return RetryTools.Retry<GetNearByPoiListResponse>(() =>
+            {
+                return HttpTools.Get<GetNearByPoiListResponse>(string.Format(urlDictionary["GetNearByPoiList"], page, pageRows, accessToken), null, null);
+            });
+        }
+        public override SetNearByPoiShowStatusResponse SetNearByPoiShowStatus(string accessToken, SetNearByPoiShowStatusRequest request)
+        {
+            return RetryTools.Retry<SetNearByPoiShowStatusResponse>(() =>
+            {
+                return HttpTools.Post<SetNearByPoiShowStatusResponse>(string.Format(urlDictionary["SetNearByPoiShowStatus"], accessToken), null, null, request);
             });
         }
         #endregion

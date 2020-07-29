@@ -1,6 +1,7 @@
 ﻿using QinSoft.Wx.MiniProgram.Model.Analysis;
 using QinSoft.Wx.MiniProgram.Model.Auth;
 using QinSoft.Wx.MiniProgram.Model.CustomerService;
+using QinSoft.Wx.MiniProgram.Model.NearByPoi;
 using QinSoft.Wx.MiniProgram.Model.Plugin;
 using QinSoft.Wx.MiniProgram.Model.UniformMessage;
 using QinSoft.Wx.MiniProgram.Model.UpdatableMessage;
@@ -81,6 +82,16 @@ namespace QinSoft.Wx.MiniProgram
         public abstract SetDevPluginApplyStatusResponse SetDevPluginApplyStatus(string accessToken, SetDevPluginApplyStatusRequest request);
 
         public abstract UnbindPluginResponse UnbindPlugin(string accessToken, UnbindPluginRequest request);
+        #endregion
+
+        #region 附加小程序
+        public abstract AddNearByPoiResponse AddNearbyPoi(string accessToken, AddNearByPoiRequest request);
+
+        public abstract DeleteNearByPoiResponse DeleteNearByPoi(string accessToken, DeleteNearByPoiRequest request);
+
+        public abstract GetNearByPoiListResponse GetNearByPoiList(string accessToken, int page, int pageRows);
+
+        public abstract SetNearByPoiShowStatusResponse SetNearByPoiShowStatus(string accessToken, SetNearByPoiShowStatusRequest request);
         #endregion
     }
 }

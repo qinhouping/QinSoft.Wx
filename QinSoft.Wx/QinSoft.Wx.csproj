@@ -89,6 +89,13 @@
     <Compile Include="MiniProgram\Model\CustomerService\SetTypingRequest.cs" />
     <Compile Include="MiniProgram\Model\CustomerService\SetTypingResponse.cs" />
     <Compile Include="MiniProgram\Model\CustomerService\UploadTempMediaResponse.cs" />
+    <Compile Include="MiniProgram\Model\NearByPoi\AddNearByPoiRequest.cs" />
+    <Compile Include="MiniProgram\Model\NearByPoi\AddNearByPoiResponse.cs" />
+    <Compile Include="MiniProgram\Model\NearByPoi\DeleteNearByPoiRequest.cs" />
+    <Compile Include="MiniProgram\Model\NearByPoi\DeleteNearByPoiResponse.cs" />
+    <Compile Include="MiniProgram\Model\NearByPoi\GetNearByPoiListResponse.cs" />
+    <Compile Include="MiniProgram\Model\NearByPoi\SetNearByPoiShowStatusRequest.cs" />
+    <Compile Include="MiniProgram\Model\NearByPoi\SetNearByPoiShowStatusResponse.cs" />
     <Compile Include="MiniProgram\Model\Plugin\ApplyPluginRequest.cs" />
     <Compile Include="MiniProgram\Model\Plugin\ApplyPluginResponse.cs" />
     <Compile Include="MiniProgram\Model\Plugin\GetPluginDevApplyListRequest.cs" />
