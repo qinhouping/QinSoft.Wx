@@ -1,37 +1,38 @@
 //index.js
-const log=require("../../utils/log.js")
+const log = require("../../utils/log.js")
 
 //获取应用实例
 const app = getApp()
 
 Page({
   data: {
-    userInfo: {},
+    userInfo: null,
     hasUserInfo: false
   },
 
   onLoad: function () {
     if (app.globalData.userInfo) {
+      // 全局用户信息
       this.setData({
         userInfo: app.globalData.userInfo,
         hasUserInfo: true
       })
     } else {
-      app.userInfoReadyCallback = res => {
+      // 用户获取结果回调
+      app.userInfoReadyCallback = userInfo => {
         this.setData({
-          userInfo: res.userInfo,
+          userInfo: userInfo,
           hasUserInfo: true
         })
       }
     }
   },
 
-  getUserInfo: function (e) {
-    log.success("手动获取用户信息"+JSON.stringify(e));
-    app.globalData.userInfo = e.detail.userInfo
-    this.setData({
-      userInfo: e.detail.userInfo,
-      hasUserInfo: true
-    })
+  //手动获取用户信息事件处理
+  onGetUserInfo: function (event) {
+    log.success("getUserInfo", JSON.stringify(event));
+    if (event.detail.errMsg == "getUserInfo:ok") {
+      app.setUserInfo(event.detail.userInfo)
+    }
   }
 })

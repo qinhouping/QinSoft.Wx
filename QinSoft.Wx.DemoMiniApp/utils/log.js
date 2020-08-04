@@ -1,29 +1,31 @@
 const logKey = "system.logs"
 
-const saveLog = (type, message) => {
+const saveLog = (type, action, content) => {
   var logs = wx.getStorageSync(logKey) || []
   logs.unshift({
     time: new Date(),
     type: type,
-    message: message
+    action: action,
+    content: content
   })
   wx.setStorageSync(logKey, logs)
+  return logs.length
 }
 
-const success = message => {
-  saveLog("success", message)
+const success = (action, content) => {
+  return saveLog("success", action, content)
 }
 
-const info = message => {
-  saveLog("info", message)
+const info =  (action, content)  => {
+  return saveLog("info", action, content)
 }
 
-const warning = message => {
-  saveLog("warning", message)
+const warning =  (action, content)  => {
+  return saveLog("warning", action, content)
 }
 
-const error = message => {
-  saveLog("error", message)
+const error =  (action, content)  => {
+  return saveLog("error", action, content)
 }
 
 const getLogs = () => {

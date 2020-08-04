@@ -1,0 +1,42 @@
+.log {
+  height: auto;
+  width: 100%;
+  margin: 20rpx 0;
+  text-align: left;
+  border: hidden;
+}
+
+.log .log-item {
+  font-size: 20rpx;
+  padding: 5rpx 15rpx;
+  margin: 20rpx;
+  font-size: 20rpx;
+}
+
+.log .log-type {
+  border-radius: 25rpx;
+  margin: 20rpx;
+  width: 80rpx;
+  text-align: center;
+  float: right;
+}
+
+.log .log-success {
+  color: #FFFFFF;
+  background-color: #5FB878;
+}
+
+.log .log-info {
+  color: #FFFFFF;
+  background-color: #009688;
+}
+
+.log .log-warning {
+  color: #FFFFFF;
+  background-color: #FFB800;
+}
+
+.log-warning {
+  color: #FFFFFF;
+  background-color: #FF5722;
+}

@@ -4,14 +4,14 @@
 </page-meta> -->
 
 <scroll-view>
-	<button data-url="/pages/demo/viewcontainer" bind:tap="bindNavigatorTap">1. 视图容器</button>
-	<button data-url="/pages/demo/basecontent" bind:tap="bindNavigatorTap">2. 基础内容</button>
-	<button data-url="/pages/demo/formcomponent" bind:tap="bindNavigatorTap">3. 表单组件</button>
-	<button data-url="/pages/demo/navigator" bind:tap="bindNavigatorTap">4. 导航</button>
-	<button data-url="/pages/demo/media" bind:tap="bindNavigatorTap">5. 媒体组件</button>
-	<button data-url="/pages/demo/map" bind:tap="bindNavigatorTap">6. 地图</button>
-	<button data-url="/pages/demo/open" bind:tap="bindNavigatorTap">7. 开放能力</button>
-	<button data-url="/pages/demo/webview" bind:tap="bindNavigatorTap">8. 网页</button>
-	<button open-type="contact">9. 客服</button>
-	<button bind:tap="bindSubscribeMessageTap">10. 订阅消息</button>
+	<button data-url="/pages/demo/viewcontainer" bind:tap="bindNavigatorTap" class="item">1. 视图容器</button>
+	<button data-url="/pages/demo/basecontent" bind:tap="bindNavigatorTap" class="item">2. 基础内容</button>
+	<button data-url="/pages/demo/formcomponent" bind:tap="bindNavigatorTap" class="item">3. 表单组件</button>
+	<button data-url="/pages/demo/navigator" bind:tap="bindNavigatorTap" class="item">4. 导航</button>
+	<button data-url="/pages/demo/media" bind:tap="bindNavigatorTap" class="item">5. 媒体组件</button>
+	<button data-url="/pages/demo/map" bind:tap="bindNavigatorTap" class="item">6. 地图</button>
+	<button data-url="/pages/demo/open" bind:tap="bindNavigatorTap" class="item">7. 开放能力</button>
+	<button data-url="/pages/demo/webview" bind:tap="bindNavigatorTap" class="item">8. 网页</button>
+	<button open-type="contact" class="item">9. 客服</button>
+	<button bind:tap="bindSubscribeMessageTap" class="item">10. 订阅消息</button>
 </scroll-view>

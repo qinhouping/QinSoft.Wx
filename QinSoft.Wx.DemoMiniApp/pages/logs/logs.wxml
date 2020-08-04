@@ -1,15 +1,11 @@
 <!--logs.wxml-->
 
-<view class="weui-container">
+<view>
 	<block wx:for="{{logs}}" wx:for-item="log" wx:key="log">
-		<block>
-			<text style="color:red">{{log.time}}</text>
-		</block>
-		<block>
-			<text style="color:red">{{log.type}}</text>
-		</block>
-		<block>
-			<text>{{log.message}}</text>
-		</block>
+		<button class="log" bind:tap="onLogDetailTap" data-log="{{log}}">
+			<view class="log-time">{{log.time}}</view>
+			<view class="log-time">{{log.action}}</view>
+			<view class="log-item log-type log-{{log.type}}">{{log.type}}</view>
+		</button>
 	</block>
-</view>weui
+</view>

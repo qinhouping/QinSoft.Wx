@@ -1,1 +1,8 @@
 /* pages/demo/index.wxss */
+
+.item {
+  height: 100rpx;
+  width: 100%;
+  margin: 20rpx 0;
+  text-align: left;
+}

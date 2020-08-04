@@ -1,3 +1,2 @@
 /**app.wxss**/
-
-@import "style/weui.wxss"
+/* 全局样式 */

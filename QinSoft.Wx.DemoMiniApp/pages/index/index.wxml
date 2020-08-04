@@ -1,15 +1,17 @@
 <!--index.wxml-->
-<view class="weui-container">
+<view>
 	<view class="userinfo">
 		<block wx:if="{{!hasUserInfo}}">
-			<button open-type="getUserInfo" bind:getuserinfo="getUserInfo" class="userinfo-empty">
-				<image src="../../res/icon/user.png" mode="cover"></image>
+			<button open-type="getUserInfo" bind:getuserinfo="onGetUserInfo" class="userinfo-avatar">
+				<image src="../../res/image/user.png" mode="cover"></image>
 			</button>
-			<text class="userinfo-nickname">用户未登录</text>
+			<text class="userinfo-nickname">请点击头像登录！</text>
 		</block>
 
 		<block wx:else>
-			<image class="userinfo-avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image>
+			<label class="userinfo-avatar">
+				<image src="{{userInfo.avatarUrl}}" mode="conver"></image>
+			</label>
 			<text class="userinfo-nickname">{{userInfo.nickName}}</text>
 		</block>
 	</view>
