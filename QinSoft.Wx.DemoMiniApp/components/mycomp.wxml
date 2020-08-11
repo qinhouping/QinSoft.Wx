@@ -1,0 +1,10 @@
+<!--components/mycomp.wxml-->
+<view bind:tap="onTap">
+	<block wx:if="{{count}}">
+		<view class=".tip">{{count}}</view>
+	</block>
+	<block wx:else>
+		<view class=".tip">{{tip}}</view>
+	</block>
+	<slot></slot>
+</view>

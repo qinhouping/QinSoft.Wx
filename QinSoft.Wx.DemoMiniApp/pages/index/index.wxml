@@ -14,5 +14,9 @@
 			</label>
 			<text class="userinfo-nickname">{{userInfo.nickName}}</text>
 		</block>
+
+		<mycomp tip="QinSoft.Wx" bind:myevent="onMyEvent" class="mycomp">
+			<view class="copyright">©qinsoft</view>
+		</mycomp>
 	</view>
 </view>

@@ -1,4 +1,6 @@
 {
-  "usingComponents": {},
+  "usingComponents": {
+    "mycomp":"/components/mycomp"
+  },
   "navigationBarTitleText":"首页"
 }

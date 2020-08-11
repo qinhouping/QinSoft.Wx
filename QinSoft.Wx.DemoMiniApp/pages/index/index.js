@@ -30,9 +30,22 @@ Page({
 
   //手动获取用户信息事件处理
   onGetUserInfo: function (event) {
-    log.success("getUserInfo", JSON.stringify(event));
+    log.success("onGetUserInfo", JSON.stringify(event));
     if (event.detail.errMsg == "getUserInfo:ok") {
       app.setUserInfo(event.detail.userInfo)
     }
+  },
+
+  onMyEvent: function (event) {
+    wx.showModal({
+      title: "系统提示",
+      content: "需要清除本地缓存吗?",
+      success: function (res) {
+        if (res.confirm) {
+          wx.clearStorageSync()
+          wx.createWorker("/workers/myworker.js").postMessage(res)
+        }
+      }
+    })
   }
 })

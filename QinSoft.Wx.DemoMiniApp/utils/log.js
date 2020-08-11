@@ -1,9 +1,11 @@
-const logKey = "system.logs"
+const util = require("util.js")
+
+const logKey = "qinsoft.wx.logs"
 
 const saveLog = (type, action, content) => {
   var logs = wx.getStorageSync(logKey) || []
   logs.unshift({
-    time: new Date(),
+    time: util.formatTime(new Date()),
     type: type,
     action: action,
     content: content
@@ -16,15 +18,15 @@ const success = (action, content) => {
   return saveLog("success", action, content)
 }
 
-const info =  (action, content)  => {
+const info = (action, content) => {
   return saveLog("info", action, content)
 }
 
-const warning =  (action, content)  => {
+const warning = (action, content) => {
   return saveLog("warning", action, content)
 }
 
-const error =  (action, content)  => {
+const error = (action, content) => {
   return saveLog("error", action, content)
 }
 

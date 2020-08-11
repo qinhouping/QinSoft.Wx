@@ -10,14 +10,14 @@ Page({
     audioName: "要我怎么办 - 李荣浩",
     audioAuthor: "李荣浩",
 
-    photoSrc:null
+    photoSrc: null
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    const a1=wx.createAudioContext("a1")
+    const a1 = wx.createAudioContext("a1")
     a1.play()
   },
 
@@ -70,20 +70,30 @@ Page({
 
   },
 
-  bindAudioError: function (e) {
+  bindAudioError: function (event) {
     wx.showModal({
       cancelColor: 'cancelColor',
-      content: JSON.stringify(e)
+      content: JSON.stringify(event)
     })
   },
 
-  bindCameraButtonTap: function (e) {
+  bindCameraButtonTap: function (event) {
     const ctx = wx.createCameraContext()
     ctx.takePhoto({
       quality: 'high',
       success: (res) => {
         this.setData({
           photoSrc: res.tempImagePath
+        })
+      }
+    })
+  },
+
+  bindChooseImageTap: function (event) {
+    wx.chooseImage({
+      success: (res) => {
+        this.setData({
+          photoSrc: res.tempFilePaths[0]
         })
       }
     })

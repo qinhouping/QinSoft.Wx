@@ -6,6 +6,7 @@ Page({
     logs: [],
     detailPagePath: "/pages/logs/logdetail"
   },
+
   onLoad: function () {
     this.setData({
       logs: log.getLogs()
@@ -29,7 +30,7 @@ Page({
       key: 'logdetail',
       success: function () {
         wx.navigateTo({
-          url: _this.data.detailPagePath,
+          url: _this.data.detailPagePath + "?key=logdetail",
         })
       }
     })

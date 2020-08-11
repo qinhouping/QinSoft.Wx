@@ -11,7 +11,8 @@
     "pages/demo/map",
     "pages/demo/open",
     "pages/demo/webview",
-    "pages/logs/logdetail"
+    "pages/logs/logdetail",
+    "pages/demo/canvas"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -25,8 +26,7 @@
     "color": "#888",
     "selectedColor": "#000",
     "backgroundColor": "#fff",
-    "list": [
-      {
+    "list": [{
         "pagePath": "pages/index/index",
         "iconPath": "res/image/home.png",
         "text": "首页"
@@ -43,5 +43,12 @@
       }
     ]
   },
-  "usingComponents": {}
+  "usingComponents": {},
+  "networkTimeout": {
+    "request": 60000,
+    "connectSocket": 60000,
+    "uploadFile": 600000,
+    "downloadFile": 600000
+  },
+  "workers": "workers"
 }

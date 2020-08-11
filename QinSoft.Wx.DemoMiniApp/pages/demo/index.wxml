@@ -14,4 +14,5 @@
 	<button data-url="/pages/demo/webview" bind:tap="bindNavigatorTap" class="item">8. 网页</button>
 	<button open-type="contact" class="item">9. 客服</button>
 	<button bind:tap="bindSubscribeMessageTap" class="item">10. 订阅消息</button>
+	<button data-url="/pages/demo/canvas" bind:tap="bindNavigatorTap" class="item">11. 画布</button>
 </scroll-view>

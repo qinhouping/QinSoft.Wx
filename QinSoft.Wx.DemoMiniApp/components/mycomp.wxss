@@ -1,0 +1,12 @@
+/* components/mycomp.wxss */
+
+.tip {
+  background-color: #5FB878;
+  color: #FFFFFF;
+  text-align: center;
+  margin: 10rpx;
+  padding: 10rpx;
+  border-radius: 25rpx;
+  height: 50rpx;
+  min-width: 100rpx;
+}

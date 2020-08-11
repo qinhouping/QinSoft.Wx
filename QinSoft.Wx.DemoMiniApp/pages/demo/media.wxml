@@ -11,4 +11,8 @@
 		<view>预览</view>
 		<image mode="widthFix" src="{{photoSrc}}"></image>
 	</block>
+
+	<block>
+		<button bindtap="bindChooseImageTap">选择图片</button>
+	</block>
 </view>

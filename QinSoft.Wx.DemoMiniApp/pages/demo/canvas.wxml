@@ -1,0 +1,5 @@
+<!--pages/demo/canvas.wxml-->
+<canvas canvas-id="mycanvas" bind:touchmove="onTouchMove" >
+
+</canvas>
+<label>{{touch.x}},{{touch.y}}</label>

@@ -9,6 +9,14 @@ App({
 
   onLaunch: function (options) {
     log.info("App.onLaunch", JSON.stringify(options))
+
+    //监听内存告警
+    wx.onMemoryWarning((result) => {
+      log.warn("wx.onMemoryWarning", JSON.stringify(result))
+    })
+
+    this._updateManage()
+
     // 登录
     wx.login({
       success: res => {
@@ -63,7 +71,7 @@ App({
   },
 
   onError: function (options) {
-    log.info("App.onError", JSON.stringify(options))
+    log.error("App.onError", JSON.stringify(options))
   },
 
   setUserInfo: function (userInfo) {
@@ -72,5 +80,27 @@ App({
     if (this.userInfoReadyCallback) {
       this.userInfoReadyCallback(userInfo)
     }
+  },
+
+  _updateManage: function () {
+    const updateManager = wx.getUpdateManager()
+    updateManager.onCheckForUpdate(res => {
+      log.info("updateManager.onCheckForUpdate", JSON.stringify(res))
+    })
+    updateManager.onUpdateReady(() => {
+      wx.showModal({
+        title: '更新提示',
+        content: '新版本已经准备好，是否重启应用？',
+        success(res) {
+          if (res.confirm) {
+            // 新的版本已经下载好，调用 applyUpdate 应用新版本并重启
+            updateManager.applyUpdate()
+          }
+        }
+      })
+    })
+    updateManager.onUpdateFailed(() => {
+      log.error("updateManager.onUpdateFailed", null)
+    })
   }
 })
